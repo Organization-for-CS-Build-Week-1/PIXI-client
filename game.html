@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ant's Knapsack</title>
+    </head>
+
+    <body>
+        <div id="container"></div>
+        <script src="./pixi/pixi.min.js"></script>
+        <script>
+
+            let Application = PIXI.Application,
+                Container = PIXI.Container,
+                loader = PIXI.Loader.shared,
+                Sprite = PIXI.Sprite,
+                resources = loader.resources
+
+            //create app
+            let app = new Application({
+                width: 500,
+                height: 500,
+                antialiasing: true,
+                transparent: false,
+                resolution: 1
+            })
+
+            const container = document.getElementById("container")
+            container.appendChild(app.view)
+
+            loader.add("assets/spritesheet.json")
+                .load(setup)
+
+            let state, ant1, gameScene, room;
+
+            function setup() {
+                id = resources['assets/spritesheet.json'].textures
+
+
+                gameScene = new Container()
+                app.stage.addChild(gameScene)
+
+
+
+                ant1 = new Sprite(id["Ant1.png"])
+
+            }
+
+
+
+
+        </script>
+
+    </body>
+
+</html>
