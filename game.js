@@ -12,7 +12,7 @@ container.appendChild(app.view)
 
 loader.add('assets/spritesheet.json').load(setup)
 
-let state, ant1, gameScene, room
+let state, ant1, gameScene, room, path
 
 function setup() {
   id = resources['assets/spritesheet.json'].textures
@@ -25,6 +25,11 @@ function setup() {
   background.position.set(app.screen.width / 2, app.screen.height / 2)
   background.scale.set(1)
   gameScene.addChild(background)
+
+  path = new Sprite(id['path.png'])
+  path.anchor.set(1)
+  path.position.set(app.screen.width, app.screen.height / 2)
+  gameScene.addChild(path)
 
   ant1 = new Sprite(id['Ant1.png'])
   ant1.anchor.set(0.5)
@@ -99,12 +104,29 @@ function play(delta) {
   ant1.x += ant1.vx
   ant1.y += ant1.vy
 
+  //if scaled up multiply values by same, variable would be good for that.
   contain(ant1, {
     x: 50,
     y: 40,
     width: gameScene.width - 10,
     height: gameScene.height - 10,
   })
+  if (testForAABB(ant1, path)) {
+    console.log('Next room!')
+  }
+}
+
+// classic AABB collision test
+function testForAABB(object1, object2) {
+  const bounds1 = object1.getBounds()
+  const bounds2 = object2.getBounds()
+
+  return (
+    bounds1.x < bounds2.x + bounds2.width &&
+    bounds1.x + bounds2.width > bounds2.x &&
+    bounds1.y < bounds2.y + bounds2.height &&
+    bounds1.y + bounds2.height > bounds2.y
+  )
 }
 
 function contain(sprite, container) {
