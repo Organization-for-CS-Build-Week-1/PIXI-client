@@ -3,14 +3,10 @@ const Application = PIXI.Application,
   resources = loader.resources,
   Container = PIXI.Container,
   Sprite = PIXI.Sprite,
-  app = new Application({
-    width: 500,
-    height: 500,
-    antialiasing: true,
-    transparent: false,
-    resolution: 1,
-  }),
-  container = document.getElementById('container')
+  container = document.getElementById('container'),
+  app = new Application({ resizeTo: container })
+
+app.renderer.autoDensity = true
 
 container.appendChild(app.view)
 
@@ -25,8 +21,12 @@ function setup() {
   app.stage.addChild(gameScene)
 
   background = new Sprite(id['room-background.png'])
+  background.anchor.set(0.5)
+  background.position.set(app.screen.width / 2, app.screen.height / 2)
+  background.scale.set(1)
   gameScene.addChild(background)
 
   ant1 = new Sprite(id['Ant1.png'])
+  ant1.position.set(app.screen.width / 2, app.screen.height / 2)
   gameScene.addChild(ant1)
 }
