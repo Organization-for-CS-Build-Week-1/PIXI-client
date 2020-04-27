@@ -27,6 +27,106 @@ function setup() {
   gameScene.addChild(background)
 
   ant1 = new Sprite(id['Ant1.png'])
-  ant1.position.set(app.screen.width / 2, app.screen.height / 2)
+  ant1.anchor.set(0.5)
+  ant1.x = app.screen.width / 2
+  ant1.y = app.screen.height / 2
+  ant1.vx = 0
+  ant1.vy = 0
   gameScene.addChild(ant1)
+
+  let left = keyboard(37),
+    up = keyboard(38),
+    right = keyboard(39),
+    down = keyboard(40)
+
+  //Up
+  up.press = function () {
+    ant1.vy = -5
+    ant1.vx = 0
+  }
+  up.release = function () {
+    if (!down.isDown && ant1.vx === 0) {
+      ant1.vy = 0
+    }
+  }
+
+  //Left
+  left.press = function () {
+    ant1.vx = -5
+    ant1.vy = 0
+  }
+  left.release = function () {
+    if (!right.isDown && ant1.vy === 0) {
+      ant1.vx = 0
+    }
+  }
+
+  //Right
+  right.press = function () {
+    ant1.vx = 5
+    ant1.vy = 0
+  }
+  right.release = function () {
+    if (!left.isDown && ant1.vy === 0) {
+      ant1.vx = 0
+    }
+  }
+
+  //Down
+  down.press = function () {
+    ant1.vy = 5
+    ant1.vx = 0
+  }
+  down.release = function () {
+    if (!up.isDown && ant1.vx === 0) {
+      ant1.vy = 0
+    }
+  }
+
+  state = play
+
+  app.ticker.add((delta) => gameLoop(delta))
+}
+
+function gameLoop(delta) {
+  //Update the current game state:
+  state(delta)
+}
+
+function play(delta) {
+  ant1.x += ant1.vx
+  ant1.y += ant1.vy
+}
+
+function keyboard(keyCode) {
+  var key = {}
+  key.code = keyCode
+  key.isDown = false
+  key.isUp = true
+  key.press = undefined
+  key.release = undefined
+  //The `downHandler`
+  key.downHandler = function (event) {
+    if (event.keyCode === key.code) {
+      if (key.isUp && key.press) key.press()
+      key.isDown = true
+      key.isUp = false
+    }
+    event.preventDefault()
+  }
+
+  //The `upHandler`
+  key.upHandler = function (event) {
+    if (event.keyCode === key.code) {
+      if (key.isDown && key.release) key.release()
+      key.isDown = false
+      key.isUp = true
+    }
+    event.preventDefault()
+  }
+
+  //Attach event listeners
+  window.addEventListener('keydown', key.downHandler.bind(key), false)
+  window.addEventListener('keyup', key.upHandler.bind(key), false)
+  return key
 }
