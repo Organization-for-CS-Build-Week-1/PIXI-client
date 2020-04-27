@@ -54,6 +54,7 @@ function setup() {
   left.press = function () {
     ant1.vx = -5
     ant1.vy = 0
+    ant1.scale.x = -1
   }
   left.release = function () {
     if (!right.isDown && ant1.vy === 0) {
@@ -65,6 +66,7 @@ function setup() {
   right.press = function () {
     ant1.vx = 5
     ant1.vy = 0
+    ant1.scale.x = 1
   }
   right.release = function () {
     if (!left.isDown && ant1.vy === 0) {
@@ -96,6 +98,44 @@ function gameLoop(delta) {
 function play(delta) {
   ant1.x += ant1.vx
   ant1.y += ant1.vy
+
+  contain(ant1, {
+    x: 50,
+    y: 40,
+    width: gameScene.width - 10,
+    height: gameScene.height - 10,
+  })
+}
+
+function contain(sprite, container) {
+  let collision = undefined
+
+  //Left
+  if (sprite.x < container.x) {
+    sprite.x = container.x
+    collision = 'left'
+  }
+
+  //Top
+  if (sprite.y < container.y) {
+    sprite.y = container.y
+    collision = 'top'
+  }
+
+  //Right
+  if (sprite.x + sprite.width > container.width) {
+    sprite.x = container.width - sprite.width
+    collision = 'right'
+  }
+
+  //Bottom
+  if (sprite.y + sprite.height > container.height) {
+    sprite.y = container.height - sprite.height
+    collision = 'bottom'
+  }
+
+  //Return the `collision` value
+  return collision
 }
 
 function keyboard(keyCode) {
