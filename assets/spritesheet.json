@@ -47,6 +47,22 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32}
+},
+"path.png":
+{
+	"frame": {"x":192,"y":0,"w":49,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":50},
+	"sourceSize": {"w":49,"h":50}
+},
+"room-background.png":
+{
+	"frame": {"x":0,"y":50,"w":500,"h":500},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
+	"sourceSize": {"w":500,"h":500}
 }},
 "animations": {
 	"Ant": ["Ant1.png","Ant2.png"],
@@ -58,8 +74,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":192,"h":32},
+	"size": {"w":500,"h":550},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c9642105e41ceb392e4fc50e349f0b00:fd89ba6469e48d035fe458e574a5fc94:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:f1f8e8dcc76d437be924e06afa896f5b:902cc4cacbad771f4b199b327ed5cc65:729adc6043343cfda41c447ce8f464d6$"
 }
 }
