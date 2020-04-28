@@ -4,7 +4,7 @@
  */
 function listenForInfo() {
     highscores = Array.from(document.getElementsByClassName("highscore"))
-    socket.on("highscoreUpdate", data => {
+    socket.on("highscoreupdate", data => {
         highscores[0].textContent = data[0]
         highscores[1].textContent = data[1]
         highscores[2].textContent = data[2]
