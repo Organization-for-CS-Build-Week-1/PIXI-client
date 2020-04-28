@@ -47,6 +47,12 @@ function runGame() {
     ant1.vy = 0
     gameScene.addChild(ant1)
 
+    function checkMoving(animatedSprite) {
+      if (animatedSprite.vx || animatedSprite.vy && animatedSprite.play) {
+        animatedSprite.play()
+      } else animatedSprite.stop()
+    }
+
     let left = keyboard(37),
       up = keyboard(38),
       right = keyboard(39),
@@ -55,55 +61,47 @@ function runGame() {
     //Up
     up.press = function () {
       ant1.vy = -3
-      ant1.vx = 0
-      ant1.play()
+      checkMoving(ant1)
     }
     up.release = function () {
-      if (!down.isDown && ant1.vx === 0) {
-        ant1.vy = 0
-        ant1.stop()
-      }
+      if (down.isDown) ant1.vy = 3
+      else ant1.vy = 0
+      checkMoving(ant1)
     }
 
     //Left
     left.press = function () {
       ant1.vx = -3
-      ant1.vy = 0
       ant1.scale.x = -1
-      ant1.play()
+      checkMoving(ant1)
     }
     left.release = function () {
-      if (!right.isDown && ant1.vy === 0) {
-        ant1.vx = 0
-        ant1.stop()
-      }
+      if (right.isDown) ant1.vx = 3
+      else ant1.vx = 0
+      checkMoving(ant1)
     }
 
     //Right
     right.press = function () {
       ant1.vx = 3
-      ant1.vy = 0
       ant1.scale.x = 1
-      ant1.play()
+      checkMoving(ant1)
     }
     right.release = function () {
-      if (!left.isDown && ant1.vy === 0) {
-        ant1.vx = 0
-        ant1.stop()
-      }
+      if (left.isDown) ant1.vx = -3
+      else ant1.vx = 0
+      checkMoving(ant1)
     }
 
     //Down
     down.press = function () {
       ant1.vy = 3
-      ant1.vx = 0
-      ant1.play()
+      checkMoving(ant1)
     }
     down.release = function () {
-      if (!up.isDown && ant1.vx === 0) {
-        ant1.vy = 0
-        ant1.stop()
-      }
+      if (up.isDown) ant1.vy = -3
+      else ant1.vy = 0
+      checkMoving(ant1)
     }
 
     state = play

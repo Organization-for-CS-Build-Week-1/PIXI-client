@@ -1,37 +1,53 @@
+body {
+  background-color: rgb(49, 53, 56);
+}
+
 #nav {
-    display: flex;
-    padding: 1rem;
+  display: flex;
+  padding: 1rem;
 }
 
-#nav button {
-    margin-left: 1rem;
-    padding: 0.3rem 0.7rem;
-    font-family: "fippsregular", Arial sans-serif;
-    background-color: #164d16;
-    border: 2px solid black;
-    box-shadow: 2px 2px gray;
-    transform: translate(-2px, -2px);
-} 
-
-#nav button:hover {
-    background-color: #1b721b;
-    cursor: pointer;
-    transform: translate(0, 0);
-    box-shadow: none;
+#nav button, .submit {
+  margin-left: 1rem;
+  padding: 0.3rem 0.7rem;
+  font-family: "fippsregular", Arial sans-serif;
+  background-color: #1c971c;
+  border: 2px solid black;
+  box-shadow: 2px 2px gray;
+  transform: translate(-2px, -2px);
+  outline: none;
 }
 
-#landing-page-container {
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    background: rgb(68, 64, 9);
+#nav button:hover, .submit:hover {
+  background-color: #57bb1e;
+  cursor: pointer;
+  transform: translate(0, 0);
+  box-shadow: none;
 }
 
+#landing-page-container, #login-container, #register-container {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
 
+#logo {
+  margin-top: 15px;
+  padding-bottom: 10px;
+  background: #1c971c;
+  border: 10px solid black;
+  outline: 2px solid grey;
+}
 
 #landing-page-container h1 {
-    text-align: center;
-    font-family: "fippsregular", Arial sans-serif;
-    font-size: 5rem;
+  text-align: center;
+  font-family: "fippsregular", Arial sans-serif;
+  font-size: 5rem;
+}
+
+.auth-input {
+    height: 16px;
+    width: 120px;
+    padding: 5px;
 }
