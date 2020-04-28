@@ -11,32 +11,46 @@
   margin: 10px 0;
 }
 
-.left-panel {
+.panel {
   height: 100%;
-  width: 200px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   margin-right: 10px;
 }
 
-.left-panel > div > h2 {
+.left-panel {
+  margin-right: 10px;
+}
+
+.right-panel {
+  margin-left: 10px;
+}
+
+.panel > div > h2 {
   margin-top: 10px;
+  text-align: center;
 }
 
 .scoreboard {
   margin-bottom: 5px;
   width: 100%;
   height: 50%;
-  text-align: center;
   background-color: rgb(117, 212, 117);
 }
 
 .chat {
   margin-top: 5px;
-  text-align: center;
   width: 100%;
   height: 50%;
   background-color: skyblue;
+}
+
+.map {
+  background-color: azure;
+  width: 100%;
+  margin-bottom: 5px;
+  height: 50%;
 }
 
 #container {
