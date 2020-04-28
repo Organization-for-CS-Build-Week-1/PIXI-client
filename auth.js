@@ -3,12 +3,19 @@ socket.on("register", (data) => {
   console.log(data);
   switchPage("game");
 });
-socket.on("registerError", console.error);
+socket.on("registerError", (error) => {
+  console.error(error);
+  alert(error.error);
+});
+
 socket.on("login", (data) => {
   console.log(data);
   switchPage("game");
 });
-socket.on("loginError", console.error);
+socket.on("loginError", (error) => {
+  console.error(error);
+  alert(error.error);
+});
 
 //register form submit
 function registerSetup() {
@@ -42,14 +49,17 @@ function loginSetup() {
   //submit login form function
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-      username = document.getElementById("username")
-      password = document.getElementById("password")
+    username = document.getElementById("username");
+    password = document.getElementById("password");
 
-      //send data to BE
-    socket.emit("login", {username: username.value, password: password.value});
+    //send data to BE
+    socket.emit("login", {
+      username: username.value,
+      password: password.value,
+    });
 
     //clear input values
-    username.value = ""
-    password.value = ""
+    username.value = "";
+    password.value = "";
   });
 }
