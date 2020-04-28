@@ -1,7 +1,3 @@
-socket.on('init', (data) => {
-  console.log(JSON.stringify(data.you))
-})
-
 function runGame() {
   const Application = PIXI.Application,
     loader = PIXI.Loader.shared,
