@@ -14,7 +14,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, room, path
+  let state, ant1, gameScene, room, path, stick
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -33,6 +33,12 @@ function runGame() {
     path.anchor.set(1)
     path.position.set(app.screen.width, app.screen.height / 2)
     gameScene.addChild(path)
+
+    stick = new Sprite(id['Stick.png'])
+    stick.anchor.set(0.5)
+    stick.position.set(50, 50)
+    stick.interactive = true
+    gameScene.addChild(stick)
 
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
@@ -117,6 +123,20 @@ function runGame() {
     })
     if (testForAABB(ant1, path)) {
       console.log('Next room!')
+    }
+
+    itemCollision(ant1, [stick])
+  }
+
+  //ant collision with items
+  function itemCollision(player, items) {
+    if (!items.length) return
+    else {
+      items.forEach(item => {
+        if(testForAABB(player, item)) {
+          console.log("ITEM!")
+        }
+      })
     }
   }
 
