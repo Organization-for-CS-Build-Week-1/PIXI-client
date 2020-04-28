@@ -1,3 +1,5 @@
+console.log(socket)
+
 const Application = PIXI.Application,
   loader = PIXI.Loader.shared,
   resources = loader.resources,
