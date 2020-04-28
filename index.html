@@ -11,12 +11,14 @@
     <body>
         <!-- nav -->
         <nav id="nav">
-            <a href="./login.html">Login</a>
-            <a href="./register.html">Register</a>
+            <button id="register-button">Register</button>
+            <button id="login-button">Login</button>
+            <button id="game-button">Game</button>
+            <button id="home-button">Home</button>
         </nav>
 
         <!-- landing page -->
-        <div id="landing-page-container">
+        <div id="landing-page-container" style="display: none;">
             <h1>LANDING PAGE</h1>
             <h2>LOGO</h2>
             <h3>Brief description of game</h3>
@@ -28,7 +30,7 @@
         </div>
 
         <!-- register -->
-        <div id="register-container">
+        <div id="register-container" class="no-display" style="display: none;">
             <h1>REGISTER</h1>
             <form id="register-form">
                 <input id="username" type="text" name="username" autoComplete="username" />
@@ -40,7 +42,7 @@
         </div>
 
         <!-- login -->
-        <div id="login-container">
+        <div id="login-container" class="no-display" style="display: none;">
             <h1>LOGIN</h1>
             <form>
                 <input type="text" name="username" autoComplete="username" />
@@ -50,7 +52,7 @@
         </div>
 
         <!-- game -->
-        <div id="game-container" class="wrapper">
+        <div id="game-container" class="wrapper no-display" style="display: none;">
             <div class="left-panel">
               <div class="scoreboard">
                 <h2 class="score-title">High Scores</h2>
@@ -65,6 +67,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
         <script src="pixi/pixi.min.js"></script>
 
+        <script src="main.js"></script>
         <script src="register.js"></script>
         <script src="game.js"></script>
     </body>

@@ -1,6 +1,6 @@
 console.log(socket)
 
-const Application = PIXI.Application,
+function runGame() {const Application = PIXI.Application,
   loader = PIXI.Loader.shared,
   resources = loader.resources,
   Container = PIXI.Container,
@@ -202,4 +202,4 @@ function keyboard(keyCode) {
   window.addEventListener("keydown", key.downHandler.bind(key), false);
   window.addEventListener("keyup", key.upHandler.bind(key), false);
   return key;
-}
+}}
