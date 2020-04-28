@@ -1,4 +1,6 @@
-console.log(socket)
+socket.on('init', (data) => {
+  console.log(JSON.stringify(data.map))
+})
 
 function runGame() {
   const Application = PIXI.Application,
