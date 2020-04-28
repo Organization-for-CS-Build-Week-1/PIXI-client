@@ -30,6 +30,7 @@
 .panel > div > h2 {
   margin-top: 10px;
   text-align: center;
+  font-family: 'arcadeclassicregular', Arial sans-serif;
 }
 
 .scoreboard {
