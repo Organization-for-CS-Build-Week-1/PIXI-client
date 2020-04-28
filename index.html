@@ -42,34 +42,34 @@
       <h1>REGISTER</h1>
       <form id="register-form">
         <label>
-            Username:
-            <input
+          Username:
+          <input
             id="username1"
             class="auth-input"
             type="text"
             name="username1"
             autocomplete="username"
-            />
+          />
         </label>
         <label>
-            Password:
-            <input
+          Password:
+          <input
             id="password1"
             class="auth-input"
             type="password"
             name="password"
             autocomplete="current-password"
-            />
+          />
         </label>
         <label>
-            Confirm Password:
-            <input
+          Confirm Password:
+          <input
             id="password2"
             class="auth-input"
             type="password"
             name="password"
             autocomplete="current-password"
-            />
+          />
         </label>
 
         <button class="submit" type="submit">GO</button>
@@ -83,21 +83,21 @@
         <label>
           Username:
           <input
-          id="username"
-          class="auth-input"
-          type="text"
-          name="username"
-          autocomplete="username"
+            id="username"
+            class="auth-input"
+            type="text"
+            name="username"
+            autocomplete="username"
           />
         </label>
         <label>
           Password:
           <input
-          id="password"
-          class="auth-input"
-          type="password"
-          name="password"
-          autocomplete="current-password"
+            id="password"
+            class="auth-input"
+            type="password"
+            name="password"
+            autocomplete="current-password"
           />
         </label>
         <button class="submit" type="submit">GO</button>
@@ -109,6 +109,16 @@
       <div class="left-panel panel">
         <div class="scoreboard">
           <h2 class="score-title">Top Ranking Ants</h2>
+          <div class="scores">
+            <!-- ↓↓ USE JS TO CHANGE TEXT CONTENT ↓↓ -->
+            <h4>1: <span class="highscore"></span></h4>
+            <h4>2: <span class="highscore"></span></h4>
+            <h4>3: <span class="highscore"></span></h4>
+          </div>
+          <div class="player-score">
+            <h4>You: <span id="player-score"></span></h4>
+            <!-- ↑↑ USE JS TO CHANGE TEXT CONTENT ↑↑ -->
+          </div>
         </div>
         <div class="chat">
           <h2 class="chat-title">Chatroom</h2>
@@ -117,6 +127,9 @@
       <div id="container"></div>
       <div class="right-panel panel">
         <div class="map" id="piximap"></div>
+        <div class="inventory">
+          <h2 class="inventory-title">Inventory</h2>
+        </div>
       </div>
     </div>
 
@@ -125,10 +138,10 @@
       crossorigin="anonymous"
     ></script>
     <script src="pixi/pixi.min.js"></script>
-
-    <script src="main.js"></script>
+    <script src="highscorelistener.js"></script>
     <script src="auth.js"></script>
     <script src="game.js"></script>
     <script src="map.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>
