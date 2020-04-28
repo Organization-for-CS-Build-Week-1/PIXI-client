@@ -5,21 +5,71 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Ant's Knapsack</title>
+        <link rel="stylesheet" type="text/css" href="game.css" />
     </head>
 
     <body>
+        <!-- nav -->
+        <nav id="nav">
+            <button id="register-button">Register</button>
+            <button id="login-button">Login</button>
+            <button id="game-button">Game</button>
+            <button id="home-button">Home</button>
+        </nav>
 
-        <h1>LANDING PAGE</h1>
-        <a href="./login.html">Login</a>
-        <a href="./register.html">Register</a>
-        <h2>LOGO</h2>
-        <h3>Brief description of game</h3>
-        <p>screenshot of game</p>
+        <!-- landing page -->
+        <div id="landing-page-container" style="display: none;">
+            <h1>LANDING PAGE</h1>
+            <h2>LOGO</h2>
+            <h3>Brief description of game</h3>
+            <p>screenshot of game</p>
 
-        <p>Here is a longer description of the game based on the screenshot</p>
+            <p>Here is a longer description of the game based on the screenshot</p>
 
-        <p>Here is another description of the game based on the screenshot</p>
+            <p>Here is another description of the game based on the screenshot</p>
+        </div>
 
+        <!-- register -->
+        <div id="register-container" class="no-display" style="display: none;">
+            <h1>REGISTER</h1>
+            <form id="register-form">
+                <input id="username" type="text" name="username" autoComplete="username" />
+                <input id="password1" type="password" name="password" autoComplete="current-password" />
+                <input id="password2" type="password" name="password" autoComplete="current-password" />
+
+                <button type="submit">submit</button>
+            </form>
+        </div>
+
+        <!-- login -->
+        <div id="login-container" class="no-display" style="display: none;">
+            <h1>LOGIN</h1>
+            <form>
+                <input type="text" name="username" autoComplete="username" />
+                <input type="password" name="password" autoComplete="current-password" />
+                <button type="submit">submit</button>
+            </form>
+        </div>
+
+        <!-- game -->
+        <div id="game-container" class="wrapper no-display" style="display: none;">
+            <div class="left-panel">
+              <div class="scoreboard">
+                <h2 class="score-title">High Scores</h2>
+              </div>
+              <div class="chat">
+                <h2 class="chat-title">Chatroom</h2>
+              </div>
+            </div>
+            <div id="container"></div>
+          </div>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
+        <script src="pixi/pixi.min.js"></script>
+
+        <script src="main.js"></script>
+        <script src="register.js"></script>
+        <script src="game.js"></script>
     </body>
 
 </html>
