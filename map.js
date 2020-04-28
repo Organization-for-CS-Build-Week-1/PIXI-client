@@ -201,17 +201,5 @@ function runMap() {
         app.screen.height / 2 - youy * 11
       )
     }
-
-    console.log(mapContainer)
-    state = play
-
-    app.ticker.add((delta) => gameLoop(delta))
   }
-
-  function gameLoop(delta) {
-    //Update the current game state:
-    state(delta)
-  }
-
-  function play(delta) {}
 }
