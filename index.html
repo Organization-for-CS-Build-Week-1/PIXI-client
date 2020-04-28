@@ -21,44 +21,50 @@
 
         <!-- landing page -->
         <div id="landing-page-container" style="display: none;">
-            <h1>The Ant's Knapsack</h1>
+            <h1 id="logo">The Ant's Knapsack</h1>
         </div>
 
         <!-- register -->
-        <div id="register-container" class="no-display" style="display: none;">
+        <div id="register-container" style="display: none;">
             <h1>REGISTER</h1>
             <form id="register-form">
-                <input id="username1" type="text" name="username1" autoComplete="username" />
-                <input id="password1" type="password" name="password" autoComplete="current-password" />
-                <input id="password2" type="password" name="password" autoComplete="current-password" />
+                <input id="username1" class="auth-input" type="text" name="username1" autoComplete="username" />
+                <input id="password1" class="auth-input" type="password" name="password" autoComplete="current-password" />
+                <input id="password2" class="auth-input" type="password" name="password" autoComplete="current-password" />
 
-                <button type="submit">submit</button>
+                <button class="submit" type="submit">submit</button>
             </form>
         </div>
 
         <!-- login -->
-        <div id="login-container" class="no-display" style="display: none;">
+        <div id="login-container" style="display: none;">
             <h1>LOGIN</h1>
             <form id="login-form">
-                <input id="username" type="text" name="username" autoComplete="username" />
-                <input id="password" type="password" name="password" autoComplete="current-password" />
-                <button type="submit">submit</button>
+                <label>
+                    Username:
+                </label>
+                <input id="username" class="auth-input" type="text" name="username" autoComplete="username" />
+                <label>
+                    Password:
+                </label>
+                <input id="password" class="auth-input" type="password" name="password" autoComplete="current-password" />
+                <button class="submit" type="submit">Submit</button>
             </form>
         </div>
 
         <!-- game -->
-        <div id="game-container" class="wrapper no-display" style="display: none;">
+        <div id="game-container" class="wrapper" style="display: none;">
             <div class="left-panel">
-              <div class="scoreboard">
-                <h2 class="score-title">High Scores</h2>
-              </div>
-              <div class="chat">
-                <h2 class="chat-title">Chatroom</h2>
-              </div>
+                <div class="scoreboard">
+                    <h2 class="score-title">High Scores</h2>
+                </div>
+                <div class="chat">
+                    <h2 class="chat-title">Chatroom</h2>
+                </div>
             </div>
             <div id="container"></div>
-          </div>
-        
+        </div>
+
         <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
         <script src="pixi/pixi.min.js"></script>
 
