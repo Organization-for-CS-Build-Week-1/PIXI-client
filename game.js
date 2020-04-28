@@ -62,10 +62,9 @@ function runGame() {
       checkMoving(ant1)
     }
     up.release = function () {
-      if (!down.isDown) {
-        ant1.vy = 0
-        checkMoving(ant1)
-      }
+      if (down.isDown) ant1.vy = 3
+      else ant1.vy = 0
+      checkMoving(ant1)
     }
 
     //Left
@@ -75,10 +74,9 @@ function runGame() {
       checkMoving(ant1)
     }
     left.release = function () {
-      if (!right.isDown) {
-        ant1.vx = 0
-        checkMoving(ant1)
-      }
+      if (right.isDown) ant1.vx = 3
+      else ant1.vx = 0
+      checkMoving(ant1)
     }
 
     //Right
@@ -88,10 +86,9 @@ function runGame() {
       checkMoving(ant1)
     }
     right.release = function () {
-      if (!left.isDown) {
-        ant1.vx = 0
-        checkMoving(ant1)
-      }
+      if (left.isDown) ant1.vx = -3
+      else ant1.vx = 0
+      checkMoving(ant1)
     }
 
     //Down
@@ -100,10 +97,9 @@ function runGame() {
       checkMoving(ant1)
     }
     down.release = function () {
-      if (!up.isDown) {
-        ant1.vy = 0
-        checkMoving(ant1)
-      }
+      if (up.isDown) ant1.vy = -3
+      else ant1.vy = 0
+      checkMoving(ant1)
     }
 
     state = play
