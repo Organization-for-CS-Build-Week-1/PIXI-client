@@ -1,5 +1,5 @@
 socket.on('init', (data) => {
-  console.log(JSON.stringify(data))
+  console.log(JSON.stringify(data.you))
 })
 
 function runGame() {
