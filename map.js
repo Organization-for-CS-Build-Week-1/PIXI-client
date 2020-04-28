@@ -1,3 +1,7 @@
+socket.on('init', (data) => {
+  console.log(JSON.stringify(data.you))
+})
+
 const data = {
   map: {
     rooms: [
@@ -156,7 +160,7 @@ const data = {
   you: {
     id: 3,
     username: 'apples',
-    world_loc: [5, 0],
+    world_loc: [7, 0],
     weight: 0,
     highscore: 0,
     items: {},
@@ -179,12 +183,12 @@ function runMap() {
   app.stage.addChild(mapContainer)
 
   function setup() {
+    const youx = data.you.world_loc[0]
+    const youy = data.you.world_loc[1]
     for (let i = 0; i < data.map.rooms.length; i++) {
       const rectangle = new PIXI.Graphics()
       const roomx = data.map.rooms[i][0]
       const roomy = data.map.rooms[i][1]
-      const youx = data.you.world_loc[0]
-      const youy = data.you.world_loc[1]
 
       let color = 0x66ccff
       if (roomx === youx && roomy === youy) color = 0xff0000
@@ -195,11 +199,11 @@ function runMap() {
       rectangle.x = roomx * 11
       rectangle.y = roomy * 11
       mapContainer.addChild(rectangle)
-
-      mapContainer.position.set(
-        app.screen.width / 2 - youx * 11,
-        app.screen.height / 2 - youy * 11
-      )
     }
+    mapContainer.position.set(
+      app.screen.width / 2 - youx * 11,
+      app.screen.height / 2 - youy * 11
+    )
+    mapContainer.scale.y = -1
   }
 }
