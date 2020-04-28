@@ -10,13 +10,15 @@ home: document.getElementById("home-button")
 }
 
 let currentPage;
+let gameRunning = false;
 
 function switchPage(page){
     if(currentPage && currentPage.style) currentPage.style.display = "none"
     pages[page].style.display = "flex"
     currentPage = pages[page]
 
-    if(page === "game"){
+    if(page === "game" && !gameRunning){
+        gameRunning = true
         runGame()
     }
 }
