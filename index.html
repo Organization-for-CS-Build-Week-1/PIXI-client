@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ant's Knapsack</title>
-    <link rel="stylesheet" type="text/css" href="game.css" />
-    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="styles/game.css" />
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="styles/auth.css" />
+
     <link
       rel="stylesheet"
       href="assets/fipps/stylesheet.css"
@@ -36,60 +38,69 @@
     </div>
 
     <!-- register -->
-    <div id="register-container" style="display: none;">
+    <div id="register-container" class="auth-container" style="display: none;">
       <h1>REGISTER</h1>
       <form id="register-form">
-        <input
-          id="username1"
-          class="auth-input"
-          type="text"
-          name="username1"
-          autocomplete="username"
-        />
-        <input
-          id="password1"
-          class="auth-input"
-          type="password"
-          name="password"
-          autocomplete="current-password"
-        />
-        <input
-          id="password2"
-          class="auth-input"
-          type="password"
-          name="password"
-          autocomplete="current-password"
-        />
+        <label>
+            Username:
+            <input
+            id="username1"
+            class="auth-input"
+            type="text"
+            name="username1"
+            autocomplete="username"
+            />
+        </label>
+        <label>
+            Password:
+            <input
+            id="password1"
+            class="auth-input"
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            />
+        </label>
+        <label>
+            Confirm Password:
+            <input
+            id="password2"
+            class="auth-input"
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            />
+        </label>
 
-        <button class="submit" type="submit">submit</button>
+        <button class="submit" type="submit">GO</button>
       </form>
     </div>
 
     <!-- login -->
-    <div id="login-container" style="display: none;">
+    <div id="login-container" class="auth-container" style="display: none;">
       <h1>LOGIN</h1>
       <form id="login-form">
         <label>
           Username:
-        </label>
-        <input
+          <input
           id="username"
           class="auth-input"
           type="text"
           name="username"
           autocomplete="username"
-        />
+          />
+        </label>
         <label>
           Password:
-        </label>
-        <input
+          <input
           id="password"
           class="auth-input"
           type="password"
           name="password"
           autocomplete="current-password"
-        />
-        <button class="submit" type="submit">Submit</button>
+          />
+        </label>
+        <button class="submit" type="submit">GO</button>
       </form>
     </div>
 

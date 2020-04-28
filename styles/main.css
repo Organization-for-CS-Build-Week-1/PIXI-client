@@ -2,22 +2,23 @@ body {
   background-color: rgb(49, 53, 56);
 }
 
-p {
-  font-family: "arcadeclassicregular", Arial sans-serif;
+p, label, input {
+  font-family: 'arcadeclassicregular', Arial sans-serif;
   color: white;
 }
 
 #nav {
   display: flex;
-  padding: 1rem;
+  padding: 2rem;
 }
 
 #nav button,
 .submit {
   margin-left: 1rem;
   padding: 0.3rem 0.7rem;
-  font-family: "fippsregular", Arial sans-serif;
-  background-color: #1c971c;
+  max-height: 2.5rem;
+  font-family: 'fippsregular', Arial sans-serif;
+  background-color: white;
   border: 2px solid black;
   box-shadow: 2px 2px gray;
   transform: translate(-2px, -2px);
@@ -52,12 +53,9 @@ p {
 
 #landing-page-container h1 {
   text-align: center;
-  font-family: "fippsregular", Arial sans-serif;
-  font-size: 5rem;
+  font-family: 'fippsregular', Arial sans-serif;
+  font-size: 4rem;
+  width: 85%;
 }
 
-.auth-input {
-  height: 16px;
-  width: 120px;
-  padding: 5px;
-}
+
