@@ -1,26 +1,17 @@
 //socket functions
-socket.on('register', (data) => {
-  console.log(data)
-  socket.emit('init')
-  switchPage('game')
-})
-socket.on('registerError', (error) => {
-  console.error(error)
-  alert(error.error)
-})
-
-socket.on('login', (data) => {
-  console.log(data)
-  socket.emit('init')
-  switchPage('game')
-})
-socket.on('loginError', (error) => {
-  console.error(error)
-  alert(error.error)
-})
 
 //register form submit
 function registerSetup() {
+  socket.on('register', (data) => {
+    console.log(data)
+    socket.emit('init')
+    switchPage('game')
+  })
+  socket.on('registerError', (error) => {
+    console.error(error)
+    alert(error.error)
+  })
+
   registerForm = document.getElementById('register-form')
 
   //submit register form function
@@ -31,7 +22,7 @@ function registerSetup() {
     password2 = document.getElementById('password2')
 
     //send data to BE
-    socket.emit('registration', {
+    socket.emit('register', {
       username: username.value,
       password1: password1.value,
       password2: password2.value,
@@ -44,6 +35,16 @@ function registerSetup() {
 
 //login form submit
 function loginSetup() {
+  socket.on('login', (data) => {
+    console.log(data)
+    socket.emit('init')
+    switchPage('game')
+  })
+  socket.on('loginError', (error) => {
+    console.error(error)
+    alert(error.error)
+  })
+
   loginForm = document.getElementById('login-form')
 
   //submit login form function

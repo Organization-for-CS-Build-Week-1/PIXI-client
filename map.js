@@ -1,6 +1,6 @@
-socket.on('init', (data) => {
-  console.log(JSON.stringify(data.you))
-})
+// socket.on('init', (data) => {
+//   console.log(JSON.stringify(data.you))
+// })
 
 const data = {
   map: {
@@ -182,6 +182,8 @@ function runMap() {
 
   app.stage.addChild(mapContainer)
 
+  console.log('Hello')
+
   function setup() {
     const youx = data.you.world_loc[0]
     const youy = data.you.world_loc[1]
@@ -189,7 +191,6 @@ function runMap() {
       const rectangle = new PIXI.Graphics()
       const roomx = data.map.rooms[i][0]
       const roomy = data.map.rooms[i][1]
-
       let color = 0x66ccff
       if (roomx === youx && roomy === youy) color = 0xff0000
 
