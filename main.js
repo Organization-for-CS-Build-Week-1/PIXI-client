@@ -26,6 +26,7 @@ function switchPage(page) {
     gameRunning = true
     runGame()
     runMap()
+    listenForInfo()
   }
 
   if (page === 'login') loginSetup()
