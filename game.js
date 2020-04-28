@@ -18,7 +18,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, animatedAnt, gameScene, room, path
+  let state, ant1, gameScene, room, path
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -47,11 +47,7 @@ function runGame() {
     ant1.vy = 0
     gameScene.addChild(ant1)
 
-    function checkMoving(animatedSprite) {
-      if (animatedSprite.vx || animatedSprite.vy && animatedSprite.play) {
-        animatedSprite.play()
-      } else animatedSprite.stop()
-    }
+
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -128,6 +124,13 @@ function runGame() {
     if (testForAABB(ant1, path)) {
       console.log('Next room!')
     }
+  }
+
+  //check if an animatedSprite is moving
+  function checkMoving(animatedSprite) {
+    if (animatedSprite.vx || animatedSprite.vy && animatedSprite.play) {
+      animatedSprite.play()
+    } else animatedSprite.stop()
   }
 
   // classic AABB collision test
