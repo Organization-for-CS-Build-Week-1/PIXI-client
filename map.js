@@ -182,8 +182,6 @@ function runMap() {
 
   app.stage.addChild(mapContainer)
 
-  console.log('Hello')
-
   function setup() {
     const youx = data.you.world_loc[0]
     const youy = data.you.world_loc[1]
