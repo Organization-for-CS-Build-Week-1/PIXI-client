@@ -1,88 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ant's Knapsack</title>
+    <link rel="stylesheet" type="text/css" href="game.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link
+      rel="stylesheet"
+      href="assets/fipps/stylesheet.css"
+      type="text/css"
+      charset="utf-8"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/arcadeclassic/stylesheet.css"
+      type="text/css"
+      charset="utf-8"
+    />
+  </head>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ant's Knapsack</title>
-        <link rel="stylesheet" type="text/css" href="game.css" />
-        <link rel="stylesheet" type="text/css" href="main.css" />
-        <link rel="stylesheet" href="assets/fipps/stylesheet.css" type="text/css" charset="utf-8" />
-        <link rel="stylesheet" href="assets/arcadeclassic/stylesheet.css" type="text/css" charset="utf-8" />
+  <body>
+    <!-- nav -->
+    <nav id="nav">
+      <button id="register-button">Register</button>
+      <button id="login-button">Login</button>
+      <button id="game-button">Game</button>
+      <button id="home-button">Home</button>
+    </nav>
 
-    </head>
+    <!-- landing page -->
+    <div id="landing-page-container" style="display: none;">
+      <h1 id="logo">The Ant's Knapsack</h1>
+      <p>This is some text.</p>
+    </div>
 
-    <body>
-        <!-- nav -->
-        <nav id="nav">
-            <button id="register-button">Register</button>
-            <button id="login-button">Login</button>
-            <button id="game-button">Game</button>
-            <button id="home-button">Home</button>
-        </nav>
+    <!-- register -->
+    <div id="register-container" style="display: none;">
+      <h1>REGISTER</h1>
+      <form id="register-form">
+        <input
+          id="username1"
+          class="auth-input"
+          type="text"
+          name="username1"
+          autocomplete="username"
+        />
+        <input
+          id="password1"
+          class="auth-input"
+          type="password"
+          name="password"
+          autocomplete="current-password"
+        />
+        <input
+          id="password2"
+          class="auth-input"
+          type="password"
+          name="password"
+          autocomplete="current-password"
+        />
 
-        <!-- landing page -->
-        <div id="landing-page-container" style="display: none;">
-            <h1 id="logo">The Ant's Knapsack</h1>
-            <p>This is some text.</p>
+        <button class="submit" type="submit">submit</button>
+      </form>
+    </div>
+
+    <!-- login -->
+    <div id="login-container" style="display: none;">
+      <h1>LOGIN</h1>
+      <form id="login-form">
+        <label>
+          Username:
+        </label>
+        <input
+          id="username"
+          class="auth-input"
+          type="text"
+          name="username"
+          autocomplete="username"
+        />
+        <label>
+          Password:
+        </label>
+        <input
+          id="password"
+          class="auth-input"
+          type="password"
+          name="password"
+          autocomplete="current-password"
+        />
+        <button class="submit" type="submit">Submit</button>
+      </form>
+    </div>
+
+    <!-- game -->
+    <div id="game-container" class="wrapper" style="display: none;">
+      <div class="left-panel panel">
+        <div class="scoreboard">
+          <h2 class="score-title">High Scores</h2>
         </div>
-
-        <!-- register -->
-        <div id="register-container" style="display: none;">
-            <h1>REGISTER</h1>
-            <form id="register-form">
-                <input id="username1" class="auth-input" type="text" name="username1" autocomplete="username" />
-                <input id="password1" class="auth-input" type="password" name="password"
-                    autocomplete="current-password" />
-                <input id="password2" class="auth-input" type="password" name="password"
-                    autocomplete="current-password" />
-
-                <button class="submit" type="submit">submit</button>
-            </form>
+        <div class="chat">
+          <h2 class="chat-title">Chatroom</h2>
         </div>
+      </div>
+      <div id="container"></div>
+      <div class="right-panel panel">
+        <div class="map" id="piximap"></div>
+      </div>
+    </div>
 
-        <!-- login -->
-        <div id="login-container" style="display: none;">
-            <h1>LOGIN</h1>
-            <form id="login-form">
-                <label>
-                    Username:
-                </label>
-                <input id="username" class="auth-input" type="text" name="username" autocomplete="username" />
-                <label>
-                    Password:
-                </label>
-                <input id="password" class="auth-input" type="password" name="password"
-                    autocomplete="current-password" />
-                <button class="submit" type="submit">Submit</button>
-            </form>
-        </div>
+    <script
+      src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="pixi/pixi.min.js"></script>
 
-        <!-- game -->
-        <div id="game-container" class="wrapper" style="display: none;">
-            <div class="left-panel panel">
-                <div class="scoreboard">
-                    <h2 class="score-title">High Scores</h2>
-                </div>
-                <div class="chat">
-                    <h2 class="chat-title">Chatroom</h2>
-                </div>
-            </div>
-            <div id="container"></div>
-            <div class="right-panel panel">
-                <div class="map" id="piximap">
-                    <h2 class="map-title">Map</h2>
-                </div>
-            </div>
-        </div>
-
-        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
-        <script src="pixi/pixi.min.js"></script>
-
-        <script src="main.js"></script>
-        <script src="auth.js"></script>
-        <script src="game.js"></script>
-        <script src="map.js"></script>
-    </body>
-
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script src="game.js"></script>
+    <script src="map.js"></script>
+  </body>
 </html>

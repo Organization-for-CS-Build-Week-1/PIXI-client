@@ -151,4 +151,43 @@ const map = {
     [23, 14],
     [24, 14],
   ],
-};
+}
+
+function runMap() {
+  const Application = PIXI.Application,
+    loader = PIXI.Loader.shared,
+    container = document.getElementById('piximap'),
+    app = new Application({ resizeTo: container }),
+    mapContainer = new PIXI.Container()
+
+  app.renderer.autoDensity = true
+
+  container.appendChild(app.view)
+
+  loader.load(setup)
+
+  app.stage.addChild(mapContainer)
+
+  function setup() {
+    for (let i = 0; i < map.rooms.length; i++) {
+      const rectangle = new PIXI.Graphics()
+      rectangle.beginFill(0x66ccff)
+      rectangle.drawRect(0, 0, 10, 10)
+      rectangle.endFill()
+      rectangle.x = map.rooms[i][0] * 11
+      rectangle.y = map.rooms[i][1] * 11
+      mapContainer.addChild(rectangle)
+    }
+
+    state = play
+
+    app.ticker.add((delta) => gameLoop(delta))
+  }
+
+  function gameLoop(delta) {
+    //Update the current game state:
+    state(delta)
+  }
+
+  function play(delta) {}
+}

@@ -1,5 +1,5 @@
 socket.on('init', (data) => {
-  console.log(JSON.stringify(data.map))
+  console.log(JSON.stringify(data))
 })
 
 function runGame() {
@@ -46,8 +46,6 @@ function runGame() {
     ant1.vx = 0
     ant1.vy = 0
     gameScene.addChild(ant1)
-
-
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -128,7 +126,7 @@ function runGame() {
 
   //check if an animatedSprite is moving
   function checkMoving(animatedSprite) {
-    if (animatedSprite.vx || animatedSprite.vy && animatedSprite.play) {
+    if (animatedSprite.vx || (animatedSprite.vy && animatedSprite.play)) {
       animatedSprite.play()
     } else animatedSprite.stop()
   }
