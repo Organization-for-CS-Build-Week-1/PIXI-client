@@ -1,8 +1,8 @@
 function runMap() {
   socket.on('mapinfo', (data) => {
-    const rooms = data.map.rooms
-    socket.on('roomupdate', (data) => {
-      const cur_loc = data.player.world_loc
+    const rooms = data.rooms
+    socket.on('playerupdate', (data) => {
+      const cur_loc = data.world_loc
       drawMap(rooms, cur_loc)
     })
   })
