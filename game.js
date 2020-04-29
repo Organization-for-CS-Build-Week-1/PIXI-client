@@ -246,8 +246,6 @@ function runGame() {
           roomItems[i].location.x,
           roomItems[i].location.y
         )
-<<<<<<< HEAD
-=======
         roomItems[i]['sprite'].interactive = true
         gameScene.addChild(roomItems[i]['sprite'])
       }
@@ -258,7 +256,6 @@ function runGame() {
           roomItems[i].location.x,
           roomItems[i].location.y
         )
->>>>>>> fa1a2b5e5a33d24755185a7df78037129e5e50bf
         roomItems[i]['sprite'].interactive = true
         gameScene.addChild(roomItems[i]['sprite'])
       }
