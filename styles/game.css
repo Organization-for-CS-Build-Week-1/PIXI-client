@@ -93,7 +93,6 @@
   width: 16px;
 }
 #chat-container::-webkit-scrollbar-track {
-  border: 2px solid black;
 }
 #chat-container::-webkit-scrollbar-thumb {
   background: #4d6fa5;
@@ -186,7 +185,6 @@
   width: 1rem;
 }
 #inventory-container::-webkit-scrollbar-track {
-  border: 2px solid black;
 }
 #inventory-container::-webkit-scrollbar-thumb {
   background: #462a0a;
@@ -204,6 +202,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.item:hover {
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 
 .third {
