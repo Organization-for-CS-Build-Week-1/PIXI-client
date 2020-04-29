@@ -248,13 +248,44 @@ function runGame() {
 
   function generateItems() {
     for (i = 0; i < roomItems.length; i++) {
+      console.log(roomItems)
       if (roomItems[i].name === 'stick') {
         roomItems[i]['sprite'] = new Sprite(id['Stick.png'])
         roomItems[i]['sprite'].anchor.set(0.5)
-        roomItems[i]['sprite'].position.set(roomItems[i].location.x, roomItems[i].location.y)
+        roomItems[i]['sprite'].position.set(
+          roomItems[i].location.x,
+          roomItems[i].location.y
+        )
         roomItems[i]['sprite'].interactive = true
         // gameScene.addChild(roomItems[i]['sprite'])
         console.log('room items:', roomItems)
+      }
+    }
+  }
+
+  function generatePaths() {
+    for (let i = 0; i < roomInfo.direction.length; i++) {
+      const direction = roomInfo.direction[i]
+      if (direction === 'n') {
+        north = new Sprite(id['path.png'])
+        north.position.set(app.screen.width / 2, 0)
+        gameScene.addChild(north)
+      }
+      if (direction === 'e') {
+        east = new Sprite(id['path.png'])
+        east.position.set(app.screen.width, app.screen.height / 2)
+        east.anchor.set(1)
+        gameScene.addChild(east)
+      }
+      if (direction === 's') {
+        south = new Sprite(id['path.png'])
+        south.position.set(app.screen.width / 2, app.screen.height)
+        gameScene.addChild(south)
+      }
+      if (direction === 'w') {
+        west = new Sprite(id['path.png'])
+        west.position.set(0, app.screen.height / 2)
+        gameScene.addChild(west)
       }
     }
   }
