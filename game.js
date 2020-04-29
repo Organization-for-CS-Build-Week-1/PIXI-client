@@ -14,7 +14,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, room, path, roomItems
+  let state, ant1, gameScene, room, path, roomItems, style
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -57,6 +57,11 @@ function runGame() {
         location: { x: 200, y: 200 },
       },
     ]
+
+    style = new PIXI.TextStyle({
+      fontFamily: 'Arial',
+      fontSize: 14,
+    })
 
     roomItems.length && generateItems()
 
@@ -263,20 +268,36 @@ function runGame() {
 
         //hover to see item information
         roomItems[i][`${item}${i + 1}_infoBox`] = new PIXI.Graphics() //change to using item id when using real data
+        roomItems[i][`${item}${i + 1}_infoBoxText`] = new PIXI.Text(
+          `Value: ${roomItems[i].value}\nWeight: ${roomItems[i].weight}`,
+          style
+        )
+        roomItems[i][`${item}${i + 1}_infoBoxText`].x =
+          roomItems[i].location.x + 10
+        roomItems[i][`${item}${i + 1}_infoBoxText`].y =
+          roomItems[i].location.y + 10
         roomItems[i]['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
         roomItems[i]['sprite'].mouseover = (mouseData) => {
+          roomItems[i][`${item}${i + 1}_infoBox`].lineStyle(5, 0xffffff, 1)
           roomItems[i][`${item}${i + 1}_infoBox`].beginFill(0x66ccff)
           roomItems[i][`${item}${i + 1}_infoBox`].drawRect(
             roomItems[i].location.x,
             roomItems[i].location.y,
-            80,
-            80
+            90,
+            60
           )
           roomItems[i][`${item}${i + 1}_infoBox`].endFill()
-          gameScene.addChild(roomItems[i][`${item}${i + 1}_infoBox`])
+
+          gameScene.addChild(
+            roomItems[i][`${item}${i + 1}_infoBox`],
+            roomItems[i][`${item}${i + 1}_infoBoxText`]
+          )
         }
         roomItems[i]['sprite'].mouseout = (mouseData) =>
-          gameScene.removeChild(roomItems[i][`${item}${i + 1}_infoBox`])
+          gameScene.removeChild(
+            roomItems[i][`${item}${i + 1}_infoBox`],
+            roomItems[i][`${item}${i + 1}_infoBoxText`]
+          )
 
         gameScene.addChild(roomItems[i]['sprite'])
       }
