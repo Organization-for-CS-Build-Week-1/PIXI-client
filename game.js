@@ -14,7 +14,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, room, path, stick
+  let state, ant1, gameScene, room, path, stick, roomItems
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -34,11 +34,11 @@ function runGame() {
     path.position.set(app.screen.width, app.screen.height / 2)
     gameScene.addChild(path)
 
-    stick = new Sprite(id['Stick.png'])
-    stick.anchor.set(0.5)
-    stick.position.set(50, 50)
-    stick.interactive = true
-    gameScene.addChild(stick)
+    // stick = new Sprite(id['Stick.png'])
+    // stick.anchor.set(0.5)
+    // stick.position.set(50, 50)
+    // stick.interactive = true
+    // gameScene.addChild(stick)
 
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
@@ -48,6 +48,27 @@ function runGame() {
     ant1.vx = 0
     ant1.vy = 0
     gameScene.addChild(ant1)
+
+    roomItems = [
+      {
+        name: 'stick',
+        value: 10,
+        weight: 5,
+        location: { x: 50, y: 50 },
+      },
+      {
+        name: 'gem',
+        value: 30,
+        weight: 10,
+        location: { x: 100, y: 100 },
+      },
+    ]
+
+    roomItems.length && generateItems()
+    // if (roomItems.length){
+    //   roomItems.forEach(item => gameScene.addChild(item.sprite))
+    // }
+    // gameScene.addChild(roomItems[0]['sprite'])
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -125,16 +146,16 @@ function runGame() {
       console.log('Next room!')
     }
 
-    itemCollision(ant1, [stick])
+    itemCollision(ant1, roomItems[0].sprite)
   }
 
   //ant collision with items
   function itemCollision(player, items) {
     if (!items.length) return
     else {
-      items.forEach(item => {
-        if(testForAABB(player, item)) {
-          console.log("ITEM!")
+      items.forEach((item) => {
+        if (testForAABB(player, item)) {
+          console.log('ITEM!')
         }
       })
     }
@@ -198,6 +219,7 @@ function runGame() {
     key.isUp = true
     key.press = undefined
     key.release = undefined
+
     //The `downHandler`
     key.downHandler = function (event) {
       if (event.keyCode === key.code) {
@@ -222,5 +244,18 @@ function runGame() {
     window.addEventListener('keydown', key.downHandler.bind(key), false)
     window.addEventListener('keyup', key.upHandler.bind(key), false)
     return key
+  }
+
+  function generateItems() {
+    for (i = 0; i < roomItems.length; i++) {
+      if (roomItems[i].name === 'stick') {
+        roomItems[i]['sprite'] = new Sprite(id['Stick.png'])
+        roomItems[i]['sprite'].anchor.set(0.5)
+        roomItems[i]['sprite'].position.set(roomItems[i].location.x, roomItems[i].location.y)
+        roomItems[i]['sprite'].interactive = true
+        // gameScene.addChild(roomItems[i]['sprite'])
+        console.log('room items:', roomItems)
+      }
+    }
   }
 }
