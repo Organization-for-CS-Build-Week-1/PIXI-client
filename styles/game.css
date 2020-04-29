@@ -48,7 +48,7 @@
 }
 
 .scoreboard h4 {
-  font-family: 'arcadeclassicregular', Arial sans-serif;
+  font-family: Consolas, monaco, monospace;
   font-size: 1.5rem;
 }
 
@@ -68,12 +68,77 @@
   padding-left: 1rem;
 }
 
+/* =================== CHAT =================== */
+
 .chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin-top: 5px;
   width: 100%;
   height: 50%;
   background-color: skyblue;
 }
+
+.chat * {
+  font-family: Consolas, monaco, monospace;
+}
+
+.chat-container {
+  margin: 0 1rem 0 1.7rem;
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+.chat-container::-webkit-scrollbar {
+  width: 16px;
+}
+.chat-container::-webkit-scrollbar-track {
+  border: 2px solid black;
+}
+.chat-container::-webkit-scrollbar-thumb {
+  background: #4d6fa5;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+.chat-container::-webkit-scrollbar-thumb:hover {
+}
+
+.chat-container * {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: grey;
+}
+
+/* ================= CHAT OPTIONS ================= */
+
+.chat-options {
+  z-index: 10;
+  box-shadow: 0 -2px 5px black;
+  padding: 0.5rem 1rem 0.5rem 1.7rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.chat-options button {
+  padding: 0.3rem 1rem;
+  background: skyblue;
+  border: 2px solid black;
+  box-shadow: 2px 2px gray;
+  transform: translate(-2px, -2px);
+  outline: none;
+}
+
+.chat-options button:hover {
+  cursor: pointer;
+  background: #4d6fa5;
+  box-shadow: none;
+  transform: translate(0, 0);
+  color: white
+}
+
+/* ============= MAP ============= */
 
 .map {
   width: 100%;
