@@ -14,9 +14,15 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, room, path, stick, roomItems
+  let state, ant1, gameScene, room, path, stick, roomItems, nextRoom, roomInfo
+  socket.on('roomupdate', data => {
+    console.log(data)
+    roomItems = data.room.items
+    roomInfo = data.room
+  })
 
   function setup() {
+    nextRoom = false
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
     id = resources['assets/spritesheet.json'].textures
 
@@ -32,7 +38,7 @@ function runGame() {
     path = new Sprite(id['path.png'])
     path.anchor.set(1)
     path.position.set(app.screen.width, app.screen.height / 2)
-    gameScene.addChild(path)
+    // gameScene.addChild(path)
 
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
@@ -43,22 +49,24 @@ function runGame() {
     ant1.vy = 0
     gameScene.addChild(ant1)
 
-    roomItems = [
-      {
-        name: 'stick',
-        value: 10,
-        weight: 5,
-        location: { x: 50, y: 50 },
-      },
-      {
-        name: 'gem',
-        value: 30,
-        weight: 10,
-        location: { x: 100, y: 100 },
-      },
-    ]
+    // roomItems = [
+    //   {
+    //     name: 'stick',
+    //     value: 10,
+    //     weight: 5,
+    //     location: { x: 50, y: 50 },
+    //   },
+    //   {
+    //     name: 'gem',
+    //     value: 30,
+    //     weight: 10,
+    //     location: { x: 100, y: 100 },
+    //   },
+    // ]
 
-    roomItems.length && generateItems()
+    // roomItems.length && generateItems()
+
+    
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -112,7 +120,8 @@ function runGame() {
     }
 
     state = play
-
+    console.log("test")
+    socket.emit('init')
     app.ticker.add((delta) => gameLoop(delta))
   }
 
@@ -121,9 +130,21 @@ function runGame() {
     state(delta)
   }
 
+  function checkAnt() {
+    if (nextRoom) {
+      ant1.x = app.screen.width / 2
+      ant1.y = app.screen.height / 2
+      nextRoom = false
+    }
+  }
+
   function play(delta) {
     ant1.x += ant1.vx
     ant1.y += ant1.vy
+
+    checkAnt()
+    generateItems()
+    generatePaths()
 
     //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
@@ -133,10 +154,11 @@ function runGame() {
       height: gameScene.height - 10,
     })
     if (testForAABB(ant1, path)) {
-      console.log('Next room!')
+      nextRoom = true
+      socket.emit("move", "e")
     }
 
-    itemCollision(ant1, roomItems)
+    // itemCollision(ant1, roomItems)
   }
 
   //ant collision with items
@@ -237,27 +259,28 @@ function runGame() {
   }
 
   function generateItems() {
+    if (!roomItems || !roomItems.length) return
     for (i = 0; i < roomItems.length; i++) {
       console.log(roomItems)
-      if (roomItems[i].name === 'stick') {
-        roomItems[i]['sprite'] = new Sprite(id['Stick.png'])
-        roomItems[i]['sprite'].anchor.set(0.5)
-        roomItems[i]['sprite'].position.set(
-          roomItems[i].location.x,
-          roomItems[i].location.y
+      if (roomItems[i][1].name === 'Stick') {
+        roomItems[i][1]['sprite'] = new Sprite(id['Stick.png'])
+        roomItems[i][1]['sprite'].anchor.set(0.5)
+        roomItems[i][1]['sprite'].position.set(
+          roomItems[i][0][0],
+          roomItems[i][0][1]
         )
-        roomItems[i]['sprite'].interactive = true
-        gameScene.addChild(roomItems[i]['sprite'])
+        roomItems[i][1]['sprite'].interactive = true
+        gameScene.addChild(roomItems[i][1]['sprite'])
       }
-      if (roomItems[i].name === 'gem') {
-        roomItems[i]['sprite'] = new Sprite(id['Gem.png'])
-        roomItems[i]['sprite'].anchor.set(0.5)
-        roomItems[i]['sprite'].position.set(
-          roomItems[i].location.x,
-          roomItems[i].location.y
+      if (roomItems[i][1].name === 'Gem') {
+        roomItems[i][1]['sprite'] = new Sprite(id['Gem.png'])
+        roomItems[i][1]['sprite'].anchor.set(0.5)
+        roomItems[i][1]['sprite'].position.set(
+          roomItems[i][0][0],
+          roomItems[i][0][1]
         )
-        roomItems[i]['sprite'].interactive = true
-        gameScene.addChild(roomItems[i]['sprite'])
+        roomItems[i][1]['sprite'].interactive = true
+        gameScene.addChild(roomItems[i][1]['sprite'])
       }
     }
   }
