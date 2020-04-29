@@ -267,7 +267,7 @@ function runGame() {
         roomItems[i]['sprite'].cursor = 'pointer'
         roomItems[i]['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
 
-        //hover to see item information
+        //setup infoBox elements
         roomItems[i][`${item}${i + 1}_infoBox`] = new PIXI.Graphics() //change to using item id when using real data
         roomItems[i][`${item}${i + 1}_infoBoxText`] = new PIXI.Text(
           `Value: ${roomItems[i].value}\nWeight: ${roomItems[i].weight}`,
@@ -277,6 +277,8 @@ function runGame() {
           roomItems[i].location.x + 14
         roomItems[i][`${item}${i + 1}_infoBoxText`].y =
           roomItems[i].location.y + 14
+
+        //hovering over item
         roomItems[i]['sprite'].mouseover = (mouseData) => {
           roomItems[i][`${item}${i + 1}_infoBox`].lineStyle(2, 0x000000, 1)
           roomItems[i][`${item}${i + 1}_infoBox`].beginFill(0xffffff)
@@ -293,11 +295,18 @@ function runGame() {
             roomItems[i][`${item}${i + 1}_infoBoxText`]
           )
         }
+
+        //stop hovering over item
         roomItems[i]['sprite'].mouseout = (mouseData) =>
           gameScene.removeChild(
             roomItems[i][`${item}${i + 1}_infoBox`],
             roomItems[i][`${item}${i + 1}_infoBoxText`]
           )
+
+        //click on an item
+        roomItems[i]['sprite'].on('pointerdown', () =>
+          console.log(`clicked on ${roomItems[i].name}`)
+        )
 
         gameScene.addChild(roomItems[i]['sprite'])
       }
