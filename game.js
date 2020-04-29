@@ -34,12 +34,6 @@ function runGame() {
     path.position.set(app.screen.width, app.screen.height / 2)
     gameScene.addChild(path)
 
-    // stick = new Sprite(id['Stick.png'])
-    // stick.anchor.set(0.5)
-    // stick.position.set(50, 50)
-    // stick.interactive = true
-    // gameScene.addChild(stick)
-
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
@@ -65,10 +59,6 @@ function runGame() {
     ]
 
     roomItems.length && generateItems()
-    // if (roomItems.length){
-    //   roomItems.forEach(item => gameScene.addChild(item.sprite))
-    // }
-    // gameScene.addChild(roomItems[0]['sprite'])
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -146,7 +136,7 @@ function runGame() {
       console.log('Next room!')
     }
 
-    itemCollision(ant1, roomItems[0].sprite)
+    itemCollision(ant1, roomItems)
   }
 
   //ant collision with items
@@ -154,7 +144,7 @@ function runGame() {
     if (!items.length) return
     else {
       items.forEach((item) => {
-        if (testForAABB(player, item)) {
+        if (testForAABB(player, item.sprite)) {
           console.log('ITEM!')
         }
       })
@@ -251,10 +241,22 @@ function runGame() {
       if (roomItems[i].name === 'stick') {
         roomItems[i]['sprite'] = new Sprite(id['Stick.png'])
         roomItems[i]['sprite'].anchor.set(0.5)
-        roomItems[i]['sprite'].position.set(roomItems[i].location.x, roomItems[i].location.y)
+        roomItems[i]['sprite'].position.set(
+          roomItems[i].location.x,
+          roomItems[i].location.y
+        )
         roomItems[i]['sprite'].interactive = true
-        // gameScene.addChild(roomItems[i]['sprite'])
-        console.log('room items:', roomItems)
+        gameScene.addChild(roomItems[i]['sprite'])
+      }
+      if (roomItems[i].name === 'gem') {
+        roomItems[i]['sprite'] = new Sprite(id['Gem.png'])
+        roomItems[i]['sprite'].anchor.set(0.5)
+        roomItems[i]['sprite'].position.set(
+          roomItems[i].location.x,
+          roomItems[i].location.y
+        )
+        roomItems[i]['sprite'].interactive = true
+        gameScene.addChild(roomItems[i]['sprite'])
       }
     }
   }
