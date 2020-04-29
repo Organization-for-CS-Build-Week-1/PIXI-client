@@ -84,31 +84,35 @@
   font-family: Consolas, monaco, monospace;
 }
 
-.chat-container {
+#chat-container {
   margin: 0 1rem 0 1.7rem;
   flex-grow: 1;
   overflow-y: scroll;
 }
-.chat-container::-webkit-scrollbar {
+#chat-container::-webkit-scrollbar {
   width: 16px;
 }
-.chat-container::-webkit-scrollbar-track {
+#chat-container::-webkit-scrollbar-track {
   border: 2px solid black;
 }
-.chat-container::-webkit-scrollbar-thumb {
+#chat-container::-webkit-scrollbar-thumb {
   background: #4d6fa5;
   border-left: 2px solid black;
   border-right: 2px solid black;
 }
-.chat-container::-webkit-scrollbar-thumb:hover {
+#chat-container::-webkit-scrollbar-thumb:hover {
 }
 
-.chat-container * {
+#chat-container > * {
   display: block;
   margin-top: 0.2rem;
   font-size: 1.2rem;
   font-weight: bold;
   color: grey;
+}
+
+#chat-container > p > span {
+  color: black;
 }
 
 /* ================= CHAT OPTIONS ================= */
