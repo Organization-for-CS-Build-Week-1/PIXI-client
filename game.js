@@ -265,6 +265,7 @@ function runGame() {
         )
         roomItems[i]['sprite'].interactive = true
         roomItems[i]['sprite'].cursor = 'pointer'
+        roomItems[i]['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
 
         //hover to see item information
         roomItems[i][`${item}${i + 1}_infoBox`] = new PIXI.Graphics() //change to using item id when using real data
@@ -273,13 +274,12 @@ function runGame() {
           style
         )
         roomItems[i][`${item}${i + 1}_infoBoxText`].x =
-          roomItems[i].location.x + 10
+          roomItems[i].location.x + 14
         roomItems[i][`${item}${i + 1}_infoBoxText`].y =
-          roomItems[i].location.y + 10
-        roomItems[i]['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
+          roomItems[i].location.y + 14
         roomItems[i]['sprite'].mouseover = (mouseData) => {
-          roomItems[i][`${item}${i + 1}_infoBox`].lineStyle(5, 0xffffff, 1)
-          roomItems[i][`${item}${i + 1}_infoBox`].beginFill(0x66ccff)
+          roomItems[i][`${item}${i + 1}_infoBox`].lineStyle(2, 0x000000, 1)
+          roomItems[i][`${item}${i + 1}_infoBox`].beginFill(0xffffff)
           roomItems[i][`${item}${i + 1}_infoBox`].drawRect(
             roomItems[i].location.x,
             roomItems[i].location.y,
