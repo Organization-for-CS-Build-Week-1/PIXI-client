@@ -174,6 +174,9 @@ function runGame() {
     app.ticker.add(() => play())
   }
 
+  //Space
+  space.press = () => itemCollision(ant1, roomItems)
+
   function play() {
     ant1.x += ant1.vx
     ant1.y += ant1.vy
@@ -186,16 +189,20 @@ function runGame() {
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
-    roomItems && roomItems.length && itemCollision(ant1, roomItems)
   }
 
   //ant collision with items
   function itemCollision(player, items) {
-    items.forEach((item) => {
+    for (item of items) {
       if (testForAABB(player, item[1].sprite)) {
-        console.log('ITEM!', item[1])
+        takeItem(item[1].id)
+        gameScene.removeChild(
+          item[1][`${item[1].id}_infoBox`],
+          item[1][`${item[1].id}_infoBoxText`]
+        )
+        return
       }
-    })
+    }
   }
 
   //check if an animatedSprite is moving
@@ -328,17 +335,6 @@ function runGame() {
           item[`${item.id}_infoBox`],
           item[`${item.id}_infoBoxText`]
         )
-
-      //click on an item
-      item['sprite'].on('pointerdown', () => {
-        console.log(`clicked on ${item.name}`)
-        takeItem(item.id)
-        //if successful, do this
-        gameScene.removeChild(
-          item[`${item.id}_infoBox`],
-          item[`${item.id}_infoBoxText`]
-        )
-      })
 
       itemContainer.temp.addChild(item['sprite'])
     }
