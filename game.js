@@ -14,16 +14,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state,
-    ant1,
-    gameScene,
-    room,
-    path,
-    stick,
-    roomItems,
-    nextRoom,
-    roomInfo,
-    exits
+  let state, ant1, gameScene, room, stick, roomItems, nextRoom, roomInfo, exits
 
   const roomInfoInitState = {
     direction: [],
@@ -36,10 +27,10 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
-    console.log(data)
     if (data.room) {
       roomItems = data.room.items
       roomInfo = data.room
+      cur_loc = data.room.world_loc
     }
   })
 
@@ -57,11 +48,6 @@ function runGame() {
     background.scale.set(1)
     gameScene.addChild(background)
 
-    path = new Sprite(id['path.png'])
-    path.anchor.set(1)
-    path.position.set(app.screen.width, app.screen.height / 2)
-    // gameScene.addChild(path)
-
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
@@ -70,23 +56,6 @@ function runGame() {
     ant1.vx = 0
     ant1.vy = 0
     gameScene.addChild(ant1)
-
-    // roomItems = [
-    //   {
-    //     name: 'stick',
-    //     value: 10,
-    //     weight: 5,
-    //     location: { x: 50, y: 50 },
-    //   },
-    //   {
-    //     name: 'gem',
-    //     value: 30,
-    //     weight: 10,
-    //     location: { x: 100, y: 100 },
-    //   },
-    // ]
-
-    // roomItems.length && generateItems()
 
     exits = {
       north: createPath('n'),
@@ -174,7 +143,6 @@ function runGame() {
       checkMoving(ant1)
     }
 
-    state = play
     socket.emit('init')
     app.ticker.add(() => play())
   }
