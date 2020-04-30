@@ -422,8 +422,9 @@ function runGame() {
       storeItems.setAttribute('id', 'storeItems')
       container.appendChild(storeItems)
     }
-    function takeItem(id) {
-      socket.emit('take', id)
-    }
+  }
+
+  function takeItem(id) {
+    socket.emit('take', id)
   }
 }
