@@ -6,7 +6,7 @@ function runGame() {
     Sprite = PIXI.Sprite,
     AnimatedSprite = PIXI.AnimatedSprite,
     container = document.getElementById('container'),
-    app = new Application({ resizeTo: container })
+    app = new Application({ resizeTo: container, interactive: true })
 
   const underLayer = new PIXI.Container()
   app.stage.addChild(underLayer)
@@ -20,7 +20,15 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, roomItems, roomInfo, exits, style, itemContainer
+  let state,
+    ant1,
+    gameScene,
+    roomItems,
+    roomInfo,
+    exits,
+    style,
+    itemContainer,
+    storekeeper
 
   const roomInfoInitState = {
     direction: [],
@@ -33,15 +41,18 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
-    if (data.room) {
-      itemContainer.temp.destroy()
-      itemContainer = { temp: new Container() }
-      underLayer.addChild(itemContainer.temp)
+    roomInfo = data.room
+    cur_loc = data.room.world_loc
+    itemContainer.temp.destroy()
+    itemContainer = { temp: new Container() }
+    underLayer.addChild(itemContainer.temp)
+    generatePaths()
+    drawMap()
+
+    if (data.room.name === 'Ant Store') {
       generateItems(data.room.items)
-      roomInfo = data.room
-      cur_loc = data.room.world_loc
-      generatePaths()
-      drawMap()
+    } else {
+      itemContainer.temp.addChild(storekeeper)
     }
   })
 
@@ -63,11 +74,17 @@ function runGame() {
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
-    ant1.x = app.screen.width / 2
-    ant1.y = app.screen.height / 2
+    // CHANGE BACK
+    ant1.x = app.screen.width / 2 - 50
+    ant1.y = app.screen.height / 2 - 50
     ant1.vx = 0
     ant1.vy = 0
     overLayer.addChild(ant1)
+
+    storekeeper = new Sprite(id['Full1.png'])
+    storekeeper.x = app.screen.width / 2
+    storekeeper.y = app.screen.height / 2
+    storekeeper.anchor.set(0.5)
 
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
@@ -170,13 +187,15 @@ function runGame() {
     ant1.y += ant1.vy
 
     checkPaths()
-    //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
       x: 50,
       y: 40,
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
+    if (roomInfo.name !== 'Ant Store') {
+      generateStore()
+    }
   }
 
   //ant collision with items
@@ -375,6 +394,40 @@ function runGame() {
     if (dir_string.includes('w') && testForAABB(ant1, exits.west)) {
       ant1.x = app.screen.width - 60
       socket.emit('move', 'w')
+    }
+  }
+  function generateStore() {
+    if (!roomInfo) return
+    if (testForAABB(ant1, storekeeper)) {
+      const storeLayer = new Container()
+      overLayer.addChild(storeLayer)
+      const store = new PIXI.Graphics()
+      store.lineStyle(2, 0x000000, 1)
+      store.beginFill(0xffffff)
+      store.drawRect(0, 0, app.screen.width, app.screen.height)
+      store.endFill()
+      const importantStyle = (style = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 20,
+        fontWeight: 900,
+        align: 'center',
+      }))
+      const title = new PIXI.Text(
+        'The Ant Store Welcomes You!\n Choose items for barter!\n\n\nItem          Weight          Score',
+        importantStyle
+      )
+      title.anchor.set(0.5)
+      title.position.set(app.screen.width / 2, 70)
+      storeLayer.addChild(store)
+      storeLayer.addChild(title)
+
+      const exit = new PIXI.Text('Exit', importantStyle)
+      exit.anchor.set(0.5)
+      exit.position.set(app.screen.width - 30, app.screen.height - 20)
+      exit.interactive = true
+      exit.cursor = 'pointer'
+      exit.mousedown = () => storeLayer.destroy()
+      storeLayer.addChild(exit)
     }
   }
 }
