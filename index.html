@@ -122,6 +122,13 @@
         </div>
         <div class="chat">
           <h2 class="chat-title">Chatroom</h2>
+          <div id="chat-container">
+          </div>
+          <div class="chat-options">
+            <button>GG</button>
+            <button>Hi!</button>
+            <button>...Dude.</button>
+          </div>
         </div>
       </div>
       <div id="container"></div>
@@ -129,6 +136,18 @@
         <div class="map" id="piximap"></div>
         <div class="inventory">
           <h2 class="inventory-title">Inventory</h2>
+          <div class="inventory-header">
+            <div class="third">
+              <h4>Item</h4>
+            </div>
+            <div class="third">
+              <h4>Weight</h4>
+            </div>
+            <div class="third">
+              <h4>Score</h4>
+            </div>
+          </div>
+          <div id="inventory-container"></div>
         </div>
       </div>
     </div>
@@ -138,7 +157,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="pixi/pixi.min.js"></script>
-    <script src="highscorelistener.js"></script>
+    <script src="htmlsocketlisteners.js"></script>
     <script src="auth.js"></script>
     <script src="game.js"></script>
     <script src="map.js"></script>

@@ -14,9 +14,16 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, room, path, roomItems, style
+  let state, ant1, gameScene, path, roomItems, nextRoom, roomInfo, style
+  socket.on('roomupdate', (data) => {
+    console.log(data)
+    //roomItems = data.room.items
+    generateItems(data.room.items)
+    roomInfo = data.room
+  })
 
   function setup() {
+    nextRoom = false
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
     id = resources['assets/spritesheet.json'].textures
 
@@ -32,7 +39,7 @@ function runGame() {
     path = new Sprite(id['path.png'])
     path.anchor.set(1)
     path.position.set(app.screen.width, app.screen.height / 2)
-    gameScene.addChild(path)
+    // gameScene.addChild(path)
 
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
@@ -43,27 +50,33 @@ function runGame() {
     ant1.vy = 0
     gameScene.addChild(ant1)
 
-    roomItems = [
-      {
-        name: 'stick',
-        value: 10,
-        weight: 5,
-        location: { x: 50, y: 50 },
-      },
-      {
-        name: 'gem',
-        value: 30,
-        weight: 10,
-        location: { x: 200, y: 200 },
-      },
-    ]
+    // roomItems = [
+    //   [
+    //     [87, 87],
+    //     {
+    //       id: 12,
+    //       name: 'stick',
+    //       score: 10,
+    //       weight: 5,
+    //     },
+    //   ],
+    //   [
+    //     [202, 202],
+    //     {
+    //       id: 20,
+    //       name: 'gem',
+    //       score: 30,
+    //       weight: 10,
+    //     },
+    //   ],
+    // ]
 
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
       fontSize: 14,
     })
 
-    roomItems.length && generateItems()
+    //roomItems.length && generateItems()
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -117,7 +130,8 @@ function runGame() {
     }
 
     state = play
-
+    console.log('test')
+    socket.emit('init')
     app.ticker.add((delta) => gameLoop(delta))
   }
 
@@ -126,9 +140,21 @@ function runGame() {
     state(delta)
   }
 
+  function checkAnt() {
+    if (nextRoom) {
+      ant1.x = app.screen.width / 2
+      ant1.y = app.screen.height / 2
+      nextRoom = false
+    }
+  }
+
   function play(delta) {
     ant1.x += ant1.vx
     ant1.y += ant1.vy
+
+    checkAnt()
+    //generateItems()
+    //generatePaths()
 
     //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
@@ -138,10 +164,11 @@ function runGame() {
       height: gameScene.height - 10,
     })
     if (testForAABB(ant1, path)) {
-      console.log('Next room!')
+      nextRoom = true
+      socket.emit('move', 'e')
     }
 
-    itemCollision(ant1, roomItems)
+    // itemCollision(ant1, roomItems)
   }
 
   //ant collision with items
@@ -159,7 +186,7 @@ function runGame() {
   //check if an animatedSprite is moving
   function checkMoving(animatedSprite) {
     if (animatedSprite.vx || (animatedSprite.vy && animatedSprite.play)) {
-      animatedSprite.play()
+      //animatedSprite.play()
     } else animatedSprite.stop()
   }
 
@@ -241,75 +268,57 @@ function runGame() {
     return key
   }
 
-  function generateItems() {
+  function generateItems(roomItems) {
+    if (!roomItems || !roomItems.length) return
     for (i = 0; i < roomItems.length; i++) {
-      // console.log(roomItems)
-      if (roomItems[i].name === 'stick') {
-        addItemSprite(i, 'Stick')
-      }
-      if (roomItems[i].name === 'gem') {
-        addItemSprite(i, 'Gem')
-      }
-      if (roomItems[i].name === 'trash') {
-        addItemSprite(i, 'Trash')
-      }
-      if (roomItems[i].name === 'hammer') {
-        addItemSprite(i, 'Hammer')
-      }
-      function addItemSprite(i, item) {
-        roomItems[i]['sprite'] = new Sprite(id[`${item}.png`])
-        roomItems[i]['sprite'].anchor.set(0.5)
-        roomItems[i]['sprite'].position.set(
-          roomItems[i].location.x,
-          roomItems[i].location.y
+      const item = roomItems[i][1]
+      const x = roomItems[i][0][0] + 32
+      const y = roomItems[i][0][1] + 32
+
+      //console.log("Item:", item)
+      //console.log("Item id", item.id)
+      item['sprite'] = new Sprite(id[`${item.name}.png`])
+      item['sprite'].anchor.set(0.5)
+      item['sprite'].position.set(x, y)
+      item['sprite'].interactive = true
+      item['sprite'].cursor = 'pointer'
+      item['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
+
+      //setup infoBox elements
+      item[`${item.id}_infoBox`] = new PIXI.Graphics() //change to using item id when using real data
+      item[`${item.id}_infoBoxText`] = new PIXI.Text(
+        `Score: ${item.score}\nWeight: ${item.weight}`,
+        style
+      )
+      item[`${item.id}_infoBoxText`].x = x + 14
+      item[`${item.id}_infoBoxText`].y = y + 14
+
+      //hovering over item
+      item['sprite'].mouseover = (mouseData) => {
+        item[`${item.id}_infoBox`].lineStyle(2, 0x000000, 1)
+        item[`${item.id}_infoBox`].beginFill(0xffffff)
+        item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
+        item[`${item.id}_infoBox`].endFill()
+
+        gameScene.addChild(
+          item[`${item.id}_infoBox`],
+          item[`${item.id}_infoBoxText`]
         )
-        roomItems[i]['sprite'].interactive = true
-        roomItems[i]['sprite'].cursor = 'pointer'
-        roomItems[i]['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
+      }
 
-        //setup infoBox elements
-        roomItems[i][`${item}${i + 1}_infoBox`] = new PIXI.Graphics() //change to using item id when using real data
-        roomItems[i][`${item}${i + 1}_infoBoxText`] = new PIXI.Text(
-          `Value: ${roomItems[i].value}\nWeight: ${roomItems[i].weight}`,
-          style
-        )
-        roomItems[i][`${item}${i + 1}_infoBoxText`].x =
-          roomItems[i].location.x + 14
-        roomItems[i][`${item}${i + 1}_infoBoxText`].y =
-          roomItems[i].location.y + 14
-
-        //hovering over item
-        roomItems[i]['sprite'].mouseover = (mouseData) => {
-          roomItems[i][`${item}${i + 1}_infoBox`].lineStyle(2, 0x000000, 1)
-          roomItems[i][`${item}${i + 1}_infoBox`].beginFill(0xffffff)
-          roomItems[i][`${item}${i + 1}_infoBox`].drawRect(
-            roomItems[i].location.x,
-            roomItems[i].location.y,
-            90,
-            60
-          )
-          roomItems[i][`${item}${i + 1}_infoBox`].endFill()
-
-          gameScene.addChild(
-            roomItems[i][`${item}${i + 1}_infoBox`],
-            roomItems[i][`${item}${i + 1}_infoBoxText`]
-          )
-        }
-
-        //stop hovering over item
-        roomItems[i]['sprite'].mouseout = (mouseData) =>
-          gameScene.removeChild(
-            roomItems[i][`${item}${i + 1}_infoBox`],
-            roomItems[i][`${item}${i + 1}_infoBoxText`]
-          )
-
-        //click on an item
-        roomItems[i]['sprite'].on('pointerdown', () =>
-          console.log(`clicked on ${roomItems[i].name}`)
+      //stop hovering over item
+      item['sprite'].mouseout = (mouseData) =>
+        gameScene.removeChild(
+          item[`${item.id}_infoBox`],
+          item[`${item.id}_infoBoxText`]
         )
 
-        gameScene.addChild(roomItems[i]['sprite'])
-      }
+      //click on an item
+      item['sprite'].on('pointerdown', () =>
+        console.log(`clicked on ${item.name}`)
+      )
+
+      gameScene.addChild(item['sprite'])
     }
   }
 

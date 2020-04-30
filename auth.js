@@ -4,7 +4,6 @@
 function registerSetup() {
   socket.on('register', (data) => {
     console.log(data)
-    socket.emit('init')
     switchPage('game')
   })
   socket.on('registerError', (error) => {
@@ -37,7 +36,6 @@ function registerSetup() {
 function loginSetup() {
   socket.on('login', (data) => {
     console.log(data)
-    socket.emit('init')
     switchPage('game')
   })
   socket.on('loginError', (error) => {
