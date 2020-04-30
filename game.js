@@ -30,6 +30,7 @@ function runGame() {
     itemContainer,
     storekeeper,
     storeItems
+
   let space = keyboard(32)
 
   const roomInfoInitState = {
@@ -409,18 +410,21 @@ function runGame() {
   }
 
   function generateStore() {
+    console.log(storeItems)
     if (!roomInfo) return
     if (document.getElementById('storeItems')) return
 
     if (testForAABB(ant1, storekeeper)) {
       ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
-      const storeItems = document.createElement('div')
+      const storeContents = document.createElement('div')
       const store = document.getElementById('store')
       const close = document.getElementById('close')
       close.onclick = () => (store.style.display = 'none')
       store.style.display = 'block'
-      storeItems.setAttribute('id', 'storeItems')
-      container.appendChild(storeItems)
+      storeContents.setAttribute('id', 'store-contents')
+
+      for (let i = 0; i < storeItems.length; i++) {}
+      store.appendChild(storeContents)
     }
   }
 
