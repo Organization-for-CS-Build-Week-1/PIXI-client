@@ -163,6 +163,12 @@ function inventorySetup() {
   // updateInventory(mockItems)
 }
 
+function inventoryTotal(weight, score){
+ document.getElementById('total-weight').textContent = weight
+  document.getElementById('total-score').textContent = score
+
+}
+
 // ==================== SOCKET.ON ==================== //
 
 
@@ -172,8 +178,10 @@ function listenForInfo() {
   socket.on('highscoreupdate', updateHighscores)
   
   socket.on('playerupdate', (player) => {
+    console.log("player update", player)
     scoreboard.player.textContent = player.score
     updateInventory(player.items)
+    inventoryTotal(player.weight, player.score)
   })
   scoreboardSetup()
   chatSetup()

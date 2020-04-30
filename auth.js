@@ -35,7 +35,7 @@ function registerSetup() {
 //login form submit
 function loginSetup() {
   socket.on('login', (data) => {
-    console.log(data)
+    console.log("login data:", data)
     switchPage('game')
   })
   socket.on('loginError', (error) => {
