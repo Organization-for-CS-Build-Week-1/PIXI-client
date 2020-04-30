@@ -242,7 +242,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.storeItems {
+#store-contents {
   background-color: rgb(49, 53, 56);
   margin: auto;
   padding: 20px;
@@ -250,7 +250,25 @@
   width: 50%;
   height: 40%;
 }
-
+#item-elements {
+  margin-top: 50px;
+}
+.item-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 10px;
+  border: 1px solid white;
+}
+.item-link > p {
+  font-size: large;
+  padding: 5px;
+}
+.item-link:hover {
+  cursor: hand;
+  cursor: pointer;
+  opacity: 0.7;
+}
 .closeButton {
   color: #aaaaaa;
   float: right;

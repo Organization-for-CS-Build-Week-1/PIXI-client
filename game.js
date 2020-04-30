@@ -57,6 +57,7 @@ function runGame() {
     } else {
       itemContainer.temp.addChild(storekeeper)
       storeItems = data.room.items
+      console.log(storeItems)
     }
   })
 
@@ -410,21 +411,44 @@ function runGame() {
   }
 
   function generateStore() {
-    console.log(storeItems)
+    const create = (el) => document.createElement(el)
+    const getId = (id) => document.getElementById(id)
+    const text = (el, textToAdd) => (el.textContent = textToAdd)
+    const append = (el, parentEl) => parentEl.appendChild(el)
+    const addClass = (el, aClass) => el.classList.add(aClass)
+
     if (!roomInfo) return
-    if (document.getElementById('storeItems')) return
+    if (getId('item-elements')) return
 
     if (testForAABB(ant1, storekeeper)) {
       ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
-      const storeContents = document.createElement('div')
-      const store = document.getElementById('store')
-      const close = document.getElementById('close')
+
+      const storeContents = getId('store-contents')
+      const itemElements = create('div')
+      const store = getId('store')
+      const close = getId('close')
       close.onclick = () => (store.style.display = 'none')
       store.style.display = 'block'
-      storeContents.setAttribute('id', 'store-contents')
+      itemElements.setAttribute('id', 'item-elements')
 
-      for (let i = 0; i < storeItems.length; i++) {}
-      store.appendChild(storeContents)
+      for (let i = 0; i < storeItems.length; i++) {
+        const item = create('div'),
+          name = create('p'),
+          score = create('p'),
+          weight = create('p')
+
+        item.onclick = () => console.log('Trade Started!')
+        addClass(item, 'item-link')
+        text(name, `${storeItems[i][1].name}`)
+        text(score, `${storeItems[i][1].score}`)
+        text(weight, `${storeItems[i][1].weight}`)
+
+        append(name, item)
+        append(score, item)
+        append(weight, item)
+        append(item, itemElements)
+      }
+      append(itemElements, storeContents)
     }
   }
 
