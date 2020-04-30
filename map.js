@@ -1,6 +1,6 @@
 let rooms = []
 let cur_loc = []
-
+let drawMap
 function runMap() {
   socket.on('mapinfo', (data) => {
     rooms = data.rooms
@@ -22,14 +22,9 @@ function runMap() {
 
   function setup() {
     mapContainer.scale.y = -1
-    app.ticker.add(() => play())
   }
 
-  function play() {
-    drawMap()
-  }
-
-  function drawMap() {
+  drawMap = () => {
     for (let i = 0; i < rooms.length; i++) {
       const rectangle = new PIXI.Graphics()
       const roomx = rooms[i][0]

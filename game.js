@@ -31,6 +31,8 @@ function runGame() {
       roomItems = data.room.items
       roomInfo = data.room
       cur_loc = data.room.world_loc
+      generatePaths()
+      drawMap()
     }
   })
 
@@ -152,7 +154,7 @@ function runGame() {
     ant1.y += ant1.vy
 
     generateItems()
-    generatePaths()
+
     checkPaths()
     //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
