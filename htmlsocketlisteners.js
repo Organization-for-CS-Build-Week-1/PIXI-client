@@ -2,7 +2,7 @@
 /** Empty Function as a placeholder */
 const eF = () => {}
 
-var socket = { on: eF, emit: eF }
+var socket;
 
 // ==================== HIGHSCORE SETUP ==================== //
 
@@ -26,8 +26,8 @@ function scoreboardSetup() {
   if (highscores) scoreboard.highscores = highscores
   scoreboard.player = document.getElementById('player-score')
   // Testing
-  updateHighscores(mockScores)
-  scoreboard.player.textContent = '0'
+  // updateHighscores(mockScores)
+  // scoreboard.player.textContent = '0'
 }
 
 // ==================== CHATROOM SETUP ==================== //
@@ -96,9 +96,7 @@ function chatSetup() {
   })
 
   // Testing
-
-
-mockChatMessages.map(updateChat)
+  // mockChatMessages.map(updateChat)
 }
 
 // ==================== INVENTORY SETUP ==================== //
@@ -162,21 +160,21 @@ function inventorySetup() {
   playerInventory = document.getElementById('inventory-container')
   console.log(playerInventory.children)
   // Testing
-  updateInventory(mockItems)
+  // updateInventory(mockItems)
 }
 
 // ==================== SOCKET.ON ==================== //
 
-socket.on('roomupdate', updateChat)
-
-socket.on('highscoreupdate', updateHighscores)
-
-socket.on('playerupdate', (player) => {
-  scoreboard.player.textContent = player.score
-  updateInventory(player.items)
-})
 
 function listenForInfo() {
+  socket.on('roomupdate', ({chat}) => updateChat(chat))
+  
+  socket.on('highscoreupdate', updateHighscores)
+  
+  socket.on('playerupdate', (player) => {
+    scoreboard.player.textContent = player.score
+    updateInventory(player.items)
+  })
   scoreboardSetup()
   chatSetup()
   inventorySetup()
