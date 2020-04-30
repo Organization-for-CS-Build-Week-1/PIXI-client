@@ -21,6 +21,7 @@ function runGame() {
   loader.add('assets/spritesheet.json').load(setup)
 
   let state, ant1, gameScene, roomItems, roomInfo, exits, style, itemContainer
+  let space = keyboard(32)
 
   const roomInfoInitState = {
     direction: [],
@@ -37,7 +38,8 @@ function runGame() {
       itemContainer.temp.destroy()
       itemContainer = { temp: new Container() }
       underLayer.addChild(itemContainer.temp)
-      generateItems(data.room.items)
+      roomItems = data.room.items
+      generateItems(roomItems)
       roomInfo = data.room
       cur_loc = data.room.world_loc
       generatePaths()
@@ -184,18 +186,16 @@ function runGame() {
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
+    roomItems && roomItems.length && itemCollision(ant1, roomItems)
   }
 
   //ant collision with items
   function itemCollision(player, items) {
-    if (!items.length) return
-    else {
-      items.forEach((item) => {
-        if (testForAABB(player, item.sprite)) {
-          console.log('ITEM!')
-        }
-      })
-    }
+    items.forEach((item) => {
+      if (testForAABB(player, item[1].sprite)) {
+        console.log('ITEM!', item[1])
+      }
+    })
   }
 
   //check if an animatedSprite is moving
