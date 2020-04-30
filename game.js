@@ -28,7 +28,8 @@ function runGame() {
     exits,
     style,
     itemContainer,
-    storekeeper
+    storekeeper,
+    storeItems
 
   const roomInfoInitState = {
     direction: [],
@@ -53,6 +54,7 @@ function runGame() {
       generateItems(data.room.items)
     } else {
       itemContainer.temp.addChild(storekeeper)
+      storeItems = data.room.items
     }
   })
 
@@ -75,16 +77,17 @@ function runGame() {
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
     // CHANGE BACK
-    ant1.x = app.screen.width / 2 - 50
-    ant1.y = app.screen.height / 2 - 50
+    ant1.x = app.screen.width / 2 - 100
+    ant1.y = app.screen.height / 2 - 100
     ant1.vx = 0
     ant1.vy = 0
     overLayer.addChild(ant1)
 
-    storekeeper = new Sprite(id['Full1.png'])
+    storekeeper = new Sprite(id['Store.png'])
     storekeeper.x = app.screen.width / 2
     storekeeper.y = app.screen.height / 2
     storekeeper.anchor.set(0.5)
+    storekeeper.tint = 0xff0000
 
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
@@ -396,38 +399,20 @@ function runGame() {
       socket.emit('move', 'w')
     }
   }
+
   function generateStore() {
     if (!roomInfo) return
-    if (testForAABB(ant1, storekeeper)) {
-      const storeLayer = new Container()
-      overLayer.addChild(storeLayer)
-      const store = new PIXI.Graphics()
-      store.lineStyle(2, 0x000000, 1)
-      store.beginFill(0xffffff)
-      store.drawRect(0, 0, app.screen.width, app.screen.height)
-      store.endFill()
-      const importantStyle = (style = new PIXI.TextStyle({
-        fontFamily: 'Arial',
-        fontSize: 20,
-        fontWeight: 900,
-        align: 'center',
-      }))
-      const title = new PIXI.Text(
-        'The Ant Store Welcomes You!\n Choose items for barter!\n\n\nItem          Weight          Score',
-        importantStyle
-      )
-      title.anchor.set(0.5)
-      title.position.set(app.screen.width / 2, 70)
-      storeLayer.addChild(store)
-      storeLayer.addChild(title)
+    if (document.getElementById('storeItems')) return
 
-      const exit = new PIXI.Text('Exit', importantStyle)
-      exit.anchor.set(0.5)
-      exit.position.set(app.screen.width - 30, app.screen.height - 20)
-      exit.interactive = true
-      exit.cursor = 'pointer'
-      exit.mousedown = () => storeLayer.destroy()
-      storeLayer.addChild(exit)
+    if (testForAABB(ant1, storekeeper)) {
+      ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
+      const storeItems = document.createElement('div')
+      const store = document.getElementById('store')
+      const close = document.getElementById('close')
+      close.onclick = () => (store.style.display = 'none')
+      store.style.display = 'block'
+      storeItems.setAttribute('id', 'storeItems')
+      container.appendChild(storeItems)
     }
   }
 }
