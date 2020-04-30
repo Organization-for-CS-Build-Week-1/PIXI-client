@@ -14,12 +14,24 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, path, roomItems, nextRoom, roomInfo, style
-  socket.on('roomupdate', (data) => {
+  let state, ant1, gameScene, path, nextRoom, roomInfo, style
+  
+  const roomInfoInitState = {
+    direction: [],
+    items: [],
+    name: 'base',
+    id: 0,
+    description: 'base',
+    world_loc: []
+  }
+  roomInfo = roomInfoInitState
+  
+  socket.on('roomupdate', data => {
     console.log(data)
-    //roomItems = data.room.items
-    generateItems(data.room.items)
-    roomInfo = data.room
+    if (data.room) {
+      generateItems(data.room.items)
+      roomInfo = data.room
+    }
   })
 
   function setup() {
@@ -50,33 +62,10 @@ function runGame() {
     ant1.vy = 0
     gameScene.addChild(ant1)
 
-    // roomItems = [
-    //   [
-    //     [87, 87],
-    //     {
-    //       id: 12,
-    //       name: 'stick',
-    //       score: 10,
-    //       weight: 5,
-    //     },
-    //   ],
-    //   [
-    //     [202, 202],
-    //     {
-    //       id: 20,
-    //       name: 'gem',
-    //       score: 30,
-    //       weight: 10,
-    //     },
-    //   ],
-    // ]
-
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
       fontSize: 14,
     })
-
-    //roomItems.length && generateItems()
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -153,7 +142,6 @@ function runGame() {
     ant1.y += ant1.vy
 
     checkAnt()
-    //generateItems()
     //generatePaths()
 
     //if scaled up multiply values by same, variable would be good for that.
