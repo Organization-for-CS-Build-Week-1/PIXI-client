@@ -27,7 +27,6 @@ function runGame() {
   socket.on('roomupdate', (data) => {
     roomItems = data.room.items
     roomInfo = data.room
-    console.log(data)
   })
 
   function setup() {
@@ -84,24 +83,28 @@ function runGame() {
     function createPath(direction) {
       if (direction === 'n') {
         const north = new Sprite(id['path.png'])
-        north.position.set(app.screen.width / 2, 0)
+        north.position.set(app.screen.width / 2 - 20, 0)
+        north.height = 35
         return north
       }
       if (direction === 'e') {
         const east = new Sprite(id['path.png'])
-        east.position.set(app.screen.width, app.screen.height / 2)
+        east.position.set(app.screen.width, app.screen.height / 2 + 20)
         east.anchor.set(1)
+        east.width = 35
         return east
       }
       if (direction === 's') {
         const south = new Sprite(id['path.png'])
-        south.position.set(app.screen.width / 2, app.screen.height)
+        south.position.set(app.screen.width / 2 + 20, app.screen.height)
         south.anchor.set(1)
+        south.height = 35
         return south
       }
       if (direction === 'w') {
         const west = new Sprite(id['path.png'])
-        west.position.set(0, app.screen.height / 2)
+        west.position.set(0, app.screen.height / 2 - 20)
+        west.width = 35
         return west
       }
     }
@@ -168,7 +171,7 @@ function runGame() {
 
     generateItems()
     generatePaths()
-
+    checkPaths()
     //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
       x: 50,
@@ -176,10 +179,6 @@ function runGame() {
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
-    if (testForAABB(ant1, exits.north)) socket.emit('move', 'n')
-    if (testForAABB(ant1, exits.east)) socket.emit('move', 'e')
-    if (testForAABB(ant1, exits.south)) socket.emit('move', 's')
-    if (testForAABB(ant1, exits.west)) socket.emit('move', 'w')
 
     // itemCollision(ant1, roomItems)
   }
@@ -330,6 +329,27 @@ function runGame() {
       gameScene.addChild(exits.west)
     } else {
       gameScene.removeChild(exits.west)
+    }
+  }
+
+  function checkPaths() {
+    if (!roomInfo) return
+    const dir_string = roomInfo.direction.join('')
+    if (dir_string.includes('n') && testForAABB(ant1, exits.north)) {
+      ant1.y = app.screen.height - 60
+      socket.emit('move', 'n')
+    }
+    if (dir_string.includes('e') && testForAABB(ant1, exits.east)) {
+      ant1.x = 60
+      socket.emit('move', 'e')
+    }
+    if (dir_string.includes('s') && testForAABB(ant1, exits.south)) {
+      ant1.y = 60
+      socket.emit('move', 's')
+    }
+    if (dir_string.includes('w') && testForAABB(ant1, exits.west)) {
+      ant1.x = app.screen.width - 60
+      socket.emit('move', 'w')
     }
   }
 }
