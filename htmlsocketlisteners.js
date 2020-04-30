@@ -153,7 +153,7 @@ const mockItems = [
 function updateInventory(items) {
   const currentItems = items.map((item) => new ItemContainer(item))
   playerInventory.innerHTML = ''
-  currentItems.forEach((item) => playerInventory.append(item.div))
+  currentItems.forEach((item) => playerInventory.prepend(item.div))
 }
 
 function inventorySetup() {
