@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,18 +9,8 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
     <link rel="stylesheet" type="text/css" href="styles/auth.css" />
 
-    <link
-      rel="stylesheet"
-      href="assets/fipps/stylesheet.css"
-      type="text/css"
-      charset="utf-8"
-    />
-    <link
-      rel="stylesheet"
-      href="assets/arcadeclassic/stylesheet.css"
-      type="text/css"
-      charset="utf-8"
-    />
+    <link rel="stylesheet" href="assets/fipps/stylesheet.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="assets/arcadeclassic/stylesheet.css" type="text/css" charset="utf-8" />
   </head>
 
   <body>
@@ -43,33 +34,15 @@
       <form id="register-form">
         <label>
           Username:
-          <input
-            id="username1"
-            class="auth-input"
-            type="text"
-            name="username1"
-            autocomplete="username"
-          />
+          <input id="username1" class="auth-input" type="text" name="username1" autocomplete="username" />
         </label>
         <label>
           Password:
-          <input
-            id="password1"
-            class="auth-input"
-            type="password"
-            name="password"
-            autocomplete="current-password"
-          />
+          <input id="password1" class="auth-input" type="password" name="password" autocomplete="current-password" />
         </label>
         <label>
           Confirm Password:
-          <input
-            id="password2"
-            class="auth-input"
-            type="password"
-            name="password"
-            autocomplete="current-password"
-          />
+          <input id="password2" class="auth-input" type="password" name="password" autocomplete="current-password" />
         </label>
 
         <button class="submit" type="submit">GO</button>
@@ -82,23 +55,11 @@
       <form id="login-form">
         <label>
           Username:
-          <input
-            id="username"
-            class="auth-input"
-            type="text"
-            name="username"
-            autocomplete="username"
-          />
+          <input id="username" class="auth-input" type="text" name="username" autocomplete="username" />
         </label>
         <label>
           Password:
-          <input
-            id="password"
-            class="auth-input"
-            type="password"
-            name="password"
-            autocomplete="current-password"
-          />
+          <input id="password" class="auth-input" type="password" name="password" autocomplete="current-password" />
         </label>
         <button class="submit" type="submit">GO</button>
       </form>
@@ -148,14 +109,14 @@
             </div>
           </div>
           <div id="inventory-container"></div>
+          <div id="inventory-totals">
+            <h4>Total: <span id="total-weight"></span> <span id="total-score"></span></h4>
+          </div>
         </div>
       </div>
     </div>
 
-    <script
-      src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
     <script src="pixi/pixi.min.js"></script>
     <script src="htmlsocketlisteners.js"></script>
     <script src="main.js"></script>
@@ -163,4 +124,5 @@
     <script src="game.js"></script>
     <script src="map.js"></script>
   </body>
+
 </html>

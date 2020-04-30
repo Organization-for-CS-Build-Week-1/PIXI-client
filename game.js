@@ -34,6 +34,7 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
+    console.log('roomupdate data:', data)
     if (data.room) {
       itemContainer.temp.destroy()
       itemContainer = { temp: new Container() }
