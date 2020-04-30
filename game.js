@@ -14,7 +14,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, roomItems, roomInfo, exits, style
+  let state, ant1, gameScene, roomItems, roomInfo, exits, style, itemContainer
 
   const roomInfoInitState = {
     direction: [],
@@ -28,6 +28,9 @@ function runGame() {
 
   socket.on('roomupdate', (data) => {
     if (data.room) {
+      itemContainer.temp.destroy()
+      itemContainer = { temp: new Container() }
+      app.stage.addChild(itemContainer.temp)
       generateItems(data.room.items)
       roomInfo = data.room
       cur_loc = data.room.world_loc
@@ -41,7 +44,9 @@ function runGame() {
     id = resources['assets/spritesheet.json'].textures
 
     gameScene = new Container()
+    itemContainer = { temp: new Container() }
     app.stage.addChild(gameScene)
+    app.stage.addChild(itemContainer.temp)
 
     background = new Sprite(id['room-background.png'])
     background.anchor.set(0.5)
@@ -316,8 +321,9 @@ function runGame() {
         console.log(`clicked on ${item.name}`)
       )
 
-      gameScene.addChild(item['sprite'])
+      itemContainer.temp.addChild(item['sprite'])
     }
+    console.log(itemContainer.temp)
   }
 
   function generatePaths() {
