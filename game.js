@@ -39,6 +39,13 @@ function runGame() {
     }
   })
 
+  socket.on('take', (data) => {
+    console.log(data)
+  })
+  socket.on('full', (error) => {
+    console.error(error)
+  })
+
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
     id = resources['assets/spritesheet.json'].textures
@@ -317,9 +324,15 @@ function runGame() {
         )
 
       //click on an item
-      item['sprite'].on('pointerdown', () =>
+      item['sprite'].on('pointerdown', () => {
         console.log(`clicked on ${item.name}`)
-      )
+        takeItem(item.id)
+        //if successful, do this
+        gameScene.removeChild(
+          item[`${item.id}_infoBox`],
+          item[`${item.id}_infoBoxText`]
+        )
+      })
 
       itemContainer.temp.addChild(item['sprite'])
     }
@@ -370,5 +383,9 @@ function runGame() {
       ant1.x = app.screen.width - 60
       socket.emit('move', 'w')
     }
+  }
+
+  function takeItem(id) {
+    socket.emit('take', id)
   }
 }
