@@ -14,19 +14,19 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, path, nextRoom, roomInfo, style
-  
+  let state, ant1, gameScene, path, nextRoom, roomInfo, exits, style
+
   const roomInfoInitState = {
     direction: [],
     items: [],
     name: 'base',
     id: 0,
     description: 'base',
-    world_loc: []
+    world_loc: [],
   }
   roomInfo = roomInfoInitState
-  
-  socket.on('roomupdate', data => {
+
+  socket.on('roomupdate', (data) => {
     console.log(data)
     if (data.room) {
       generateItems(data.room.items)
@@ -66,6 +66,58 @@ function runGame() {
       fontFamily: 'Arial',
       fontSize: 14,
     })
+    // roomItems = [
+    //   {
+    //     name: 'stick',
+    //     value: 10,
+    //     weight: 5,
+    //     location: { x: 50, y: 50 },
+    //   },
+    //   {
+    //     name: 'gem',
+    //     value: 30,
+    //     weight: 10,
+    //     location: { x: 100, y: 100 },
+    //   },
+    // ]
+
+    // roomItems.length && generateItems()
+
+    exits = {
+      north: createPath('n'),
+      south: createPath('s'),
+      east: createPath('e'),
+      west: createPath('w'),
+    }
+
+    function createPath(direction) {
+      if (direction === 'n') {
+        const north = new Sprite(id['path.png'])
+        north.position.set(app.screen.width / 2 - 20, 0)
+        north.height = 35
+        return north
+      }
+      if (direction === 'e') {
+        const east = new Sprite(id['path.png'])
+        east.position.set(app.screen.width, app.screen.height / 2 + 20)
+        east.anchor.set(1)
+        east.width = 35
+        return east
+      }
+      if (direction === 's') {
+        const south = new Sprite(id['path.png'])
+        south.position.set(app.screen.width / 2 + 20, app.screen.height)
+        south.anchor.set(1)
+        south.height = 35
+        return south
+      }
+      if (direction === 'w') {
+        const west = new Sprite(id['path.png'])
+        west.position.set(0, app.screen.height / 2 - 20)
+        west.width = 35
+        return west
+      }
+    }
 
     let left = keyboard(37),
       up = keyboard(38),
@@ -119,31 +171,21 @@ function runGame() {
     }
 
     state = play
-    console.log('test')
     socket.emit('init')
     app.ticker.add((delta) => gameLoop(delta))
   }
 
   function gameLoop(delta) {
-    //Update the current game state:
     state(delta)
-  }
-
-  function checkAnt() {
-    if (nextRoom) {
-      ant1.x = app.screen.width / 2
-      ant1.y = app.screen.height / 2
-      nextRoom = false
-    }
   }
 
   function play(delta) {
     ant1.x += ant1.vx
     ant1.y += ant1.vy
 
-    checkAnt()
-    //generatePaths()
-
+    //checkAnt()
+    generatePaths()
+    checkPaths()
     //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
       x: 50,
@@ -151,10 +193,10 @@ function runGame() {
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
-    if (testForAABB(ant1, path)) {
-      nextRoom = true
-      socket.emit('move', 'e')
-    }
+    // if (testForAABB(ant1, path)) {
+    //   nextRoom = true
+    //   socket.emit('move', 'e')
+    // }
 
     // itemCollision(ant1, roomItems)
   }
@@ -174,12 +216,13 @@ function runGame() {
   //check if an animatedSprite is moving
   function checkMoving(animatedSprite) {
     if (animatedSprite.vx || (animatedSprite.vy && animatedSprite.play)) {
-      //animatedSprite.play()
+      animatedSprite.play()
     } else animatedSprite.stop()
   }
 
   // classic AABB collision test
   function testForAABB(object1, object2) {
+    if (!object1 || !object2) return
     const bounds1 = object1.getBounds()
     const bounds2 = object2.getBounds()
 
@@ -311,29 +354,48 @@ function runGame() {
   }
 
   function generatePaths() {
-    for (let i = 0; i < roomInfo.direction.length; i++) {
-      const direction = roomInfo.direction[i]
-      if (direction === 'n') {
-        north = new Sprite(id['path.png'])
-        north.position.set(app.screen.width / 2, 0)
-        gameScene.addChild(north)
-      }
-      if (direction === 'e') {
-        east = new Sprite(id['path.png'])
-        east.position.set(app.screen.width, app.screen.height / 2)
-        east.anchor.set(1)
-        gameScene.addChild(east)
-      }
-      if (direction === 's') {
-        south = new Sprite(id['path.png'])
-        south.position.set(app.screen.width / 2, app.screen.height)
-        gameScene.addChild(south)
-      }
-      if (direction === 'w') {
-        west = new Sprite(id['path.png'])
-        west.position.set(0, app.screen.height / 2)
-        gameScene.addChild(west)
-      }
+    if (!roomInfo) return
+    const dir_string = roomInfo.direction.join('')
+    if (dir_string.includes('n')) {
+      gameScene.addChild(exits.north)
+    } else {
+      gameScene.removeChild(exits.north)
+    }
+    if (dir_string.includes('e')) {
+      gameScene.addChild(exits.east)
+    } else {
+      gameScene.removeChild(exits.east)
+    }
+    if (dir_string.includes('s')) {
+      gameScene.addChild(exits.south)
+    } else {
+      gameScene.removeChild(exits.south)
+    }
+    if (dir_string.includes('w')) {
+      gameScene.addChild(exits.west)
+    } else {
+      gameScene.removeChild(exits.west)
+    }
+  }
+
+  function checkPaths() {
+    if (!roomInfo) return
+    const dir_string = roomInfo.direction.join('')
+    if (dir_string.includes('n') && testForAABB(ant1, exits.north)) {
+      ant1.y = app.screen.height - 60
+      socket.emit('move', 'n')
+    }
+    if (dir_string.includes('e') && testForAABB(ant1, exits.east)) {
+      ant1.x = 60
+      socket.emit('move', 'e')
+    }
+    if (dir_string.includes('s') && testForAABB(ant1, exits.south)) {
+      ant1.y = 60
+      socket.emit('move', 's')
+    }
+    if (dir_string.includes('w') && testForAABB(ant1, exits.west)) {
+      ant1.x = app.screen.width - 60
+      socket.emit('move', 'w')
     }
   }
 }
