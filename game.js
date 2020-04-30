@@ -15,10 +15,23 @@ function runGame() {
   loader.add('assets/spritesheet.json').load(setup)
 
   let state, ant1, gameScene, room, path, stick, roomItems, nextRoom, roomInfo
+  
+  const roomInfoInitState = {
+    direction: [],
+    items: [],
+    name: 'base',
+    id: 0,
+    description: 'base',
+    world_loc: []
+  }
+  roomInfo = roomInfoInitState
+  
   socket.on('roomupdate', data => {
     console.log(data)
-    roomItems = data.room.items
-    roomInfo = data.room
+    if (data.room) {
+      roomItems = data.room.items
+      roomInfo = data.room
+    }
   })
 
   function setup() {
