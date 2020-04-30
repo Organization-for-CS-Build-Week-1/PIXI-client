@@ -21,6 +21,7 @@ function runGame() {
   loader.add('assets/spritesheet.json').load(setup)
 
   let state, ant1, gameScene, roomItems, roomInfo, exits, style, itemContainer
+  let space = keyboard(32)
 
   const roomInfoInitState = {
     direction: [],
@@ -37,12 +38,20 @@ function runGame() {
       itemContainer.temp.destroy()
       itemContainer = { temp: new Container() }
       underLayer.addChild(itemContainer.temp)
-      generateItems(data.room.items)
+      roomItems = data.room.items
+      generateItems(roomItems)
       roomInfo = data.room
       cur_loc = data.room.world_loc
       generatePaths()
       drawMap()
     }
+  })
+
+  socket.on('take', (data) => {
+    console.log(data)
+  })
+  socket.on('full', (error) => {
+    console.error(error)
   })
 
   function setup() {
@@ -110,10 +119,10 @@ function runGame() {
       }
     }
 
-    let left = keyboard(37),
-      up = keyboard(38),
-      right = keyboard(39),
-      down = keyboard(40)
+    let left = keyboard(65),
+      up = keyboard(87),
+      right = keyboard(68),
+      down = keyboard(83)
 
     //Up
     up.press = function () {
@@ -165,6 +174,9 @@ function runGame() {
     app.ticker.add(() => play())
   }
 
+  //Space
+  space.press = () => itemCollision(ant1, roomItems)
+
   function play() {
     ant1.x += ant1.vx
     ant1.y += ant1.vy
@@ -181,13 +193,15 @@ function runGame() {
 
   //ant collision with items
   function itemCollision(player, items) {
-    if (!items.length) return
-    else {
-      items.forEach((item) => {
-        if (testForAABB(player, item.sprite)) {
-          console.log('ITEM!')
-        }
-      })
+    for (item of items) {
+      if (testForAABB(player, item[1].sprite)) {
+        takeItem(item[1].id)
+        gameScene.removeChild(
+          item[1][`${item[1].id}_infoBox`],
+          item[1][`${item[1].id}_infoBoxText`]
+        )
+        return
+      }
     }
   }
 
@@ -322,11 +336,6 @@ function runGame() {
           item[`${item.id}_infoBoxText`]
         )
 
-      //click on an item
-      item['sprite'].on('pointerdown', () =>
-        console.log(`clicked on ${item.name}`)
-      )
-
       itemContainer.temp.addChild(item['sprite'])
     }
     console.log(itemContainer.temp)
@@ -376,5 +385,9 @@ function runGame() {
       ant1.x = app.screen.width - 60
       socket.emit('move', 'w')
     }
+  }
+
+  function takeItem(id) {
+    socket.emit('take', id)
   }
 }
