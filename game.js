@@ -24,9 +24,23 @@ function runGame() {
     nextRoom,
     roomInfo,
     exits
+
+  const roomInfoInitState = {
+    direction: [],
+    items: [],
+    name: 'base',
+    id: 0,
+    description: 'base',
+    world_loc: [],
+  }
+  roomInfo = roomInfoInitState
+
   socket.on('roomupdate', (data) => {
-    roomItems = data.room.items
-    roomInfo = data.room
+    console.log(data)
+    if (data.room) {
+      roomItems = data.room.items
+      roomInfo = data.room
+    }
   })
 
   function setup() {
