@@ -30,7 +30,7 @@ function runGame() {
     itemContainer,
     storekeeper,
     storeItems
-    let space = keyboard(32)
+  let space = keyboard(32)
 
   const roomInfoInitState = {
     direction: [],
@@ -422,7 +422,8 @@ function runGame() {
       storeItems.setAttribute('id', 'storeItems')
       container.appendChild(storeItems)
     }
-  function takeItem(id) {
-    socket.emit('take', id)
+    function takeItem(id) {
+      socket.emit('take', id)
+    }
   }
 }
