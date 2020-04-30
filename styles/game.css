@@ -93,7 +93,6 @@
   width: 16px;
 }
 #chat-container::-webkit-scrollbar-track {
-  border: 2px solid black;
 }
 #chat-container::-webkit-scrollbar-thumb {
   background: #4d6fa5;
@@ -119,7 +118,7 @@
 
 .chat-options {
   z-index: 10;
-  box-shadow: 0 -2px 5px black;
+  box-shadow: 0 -5px 4px -5px black;
   padding: 0.5rem 1rem 0.5rem 1.7rem;
   display: flex;
   justify-content: space-evenly;
@@ -139,7 +138,7 @@
   background: #4d6fa5;
   box-shadow: none;
   transform: translate(0, 0);
-  color: white
+  color: white;
 }
 
 /* ============= MAP ============= */
@@ -150,11 +149,78 @@
   height: 33%;
 }
 
+/* =============== INVENTORY =============== */
+
 .inventory {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin-top: 5px;
   width: 100%;
   height: 66%;
   background-color: #5d390f;
+}
+
+.inventory * {
+  font-family: Consolas, monaco, monospace;
+  font-size: 1.3rem;
+}
+
+.inventory-header {
+  margin: 0.5rem 2rem 0.5rem 1.7rem;
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#inventory-container {
+  flex-grow: 1;
+  margin: 0 1rem 1rem 1.7rem;
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+
+#inventory-container::-webkit-scrollbar {
+  width: 1rem;
+}
+#inventory-container::-webkit-scrollbar-track {
+}
+#inventory-container::-webkit-scrollbar-thumb {
+  background: #462a0a;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+#inventory-container::-webkit-scrollbar-thumb:hover {
+}
+
+/* ================ ITEM ================ */
+
+.item {
+  margin-top: 0.5rem;
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item:hover {
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.third {
+  width: 32%;
+}
+
+
+.third:nth-child(2) {
+  text-align: center;
+  margin: 0;
+}
+
+.third:nth-child(3) {
+  text-align: right;
+  margin: 0;
 }
 
 #container {
