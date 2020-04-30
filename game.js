@@ -119,10 +119,10 @@ function runGame() {
       }
     }
 
-    let left = keyboard(37),
-      up = keyboard(38),
-      right = keyboard(39),
-      down = keyboard(40)
+    let left = keyboard(65),
+      up = keyboard(87),
+      right = keyboard(68),
+      down = keyboard(83)
 
     //Up
     up.press = function () {
