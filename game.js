@@ -427,7 +427,10 @@ function runGame() {
       const itemElements = create('div')
       const store = getId('store')
       const close = getId('close')
-      close.onclick = () => (store.style.display = 'none')
+      close.onclick = () => {
+        store.style.display = 'none'
+        itemElements.remove()
+      }
       store.style.display = 'block'
       itemElements.setAttribute('id', 'item-elements')
 
