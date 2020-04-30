@@ -8,6 +8,12 @@ function runGame() {
     container = document.getElementById('container'),
     app = new Application({ resizeTo: container })
 
+  const underLayer = new PIXI.Container()
+  app.stage.addChild(underLayer)
+
+  const overLayer = new PIXI.Container()
+  app.stage.addChild(overLayer)
+
   app.renderer.autoDensity = true
 
   container.appendChild(app.view)
@@ -30,7 +36,7 @@ function runGame() {
     if (data.room) {
       itemContainer.temp.destroy()
       itemContainer = { temp: new Container() }
-      app.stage.addChild(itemContainer.temp)
+      underLayer.addChild(itemContainer.temp)
       generateItems(data.room.items)
       roomInfo = data.room
       cur_loc = data.room.world_loc
@@ -52,8 +58,8 @@ function runGame() {
 
     gameScene = new Container()
     itemContainer = { temp: new Container() }
-    app.stage.addChild(gameScene)
-    app.stage.addChild(itemContainer.temp)
+    underLayer.addChild(gameScene)
+    underLayer.addChild(itemContainer.temp)
 
     background = new Sprite(id['room-background.png'])
     background.anchor.set(0.5)
@@ -68,7 +74,7 @@ function runGame() {
     ant1.y = app.screen.height / 2
     ant1.vx = 0
     ant1.vy = 0
-    gameScene.addChild(ant1)
+    overLayer.addChild(ant1)
 
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
