@@ -101,6 +101,8 @@ function chatSetup() {
 
 // ==================== INVENTORY SETUP ==================== //
 
+let playerItemsForSale
+
 playerInventory = {}
 
 class ItemContainer {
@@ -178,6 +180,7 @@ function listenForInfo() {
   socket.on('playerupdate', (player) => {
     console.log('player update', player)
     scoreboard.player.textContent = player.score
+    playerItemsForSale = player.items
     updateInventory(player.items)
     inventoryTotal(player.weight, player.score)
   })

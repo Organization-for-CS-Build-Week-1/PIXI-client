@@ -6,7 +6,7 @@ function runGame() {
     Sprite = PIXI.Sprite,
     AnimatedSprite = PIXI.AnimatedSprite,
     container = document.getElementById('container'),
-    app = new Application({ resizeTo: container })
+    app = new Application({ resizeTo: container, interactive: true })
 
   const underLayer = new PIXI.Container()
   app.stage.addChild(underLayer)
@@ -20,7 +20,18 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, roomInfo, exits, style, itemContainer
+  let ant1,
+    gameScene,
+    roomItems,
+    roomInfo,
+    exits,
+    style,
+    itemContainer,
+    storekeeper,
+    storeItems,
+    buyItem,
+    sellItems
+
   let space = keyboard(32)
 
   const roomInfoInitState = {
@@ -34,18 +45,24 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
-    console.log('roomupdate data:', data)
     if (data.room) {
+      roomInfo = data.room
+      cur_loc = data.room.world_loc
       itemContainer.temp.destroy()
       itemContainer = { temp: new Container() }
       underLayer.addChild(itemContainer.temp)
-      // removeInfoBoxes(roomInfo.items, data.room.items)
-      roomInfo = data.room
-      generateItems(roomInfo.items)
-      cur_loc = data.room.world_loc
       generatePaths()
       drawMap()
+      if (data.room.name === 'Ant Store') {
+        storeItems = data.room.items
+        itemContainer.temp.addChild(storekeeper)
+      } else {
+        roomItems = data.room.items
+        generateItems(roomItems)
+      }
     }
+    console.log(data)
+
   })
 
   socket.on('take', (data) => {
@@ -54,6 +71,8 @@ function runGame() {
   socket.on('full', (error) => {
     console.error(error)
   })
+  socket.on('barter', (data) => console.log(data))
+  socket.on('barterError', console.error)
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -73,11 +92,17 @@ function runGame() {
     ant1 = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
-    ant1.x = app.screen.width / 2
-    ant1.y = app.screen.height / 2
+    // CHANGE BACK
+    ant1.x = app.screen.width / 2 - 100
+    ant1.y = app.screen.height / 2 - 100
     ant1.vx = 0
     ant1.vy = 0
     overLayer.addChild(ant1)
+
+    storekeeper = new Sprite(id['Store.png'])
+    storekeeper.x = app.screen.width / 2
+    storekeeper.y = app.screen.height / 2
+    storekeeper.anchor.set(0.5)
 
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
@@ -183,13 +208,15 @@ function runGame() {
     ant1.y += ant1.vy
 
     checkPaths()
-    //if scaled up multiply values by same, variable would be good for that.
     contain(ant1, {
       x: 50,
       y: 40,
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
+    if (roomInfo.name === 'Ant Store') {
+      generateStore()
+    }
   }
 
   //ant collision with items
@@ -396,6 +423,181 @@ function runGame() {
       ant1.x = app.screen.width - 60
       socket.emit('move', 'w')
     }
+  }
+  // DOM Manipulation helper functions for lazy devs
+  const create = (el) => document.createElement(el),
+    getId = (id) => document.getElementById(id),
+    text = (el, textToAdd) => (el.textContent = textToAdd),
+    append = (el, parentEl) => parentEl.appendChild(el),
+    addClass = (el, aClass) => el.classList.add(aClass)
+
+  function generateStore() {
+    if (!roomInfo) return
+
+    if (getId('item-elements')) return
+
+    if (testForAABB(ant1, storekeeper)) {
+      ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
+
+      const storeContents = getId('store-contents'),
+        itemElements = create('div'),
+        store = getId('store'),
+        close = getId('close')
+
+      close.onclick = () => {
+        store.style.display = 'none'
+        itemElements.remove()
+        sellItems = []
+      }
+      store.style.display = 'block'
+      itemElements.setAttribute('id', 'item-elements')
+
+      for (let i = 0; i < storeItems.length; i++) {
+        const item = create('div'),
+          name = create('p'),
+          score = create('p'),
+          weight = create('p')
+
+        item.onclick = () => {
+          console.log(storeItems[i])
+          buyItem = storeItems[i][1]
+          itemElements.remove()
+          inventoryScreen()
+        }
+        addClass(item, 'item-link')
+        text(name, `${storeItems[i][1].name}`)
+        text(score, `${storeItems[i][1].score}`)
+        text(weight, `${storeItems[i][1].weight}`)
+
+        append(name, item)
+        append(score, item)
+        append(weight, item)
+        append(item, itemElements)
+      }
+      append(itemElements, storeContents)
+    }
+  }
+
+  function inventoryScreen() {
+    const storeContents = getId('store-contents'),
+      itemElements = create('div'),
+      close = getId('close')
+
+    close.onclick = () => {
+      store.style.display = 'none'
+      itemElements.remove()
+      sellItems = []
+    }
+    sellItems = []
+    itemElements.setAttribute('id', 'item-elements')
+    if (playerItemsForSale.length > 0) {
+      for (let i = 0; i < playerItemsForSale.length; i++) {
+        const item = create('div'),
+          name = create('p'),
+          score = create('p'),
+          weight = create('p')
+
+        item.onclick = () => {
+          sellItems.push(playerItemsForSale[i])
+          item.remove()
+        }
+        addClass(item, 'item-link')
+        text(name, `${playerItemsForSale[i].name}`)
+        text(score, `${playerItemsForSale[i].score}`)
+        text(weight, `${playerItemsForSale[i].weight}`)
+
+        append(name, item)
+        append(score, item)
+        append(weight, item)
+        append(item, itemElements)
+      }
+    } else {
+      const emptyMessage = create('p')
+      text(emptyMessage, 'You have nothing to sell')
+      append(emptyMessage, itemElements)
+    }
+    const next = create('button')
+    text(next, 'Review')
+    addClass(next, 'inventory-button')
+    next.onclick = () => {
+      reviewScreen()
+      itemElements.remove()
+    }
+    append(next, itemElements)
+    append(itemElements, storeContents)
+  }
+
+  function reviewScreen() {
+    const storeContents = getId('store-contents'),
+      itemElements = create('div'),
+      close = getId('close')
+
+    close.onclick = () => {
+      store.style.display = 'none'
+      itemElements.remove()
+      sellItems = []
+    }
+
+    itemElements.setAttribute('id', 'item-elements')
+    const itemToBuy = create('div'),
+      name = create('p'),
+      score = create('p'),
+      weight = create('p')
+
+    addClass(itemToBuy, 'item-to-buy')
+    text(name, `${buyItem.name}`)
+    text(score, `${buyItem.score}`)
+    text(weight, `${buyItem.weight}`)
+
+    append(name, itemToBuy)
+    append(score, itemToBuy)
+    append(weight, itemToBuy)
+    append(itemToBuy, itemElements)
+
+    if (sellItems.length > 0) {
+      for (let i = 0; i < sellItems.length; i++) {
+        const item = create('div'),
+          name = create('p'),
+          score = create('p'),
+          weight = create('p')
+
+        item.onclick = () => {
+          sellItems = sellItems.filter(
+            (rmItem) => rmItem !== playerItemsForSale[i]
+          )
+          item.remove()
+        }
+        addClass(item, 'item-link')
+        text(name, `${sellItems[i].name}`)
+        text(score, `${sellItems[i].score}`)
+        text(weight, `${sellItems[i].weight}`)
+
+        append(name, item)
+        append(score, item)
+        append(weight, item)
+        append(item, itemElements)
+      }
+    } else {
+      const emptyMessage = create('p')
+      text(emptyMessage, 'You are not trading anything.')
+      append(emptyMessage, itemElements)
+    }
+    const submit = create('button')
+    text(submit, 'Barter!')
+    addClass(submit, 'inventory-button')
+    const sellIds = sellItems.map((item) => item.id)
+    const buyId = buyItem.id
+    submit.onclick = () => {
+      socket.emit('barter', {
+        player_item_ids: sellIds,
+        store_item_id: buyId,
+      })
+      store.style.display = 'none'
+      itemElements.remove()
+      sellItems = []
+    }
+    append(submit, itemElements)
+    append(itemElements, storeContents)
   }
 
   function takeItem(id) {

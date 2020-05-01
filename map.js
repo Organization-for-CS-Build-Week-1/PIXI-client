@@ -1,9 +1,13 @@
 let rooms = []
 let cur_loc = []
+let stores = []
+
 let drawMap
 function runMap() {
   socket.on('mapinfo', (data) => {
     rooms = data.rooms
+    stores = data.stores
+    console.log(data)
   })
 
   const Application = PIXI.Application,
@@ -25,11 +29,17 @@ function runMap() {
   }
 
   drawMap = () => {
+    if (stores.length === 0) return
     for (let i = 0; i < rooms.length; i++) {
       const rectangle = new PIXI.Graphics()
       const roomx = rooms[i][0]
       const roomy = rooms[i][1]
       let color = 0x66ccff
+
+      if (roomx === stores[0][0] && roomy === stores[0][1]) color = 0x00ff00
+      if (roomx === stores[1][0] && roomy === stores[1][1]) color = 0x00ff00
+      if (roomx === stores[2][0] && roomy === stores[2][1]) color = 0x00ff00
+
       if (roomx === cur_loc[0] && roomy === cur_loc[1]) color = 0xff0000
 
       rectangle.beginFill(color)
