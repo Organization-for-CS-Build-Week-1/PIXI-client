@@ -70,6 +70,9 @@ function runGame() {
   socket.on('full', (error) => {
     console.error(error)
   })
+  socket.on('barter', (data) => console.log(data))
+  socket.on('barter', (error) => console.error(error))
+  socket.on('barterError', console.error)
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -446,6 +449,7 @@ function runGame() {
           weight = create('p')
 
         item.onclick = () => {
+          console.log(storeItems[i])
           buyItem = storeItems[i][1]
           itemElements.remove()
           inventoryScreen()
@@ -485,7 +489,7 @@ function runGame() {
 
         item.onclick = () => {
           sellItems.push(playerItemsForSale[i])
-          console.log(sellItems)
+          item.remove()
         }
         addClass(item, 'item-link')
         text(name, `${playerItemsForSale[i].name}`)
@@ -502,7 +506,85 @@ function runGame() {
       text(emptyMessage, 'You have nothing to sell')
       append(emptyMessage, itemElements)
     }
+    const next = create('button')
+    text(next, 'Review')
+    addClass(next, 'inventory-button')
+    next.onclick = () => {
+      reviewScreen()
+      itemElements.remove()
+    }
+    append(next, itemElements)
+    append(itemElements, storeContents)
+  }
 
+  function reviewScreen() {
+    const storeContents = getId('store-contents'),
+      itemElements = create('div'),
+      close = getId('close')
+
+    close.onclick = () => {
+      store.style.display = 'none'
+      itemElements.remove()
+      sellItems = []
+    }
+
+    itemElements.setAttribute('id', 'item-elements')
+    const itemToBuy = create('div'),
+      name = create('p'),
+      score = create('p'),
+      weight = create('p')
+
+    addClass(itemToBuy, 'item-to-buy')
+    text(name, `${buyItem.name}`)
+    text(score, `${buyItem.score}`)
+    text(weight, `${buyItem.weight}`)
+
+    append(name, itemToBuy)
+    append(score, itemToBuy)
+    append(weight, itemToBuy)
+    append(itemToBuy, itemElements)
+
+    if (sellItems.length > 0) {
+      for (let i = 0; i < sellItems.length; i++) {
+        const item = create('div'),
+          name = create('p'),
+          score = create('p'),
+          weight = create('p')
+
+        item.onclick = () => {
+          sellItems = sellItems.filter(
+            (rmItem) => rmItem !== playerItemsForSale[i]
+          )
+          item.remove()
+        }
+        addClass(item, 'item-link')
+        text(name, `${sellItems[i].name}`)
+        text(score, `${sellItems[i].score}`)
+        text(weight, `${sellItems[i].weight}`)
+
+        append(name, item)
+        append(score, item)
+        append(weight, item)
+        append(item, itemElements)
+      }
+    } else {
+      const emptyMessage = create('p')
+      text(emptyMessage, 'You are not trading anything.')
+      append(emptyMessage, itemElements)
+    }
+    const submit = create('button')
+    text(submit, 'Barter!')
+    addClass(submit, 'inventory-button')
+    console.log(sellItems.map((item) => item.id))
+    console.log(buyItem.id)
+    const sellIds = sellItems.map((item) => item.id)
+    const buyId = buyItem.id
+    submit.onclick = () =>
+      socket.emit('barter', {
+        player_item_ids: sellIds,
+        store_item_id: buyId,
+      })
+    append(submit, itemElements)
     append(itemElements, storeContents)
   }
 
