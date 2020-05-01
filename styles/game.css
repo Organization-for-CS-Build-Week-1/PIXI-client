@@ -2,6 +2,12 @@
   margin: 0;
   padding: 0;
 }
+
+#game-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .wrapper {
   width: 100vw;
   height: 500px;
@@ -230,4 +236,18 @@
 #container {
   width: 500px;
   height: 500px;
+}
+
+#control-panel {
+  background-color: grey;
+  height: 12rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#control-panel-box {
+  background-color: turquoise;
+  height: 100%;
+  width: 600px;
 }
