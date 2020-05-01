@@ -70,7 +70,6 @@ function runGame() {
     console.error(error)
   })
   socket.on('barter', (data) => console.log(data))
-  socket.on('barter', (error) => console.error(error))
   socket.on('barterError', console.error)
 
   function setup() {
@@ -584,15 +583,17 @@ function runGame() {
     const submit = create('button')
     text(submit, 'Barter!')
     addClass(submit, 'inventory-button')
-    console.log(sellItems.map((item) => item.id))
-    console.log(buyItem.id)
     const sellIds = sellItems.map((item) => item.id)
     const buyId = buyItem.id
-    submit.onclick = () =>
+    submit.onclick = () => {
       socket.emit('barter', {
         player_item_ids: sellIds,
         store_item_id: buyId,
       })
+      store.style.display = 'none'
+      itemElements.remove()
+      sellItems = []
+    }
     append(submit, itemElements)
     append(itemElements, storeContents)
   }
