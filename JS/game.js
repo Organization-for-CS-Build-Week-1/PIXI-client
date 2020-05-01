@@ -203,9 +203,7 @@ function runGame() {
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
-    if (roomInfo.name === 'Ant Store') {
-      generateStore()
-    }
+    checkStore.collisionCheck()
   }
 
   //ant collision with items
@@ -410,6 +408,25 @@ function runGame() {
       socket.emit('move', 'w')
     }
   }
+
+  checkStore = {
+    storeOpen: false,
+    collisionCheck: () => {
+      if (
+        roomInfo.name === 'Ant Store' &&
+        testForAABB(ant1, storekeeper) &&
+        !this.storeOpen
+      ) {
+        this.storeOpen = true
+        ant1.position.set(
+          app.screen.width / 2 - 100,
+          app.screen.height / 2 - 100
+        )
+        generateStore()
+      }
+    },
+  }
+
   // DOM Manipulation helper functions for lazy devs
   const create = (el) => document.createElement(el),
     getId = (id) => document.getElementById(id),
@@ -418,98 +435,34 @@ function runGame() {
     addClass = (el, aClass) => el.classList.add(aClass)
 
   function generateStore() {
-    if (!roomInfo) return
+    const storeInventory = getId('store-inventory-container')
+    const playerInventory = getId('player-inventory-container')
+    const store = getId('store')
+    const close = getId('close')
+    sellItems = []
 
-    if (getId('item-elements')) return
-
-    if (testForAABB(ant1, storekeeper)) {
-      ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
-
-      const storeContents = getId('store-contents'),
-        itemElements = create('div'),
-        store = getId('store'),
-        close = getId('close')
-
-      close.onclick = () => {
-        store.style.display = 'none'
-        itemElements.remove()
-        sellItems = []
-      }
-      store.style.display = 'block'
-      itemElements.setAttribute('id', 'item-elements')
-
-      for (let i = 0; i < storeItems.length; i++) {
-        const item = create('div'),
-          name = create('p'),
-          score = create('p'),
-          weight = create('p')
-
-        item.onclick = () => {
-          buyItem = storeItems[i][1]
-          itemElements.remove()
-          inventoryScreen()
-        }
-        addClass(item, 'item-link')
-        text(name, `${storeItems[i][1].name}`)
-        text(score, `${storeItems[i][1].score}`)
-        text(weight, `${storeItems[i][1].weight}`)
-
-        append(name, item)
-        append(score, item)
-        append(weight, item)
-        append(item, itemElements)
-      }
-      append(itemElements, storeContents)
-    }
-  }
-
-  function inventoryScreen() {
-    const storeContents = getId('store-contents'),
-      itemElements = create('div'),
-      close = getId('close')
-
+    store.style.display = 'block'
     close.onclick = () => {
       store.style.display = 'none'
-      itemElements.remove()
+      storeInventory.innerHTML = ''
       sellItems = []
     }
-    sellItems = []
-    itemElements.setAttribute('id', 'item-elements')
-    if (playerItemsForSale.length > 0) {
-      for (let i = 0; i < playerItemsForSale.length; i++) {
-        const item = create('div'),
-          name = create('p'),
-          score = create('p'),
-          weight = create('p')
 
-        item.onclick = () => {
-          sellItems.push(playerItemsForSale[i])
-          item.remove()
-        }
-        addClass(item, 'item-link')
-        text(name, `${playerItemsForSale[i].name}`)
-        text(score, `${playerItemsForSale[i].score}`)
-        text(weight, `${playerItemsForSale[i].weight}`)
+    const itemsBeingSold = storeItems.map(
+      (item) => new ItemContainer({ ...item[1], cb: () => {} })
+    )
+    itemsBeingSold.forEach((item) => append(item.div, storeInventory))
 
-        append(name, item)
-        append(score, item)
-        append(weight, item)
-        append(item, itemElements)
-      }
+    if (playerItemsForSale.length) {
+      const playerItems = playerItemsForSale.map(
+        (item) => new ItemContainer({ ...item, cb: () => {} })
+      )
+      playerItems.forEach((item) => append(item.div, playerInventory))
     } else {
       const emptyMessage = create('p')
       text(emptyMessage, 'You have nothing to sell')
-      append(emptyMessage, itemElements)
+      append(emptyMessage, playerInventory)
     }
-    const next = create('button')
-    text(next, 'Review')
-    addClass(next, 'game-button')
-    next.onclick = () => {
-      reviewScreen()
-      itemElements.remove()
-    }
-    append(next, itemElements)
-    append(itemElements, storeContents)
   }
 
   function reviewScreen() {

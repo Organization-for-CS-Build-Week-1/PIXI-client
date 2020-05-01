@@ -1,4 +1,4 @@
-socket = io.connect('https://the-ants-knapsack.herokuapp.com/')
+socket = io.connect('http://localhost:5000/')
 
 pages = {
   landing: document.getElementById('landing-page-container'),

@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ant's Knapsack</title>
-    <link id="favicon" rel="shortcut icon" href="assets/PNG/Gem.png" type="image/png" />
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      href="assets/PNG/Gem.png"
+      type="image/png"
+    />
     <link rel="stylesheet" type="text/css" href="styles/game.css" />
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
     <link rel="stylesheet" type="text/css" href="styles/auth.css" />
@@ -200,7 +205,7 @@
       </div>
       <div class="lower-section">
         <div id="error-container" class="panel left-panel">
-          <div id="game-alert" >
+          <div id="game-alert">
             <p id="game-alert-msg"></p>
             <span id="game-alert-close">&times;</span>
           </div>
@@ -228,14 +233,53 @@
       </div>
     </div>
     <!-- Store Modal -->
-    <div id="store" class="modal">
+    <div id="store" class="modal" style="display: none;">
       <div id="store-contents">
         <span id="close" class="closeButton">&times;</span>
         <h2 class="store-header">Welcome To The Ant Store!</h2>
-        <div class="item-header-container">
-          <p class="item-headers">NAME</p>
-          <p class="item-headers">SCORE</p>
-          <p class="item-headers">WEIGHT</p>
+        <div class="store-flex">
+          <div class="store-inventory inventory">
+            <h2 class="inventory-title">STORE</h2>
+            <div class="inventory-header">
+              <div class="third">
+                <h4>Item</h4>
+              </div>
+              <div class="third">
+                <h4>Weight</h4>
+              </div>
+              <div class="third">
+                <h4>Score</h4>
+              </div>
+            </div>
+            <div id="store-inventory-container"></div>
+            <div id="barter-item"></div>
+          </div>
+          <div class="player-inventory inventory">
+            <h2 class="inventory-title">INVENTORY</h2>
+            <div class="inventory-header">
+              <div class="third">
+                <h4>Item</h4>
+              </div>
+              <div class="third">
+                <h4>Weight</h4>
+              </div>
+              <div class="third">
+                <h4>Score</h4>
+              </div>
+            </div>
+            <div id="player-inventory-container"></div>
+            <div id="player-total">
+              <div class="third">
+                <h4>Total:</h4>
+              </div>
+              <div class="third">
+                <h4 id="barter-weight"></h4>
+              </div>
+              <div class="third">
+                <h4 id="barter-score"></h4>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
