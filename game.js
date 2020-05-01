@@ -62,7 +62,6 @@ function runGame() {
       }
     }
     console.log(data)
-
   })
 
   socket.on('take', (data) => {
@@ -518,7 +517,7 @@ function runGame() {
     }
     const next = create('button')
     text(next, 'Review')
-    addClass(next, 'inventory-button')
+    addClass(next, 'game-button')
     next.onclick = () => {
       reviewScreen()
       itemElements.remove()
@@ -584,9 +583,28 @@ function runGame() {
     }
     const submit = create('button')
     text(submit, 'Barter!')
-    addClass(submit, 'inventory-button')
+    addClass(submit, 'game-button')
     const sellIds = sellItems.map((item) => item.id)
     const buyId = buyItem.id
+
+    const total = create('div'),
+      totalName = create('p'),
+      totalScore = create('p'),
+      totalWeight = create('p')
+
+    addClass(total, 'total')
+    text(totalName, `Totals:`)
+    text(totalScore, `${sellItems.reduce((sum, item) => item.score + sum, 0)}`)
+    text(
+      totalWeight,
+      `${sellItems.reduce((sum, item) => item.weight + sum, 0)}`
+    )
+
+    append(totalName, total)
+    append(totalScore, total)
+    append(totalWeight, total)
+    append(total, itemElements)
+
     submit.onclick = () => {
       socket.emit('barter', {
         player_item_ids: sellIds,
