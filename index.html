@@ -30,6 +30,8 @@
 
     <!-- register -->
     <div id="register-container" class="auth-container" style="display: none;">
+      <!-- <div id="register-alert" class="alert"><span class="close-alert"
+          onclick="this.parentElement.textContent=''">&times;</span></div> -->
       <h1>REGISTER</h1>
       <form id="register-form">
         <label>
@@ -66,53 +68,58 @@
     </div>
 
     <!-- game -->
-    <div id="game-container" class="wrapper" style="display: none;">
-      <div class="left-panel panel">
-        <div class="scoreboard">
-          <h2 class="score-title">Top Ranking Ants</h2>
-          <div class="scores">
-            <!-- ↓↓ USE JS TO CHANGE TEXT CONTENT ↓↓ -->
-            <h4>1: <span class="highscore"></span></h4>
-            <h4>2: <span class="highscore"></span></h4>
-            <h4>3: <span class="highscore"></span></h4>
+    <div id="game-container" style="display: none;">
+      <div class="wrapper">
+        <div class="left-panel panel">
+          <div class="scoreboard">
+            <h2 class="score-title">Top Ranking Ants</h2>
+            <div class="scores">
+              <!-- ↓↓ USE JS TO CHANGE TEXT CONTENT ↓↓ -->
+              <h4>1: <span class="highscore"></span></h4>
+              <h4>2: <span class="highscore"></span></h4>
+              <h4>3: <span class="highscore"></span></h4>
+            </div>
+            <div class="player-score">
+              <h4>You: <span id="player-score"></span></h4>
+              <!-- ↑↑ USE JS TO CHANGE TEXT CONTENT ↑↑ -->
+            </div>
           </div>
-          <div class="player-score">
-            <h4>You: <span id="player-score"></span></h4>
-            <!-- ↑↑ USE JS TO CHANGE TEXT CONTENT ↑↑ -->
+          <div class="chat">
+            <h2 class="chat-title">Chatroom</h2>
+            <div id="chat-container">
+            </div>
+            <div class="chat-options">
+              <button>GG</button>
+              <button>Hi!</button>
+              <button>...Dude.</button>
+            </div>
           </div>
         </div>
-        <div class="chat">
-          <h2 class="chat-title">Chatroom</h2>
-          <div id="chat-container">
-          </div>
-          <div class="chat-options">
-            <button>GG</button>
-            <button>Hi!</button>
-            <button>...Dude.</button>
+        <div id="container"></div>
+        <div class="right-panel panel">
+          <div class="map" id="piximap"></div>
+          <div class="inventory">
+            <h2 class="inventory-title">Inventory</h2>
+            <div class="inventory-header">
+              <div class="third">
+                <h4>Item</h4>
+              </div>
+              <div class="third">
+                <h4>Weight</h4>
+              </div>
+              <div class="third">
+                <h4>Score</h4>
+              </div>
+            </div>
+            <div id="inventory-container"></div>
+            <div id="inventory-totals">
+              <h4>Total: <span id="total-weight"></span> <span id="total-score"></span></h4>
+            </div>
           </div>
         </div>
       </div>
-      <div id="container"></div>
-      <div class="right-panel panel">
-        <div class="map" id="piximap"></div>
-        <div class="inventory">
-          <h2 class="inventory-title">Inventory</h2>
-          <div class="inventory-header">
-            <div class="third">
-              <h4>Item</h4>
-            </div>
-            <div class="third">
-              <h4>Weight</h4>
-            </div>
-            <div class="third">
-              <h4>Score</h4>
-            </div>
-          </div>
-          <div id="inventory-container"></div>
-          <div id="inventory-totals">
-            <h4>Total: <span id="total-weight"></span> <span id="total-score"></span></h4>
-          </div>
-        </div>
+      <div id="control-panel">
+
       </div>
     </div>
 

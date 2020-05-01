@@ -1,8 +1,9 @@
 body {
-  background-color: rgb(49, 53, 56);
+  background-color: rgb(33, 35, 37);
 }
 
-p, label, input {
+p,
+label {
   font-family: 'arcadeclassicregular', Arial sans-serif;
   color: white;
 }
@@ -57,5 +58,3 @@ p, label, input {
   font-size: 4rem;
   width: 85%;
 }
-
-
