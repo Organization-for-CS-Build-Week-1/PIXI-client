@@ -98,7 +98,6 @@ function updateChat(chatMessage) {
 
 function chatSend(e) {
   e.preventDefault()
-  console.log(e.target.textContent)
   socket.emit('chat', e.target.textContent)
 }
 
@@ -156,7 +155,6 @@ class ItemContainer {
   }
 
   dropItem = () => {
-    console.log(this.id)
     socket.emit('drop', this.id)
   }
 }
@@ -176,7 +174,6 @@ function updateInventory(items) {
 
 function inventorySetup() {
   playerInventory = document.getElementById('inventory-container')
-  console.log(playerInventory.children)
   // Testing
   // updateInventory(mockItems)
 }
@@ -194,7 +191,6 @@ function listenForInfo() {
   socket.on('highscoreupdate', updateHighscores)
 
   socket.on('playerupdate', (player) => {
-    console.log('player update', player)
     scoreboard.player.textContent = player.score
     playerItemsForSale = player.items
     updateInventory(player.items)

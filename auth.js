@@ -18,11 +18,9 @@ function sendAlert(error) {
 //register form submit
 function registerSetup() {
   socket.on('register', (data) => {
-    console.log(data)
     switchPage('game')
   })
   socket.on('registerError', (error) => {
-    console.error(error)
     sendAlert(error.error)
   })
 
@@ -52,11 +50,9 @@ function registerSetup() {
 //login form submit
 function loginSetup() {
   socket.on('login', (data) => {
-    console.log('login data:', data)
     switchPage('game')
   })
   socket.on('loginError', (error) => {
-    console.error(error)
     sendAlert(error.error)
   })
 

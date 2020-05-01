@@ -7,7 +7,6 @@ function runMap() {
   socket.on('mapinfo', (data) => {
     rooms = data.rooms
     stores = data.stores
-    console.log(data)
   })
 
   const Application = PIXI.Application,

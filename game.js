@@ -61,16 +61,10 @@ function runGame() {
         generateItems(roomItems)
       }
     }
-    console.log(data)
-  })
-
-  socket.on('take', (data) => {
-    console.log(data)
   })
   socket.on('full', (error) => {
     console.error(error)
   })
-  socket.on('barter', (data) => console.log(data))
   socket.on('barterError', console.error)
 
   function setup() {
@@ -325,8 +319,6 @@ function runGame() {
       const x = roomItems[i][0][0] + 32
       const y = roomItems[i][0][1] + 32
 
-      //console.log("Item:", item)
-      //console.log("Item id", item.id)
       item['sprite'] = new Sprite(id[`${item.name}.png`])
       item['sprite'].anchor.set(0.5)
       item['sprite'].position.set(x, y)
@@ -375,7 +367,6 @@ function runGame() {
       }
       itemContainer.temp.addChild(item['sprite'])
     }
-    console.log(itemContainer.temp)
   }
 
   function generatePaths() {
@@ -458,7 +449,6 @@ function runGame() {
           weight = create('p')
 
         item.onclick = () => {
-          console.log(storeItems[i])
           buyItem = storeItems[i][1]
           itemElements.remove()
           inventoryScreen()
