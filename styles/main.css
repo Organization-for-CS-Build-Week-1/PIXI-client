@@ -2,10 +2,15 @@ body {
   background-color: rgb(33, 35, 37);
 }
 
-p,
 label {
   font-family: 'arcadeclassicregular', Arial sans-serif;
   color: white;
+}
+
+p {
+  font-family: Consolas, monaco, monospace;
+  color: white;
+  text-shadow: 2px 2px black;
 }
 
 .game-button {
@@ -65,4 +70,28 @@ label {
   margin: 0;
   font-size: 2rem;
   color: rgb(75, 75, 83);
+}
+
+#alert {
+  background-color: tomato;
+  position: fixed;
+  top: 0rem;
+  height: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#alert-close {
+  margin-left: 15px;
+  color: black;
+  font-weight: bold;
+  float: right;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#alert-close:hover {
+  color: white;
 }
