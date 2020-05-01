@@ -7,6 +7,7 @@ var socket
 antgameaudio = new Audio('assets/WAV/gameloop.wav')
 
 function audioSetup() {
+  antgameaudio.play()
   const audioButton = document.getElementById('audio')
   antgameaudio.loop = true
   audioButton.addEventListener('click', (e) => {
@@ -127,10 +128,10 @@ class ItemContainer {
     this.weight = weight
     this.score = score
     this.div = this.createDiv()
-    this.div.addEventListener('click', this.dropItem)
+    this.div.addEventListener('click', this.dropItem.bind(this))
   }
 
-  createDiv = () => {
+  createDiv() {
     const item = document.createElement('div')
     item.className = 'item'
 
@@ -154,7 +155,7 @@ class ItemContainer {
     return item
   }
 
-  dropItem = () => {
+  dropItem() {
     socket.emit('drop', this.id)
   }
 }
@@ -200,5 +201,4 @@ function listenForInfo() {
   chatSetup()
   inventorySetup()
   audioSetup()
-  antgameaudio.play()
 }
