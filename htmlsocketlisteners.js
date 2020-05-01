@@ -26,10 +26,10 @@ function audioSetup() {
   audioButton = document.getElementById('audio')
   const audioIsMuted = window.localStorage.getItem('audioMuted')
   if (audioIsMuted === 'true') toggleGameAudio(true)
-  
+
   antgameaudio.play()
 
-  audioButton.addEventListener('click', e => {
+  audioButton.addEventListener('click', (e) => {
     if (antgameaudio.muted) toggleGameAudio(false)
     else toggleGameAudio(true)
   })
@@ -133,7 +133,7 @@ function chatSetup() {
 
 let playerItemsForSale
 
-playerInventory = {}
+playerCurrent = {}
 
 class ItemContainer {
   constructor({ id, name, weight, score }) {
@@ -183,24 +183,70 @@ const mockItems = [
 
 function updateInventory(items) {
   const currentItems = items.map((item) => new ItemContainer(item))
-  playerInventory.innerHTML = ''
-  currentItems.forEach((item) => playerInventory.prepend(item.div))
+  playerCurrent.inventory.innerHTML = ''
+  currentItems.forEach((item) => playerCurrent.inventory.prepend(item.div))
 }
 
 function inventorySetup() {
-  playerInventory = document.getElementById('inventory-container')
+  playerCurrent = {
+    inventory: document.getElementById('inventory-container'),
+    weight: document.getElementById('total-weight'),
+    score: document.getElementById('total-score'),
+  }
   // Testing
   // updateInventory(mockItems)
 }
 
 function inventoryTotal(weight, score) {
-  document.getElementById('total-weight').textContent = weight
-  document.getElementById('total-score').textContent = score
+  playerCurrent.weight.textContent = weight
+  playerCurrent.score.textContent = score
+}
+
+// ===================== ERROR HANDLING ==================== //
+let gameErrorElements = {
+  customAlert: {},
+  alertMsg: {},
+  closeAlertBtn: {},
+}
+
+let gameErrorFunctions = {
+  closeTimeout: null,
+  closeAlert: () => {
+    gameErrorElements.customAlert.classList.remove('game-alert-visible')
+  },
+  sendAlert: (errorObj) => {
+    if (gameErrorFunctions.closeTimeout)
+      clearTimeout(gameErrorFunctions.closeTimeout)
+    gameErrorElements.alertMsg.textContent = errorObj.error
+    gameErrorElements.customAlert.classList.add('game-alert-visible')
+    gameErrorFunctions.closeTimeout = setTimeout(
+      () => gameErrorFunctions.closeAlert(),
+      5000
+    )
+  },
+}
+
+function gameErrorSetup() {
+  gameErrorElements = {
+    customAlert: document.getElementById('game-alert'),
+    alertMsg: document.getElementById('game-alert-msg'),
+    closeAlertBtn: document.getElementById('game-alert-close'),
+  }
+
+  gameErrorElements.closeAlertBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    gameErrorFunctions.closeAlert()
+  })
 }
 
 // ==================== SOCKET.ON ==================== //
 
 function listenForInfo() {
+  scoreboardSetup()
+  chatSetup()
+  inventorySetup()
+  audioSetup()
+  gameErrorSetup()
   socket.on('roomupdate', ({ chat }) => updateChat(chat))
 
   socket.on('highscoreupdate', updateHighscores)
@@ -211,8 +257,9 @@ function listenForInfo() {
     updateInventory(player.items)
     inventoryTotal(player.weight, player.score)
   })
-  scoreboardSetup()
-  chatSetup()
-  inventorySetup()
-  audioSetup()
+  socket.on('moveError', gameErrorFunctions.sendAlert)
+  socket.on('barterError', gameErrorFunctions.sendAlert)
+  socket.on('full', gameErrorFunctions.sendAlert)
+  socket.on('takeError', gameErrorFunctions.sendAlert)
+  socket.on('dropError', gameErrorFunctions.sendAlert)
 }

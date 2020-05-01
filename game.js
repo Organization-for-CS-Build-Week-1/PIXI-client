@@ -62,10 +62,6 @@ function runGame() {
       }
     }
   })
-  socket.on('full', (error) => {
-    console.error(error)
-  })
-  socket.on('barterError', console.error)
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations

@@ -407,3 +407,34 @@
   justify-content: space-evenly;
   margin: 1.5rem 0;
 }
+
+#game-alert {
+  background-color: tomato;
+  padding: 0.3rem 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+  opacity: 0;
+  transform: translate(0, 1rem );
+}
+
+#game-alert.game-alert-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+#game-alert-close {
+  box-sizing: block;
+  padding: 0.7rem;
+  color: black;
+  font-weight: bold;
+  float: right;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#game-alert-close:hover {
+  color: white;
+}
