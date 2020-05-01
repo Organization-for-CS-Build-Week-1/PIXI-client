@@ -1,6 +1,7 @@
 socket = io.connect('http://localhost:5000')
 
 pages = {
+  landing: document.getElementById('landing-page-container'),
   register: document.getElementById('register-container'),
   login: document.getElementById('login-container'),
   game: document.getElementById('game-container'),
@@ -20,6 +21,7 @@ function switchPage(page) {
   currentPage = pages[page]
 
   if (page === 'game' && !gameRunning) {
+    pages['landing'].style.display = 'none'
     gameRunning = true
     runGame()
     runMap()
