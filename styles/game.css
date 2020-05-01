@@ -378,3 +378,9 @@
   justify-content: space-evenly;
   margin-bottom: 3rem;
 }
+
+.total {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 1.5rem 0;
+}
