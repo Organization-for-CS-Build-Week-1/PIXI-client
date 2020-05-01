@@ -20,6 +20,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
+<<<<<<< HEAD
   let state,
     ant1,
     gameScene,
@@ -33,6 +34,9 @@ function runGame() {
     buyItem,
     sellItems
 
+=======
+  let state, ant1, gameScene, roomInfo, exits, style, itemContainer
+>>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
   let space = keyboard(32)
 
   const roomInfoInitState = {
@@ -46,6 +50,7 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
+<<<<<<< HEAD
     roomInfo = data.room
     cur_loc = data.room.world_loc
     itemContainer.temp.destroy()
@@ -61,6 +66,19 @@ function runGame() {
     } else {
       roomItems = data.room.items
       generateItems(roomItems)
+=======
+    console.log('roomupdate data:', data)
+    if (data.room) {
+      itemContainer.temp.destroy()
+      itemContainer = { temp: new Container() }
+      underLayer.addChild(itemContainer.temp)
+      // removeInfoBoxes(roomInfo.items, data.room.items)
+      roomInfo = data.room
+      generateItems(roomInfo.items)
+      cur_loc = data.room.world_loc
+      generatePaths()
+      drawMap()
+>>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
     }
   })
 
@@ -201,7 +219,7 @@ function runGame() {
   }
 
   //Space
-  space.press = () => itemCollision(ant1, roomItems)
+  space.press = () => itemCollision(ant1, roomInfo.items)
 
   function play() {
     ant1.x += ant1.vx
@@ -341,29 +359,39 @@ function runGame() {
         `Score: ${item.score}\nWeight: ${item.weight}`,
         style
       )
-      item[`${item.id}_infoBoxText`].x = x + 14
-      item[`${item.id}_infoBoxText`].y = y + 14
 
       //hovering over item
       item['sprite'].mouseover = (mouseData) => {
         item[`${item.id}_infoBox`].lineStyle(2, 0x000000, 1)
         item[`${item.id}_infoBox`].beginFill(0xffffff)
-        item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
+        if (x < 390) {
+          item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
+          item[`${item.id}_infoBoxText`].x = x + 14
+          item[`${item.id}_infoBoxText`].y = y + 14
+        } else {
+          item[`${item.id}_infoBox`].drawRect(x - 96, y - 60, 96, 60)
+          item[`${item.id}_infoBoxText`].x = x - 82
+          item[`${item.id}_infoBoxText`].y = y - 46
+        }
         item[`${item.id}_infoBox`].endFill()
 
-        gameScene.addChild(
+        itemContainer.temp.addChild(
           item[`${item.id}_infoBox`],
           item[`${item.id}_infoBoxText`]
         )
       }
 
       //stop hovering over item
-      item['sprite'].mouseout = (mouseData) =>
-        gameScene.removeChild(
-          item[`${item.id}_infoBox`],
-          item[`${item.id}_infoBoxText`]
-        )
-
+      item['sprite'].mouseout = (mouseData) => {
+        try {
+          itemContainer.temp.removeChild(
+            item[`${item.id}_infoBox`],
+            item[`${item.id}_infoBoxText`]
+          )
+          // Just in case there's an error somehow,
+          // This will silently catch it
+        } catch (e) {}
+      }
       itemContainer.temp.addChild(item['sprite'])
     }
     console.log(itemContainer.temp)

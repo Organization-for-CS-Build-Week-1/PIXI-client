@@ -24,10 +24,11 @@
 
   <body>
     <!-- nav -->
-    <nav id="nav">
-      <button id="register-button">Register</button>
+    <!-- <nav id="nav"> -->
+    <!-- <button id="register-button">Register</button>
       <button id="login-button">Login</button>
       <button id="game-button">Game</button>
+<<<<<<< HEAD
       <button id="home-button">Home</button>
       <!-- <div style="background-color: crimson; width: 400px; height: 70px; position: fixed; right: 0rem;">Username must be more than 2 characters.</div> -->
     </nav>
@@ -72,11 +73,61 @@
             autocomplete="current-password"
           />
         </label>
+=======
+      <button id="home-button">Home</button> -->
+    <!-- <div style="background-color: crimson; width: 400px; height: 70px; position: fixed; right: 0rem;">Username must be more than 2 characters.</div> -->
+    <!-- </nav> -->
+>>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
 
-        <button class="submit" type="submit">GO</button>
-      </form>
-    </div>
+    <div id="landing-page-container">
+      <div id="landing-hero">
+        <div class="landing-hero-left">
+          <!-- register -->
+          <div
+            id="register-container"
+            class="auth-container"
+            style="display: none;"
+          >
+            <h1>REGISTER</h1>
+            <form id="register-form">
+              <label>
+                Username:
+                <input
+                  id="username1"
+                  class="auth-input"
+                  type="text"
+                  name="username1"
+                  autocomplete="username"
+                />
+              </label>
+              <label>
+                Password:
+                <input
+                  id="password1"
+                  class="auth-input"
+                  type="password"
+                  name="password"
+                  autocomplete="current-password"
+                />
+              </label>
+              <label>
+                Confirm Password:
+                <input
+                  id="password2"
+                  class="auth-input"
+                  type="password"
+                  name="password"
+                  autocomplete="current-password"
+                />
+              </label>
+              <div class="form-buttons">
+                <button class="game-button" type="submit">GO</button>
+                <button class="game-button" id="login-button">Login</button>
+              </div>
+            </form>
+          </div>
 
+<<<<<<< HEAD
     <!-- login -->
     <div id="login-container" class="auth-container" style="display: none;">
       <h1>LOGIN</h1>
@@ -103,6 +154,53 @@
         </label>
         <button class="submit" type="submit">GO</button>
       </form>
+=======
+          <!-- login -->
+          <div
+            id="login-container"
+            class="auth-container"
+            style="display: none;"
+          >
+            <h1>LOGIN</h1>
+            <form id="login-form">
+              <label>
+                Username:
+                <input
+                  id="username"
+                  class="auth-input"
+                  type="text"
+                  name="username"
+                  autocomplete="username"
+                />
+              </label>
+              <label>
+                Password:
+                <input
+                  id="password"
+                  class="auth-input"
+                  type="password"
+                  name="password"
+                  autocomplete="current-password"
+                />
+              </label>
+              <div class="form-buttons">
+                <button class="game-button" type="submit">GO</button>
+                <button class="game-button" id="register-button">
+                  Register
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="landing-hero-right">
+          <!-- logo -->
+          <div id="logo-container">
+            <h1 id="logo">The Ant's Knapsack</h1>
+          </div>
+        </div>
+      </div>
+      <div id="landing-page-bottom"></div>
+>>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
     </div>
 
     <!-- game -->
@@ -150,14 +248,27 @@
             </div>
             <div id="inventory-container"></div>
             <div id="inventory-totals">
+<<<<<<< HEAD
               <h4>
                 Total: <span id="total-weight"></span>
                 <span id="total-score"></span>
               </h4>
+=======
+              <div class="third">
+                <h4>Total:</h4>
+              </div>
+              <div class="third">
+                <h4 id="total-weight"></h4>
+              </div>
+              <div class="third">
+                <h4 id="total-score"></h4>
+              </div>
+>>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
             </div>
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <div id="control-panel">
         <div id="control-panel-box"></div>
       </div>
@@ -172,15 +283,36 @@
         <p class="item-headers">WEIGHT</p>
       </div>
     </div>
+=======
+      <div class="control-panel">
+        <h3>Controls</h3>
+        <div class="control-panel-box">
+          <div class="wasd control-third">
+            <img src="assets/PNG/WASD.png" alt="WASD to move" />
+            <h4>Move</h4>
+          </div>
+          <div class="space control-third">
+            <img src="assets/PNG/SPACE.png" alt="WASD to move" />
+            <h4>Take Item</h4>
+          </div>
+          <div class="mouse control-third">
+            <img src="assets/PNG/MOUSE.png" alt="WASD to move" />
+            <h4>Drop Item</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+>>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
     <script
       src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
       crossorigin="anonymous"
     ></script>
     <script src="pixi/pixi.min.js"></script>
     <script src="htmlsocketlisteners.js"></script>
-    <script src="main.js"></script>
     <script src="auth.js"></script>
-    <script src="game.js"></script>
+    <script src="main.js"></script>
     <script src="map.js"></script>
+    <script src="game.js"></script>
   </body>
 </html>

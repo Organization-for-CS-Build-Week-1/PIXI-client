@@ -73,10 +73,10 @@ function updateChat(chatMessage) {
   else pTag.textContent = chatMessage
 
   if (chatContainer.append) {
-    chatContainer.append(pTag)
+    chatContainer.prepend(pTag)
   }
   if (chatContainer.children.length > 15) {
-    chatContainer.children[0].remove()
+    chatContainer.children[chatContainer.children.length - 1].remove()
   }
 }
 
