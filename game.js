@@ -434,6 +434,7 @@ function runGame() {
       close.onclick = () => {
         store.style.display = 'none'
         itemElements.remove()
+        sellItems = []
       }
       store.style.display = 'block'
       itemElements.setAttribute('id', 'item-elements')
@@ -471,8 +472,9 @@ function runGame() {
     close.onclick = () => {
       store.style.display = 'none'
       itemElements.remove()
+      sellItems = []
     }
-
+    sellItems = []
     itemElements.setAttribute('id', 'item-elements')
     if (playerItemsForSale.length > 0) {
       for (let i = 0; i < playerItemsForSale.length; i++) {
@@ -482,14 +484,13 @@ function runGame() {
           weight = create('p')
 
         item.onclick = () => {
-          sellItems = []
-          sellItems.push(playerItemsForSale[i][1])
+          sellItems.push(playerItemsForSale[i])
           console.log(sellItems)
         }
         addClass(item, 'item-link')
-        text(name, `${playerItemsForSale[i][1].name}`)
-        text(score, `${playerItemsForSale[i][1].score}`)
-        text(weight, `${playerItemsForSale[i][1].weight}`)
+        text(name, `${playerItemsForSale[i].name}`)
+        text(score, `${playerItemsForSale[i].score}`)
+        text(weight, `${playerItemsForSale[i].weight}`)
 
         append(name, item)
         append(score, item)
