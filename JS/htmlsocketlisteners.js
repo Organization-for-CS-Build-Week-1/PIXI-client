@@ -143,6 +143,7 @@ const mockItems = [
 ]
 
 function updateInventory(items) {
+  playerItemsForSale = items
   const cb = function() {
     socket.emit('drop', this.id)
   }
@@ -218,7 +219,6 @@ function listenForInfo() {
 
   socket.on('playerupdate', (player) => {
     scoreboard.player.textContent = player.score
-    playerItemsForSale = player.items
     updateInventory(player.items)
     inventoryTotal(player.weight, player.score)
   })
