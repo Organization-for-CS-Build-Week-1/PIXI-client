@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,18 +9,8 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
     <link rel="stylesheet" type="text/css" href="styles/auth.css" />
 
-    <link
-      rel="stylesheet"
-      href="assets/fipps/stylesheet.css"
-      type="text/css"
-      charset="utf-8"
-    />
-    <link
-      rel="stylesheet"
-      href="assets/arcadeclassic/stylesheet.css"
-      type="text/css"
-      charset="utf-8"
-    />
+    <link rel="stylesheet" href="assets/fipps/stylesheet.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="assets/arcadeclassic/stylesheet.css" type="text/css" charset="utf-8" />
   </head>
 
   <body>
@@ -33,45 +24,28 @@
     <!-- </nav> -->
 
     <div id="landing-page-container">
+      <div id="alert" style="display: none;"><p id="alert-msg"></p>
+        <span id="alert-close">&times;</span></div>
+
       <div id="landing-hero">
         <div class="landing-hero-left">
           <!-- register -->
-          <div
-            id="register-container"
-            class="auth-container"
-            style="display: none;"
-          >
+          <div id="register-container" class="auth-container" style="display: none;">
             <h1>REGISTER</h1>
             <form id="register-form">
               <label>
                 Username:
-                <input
-                  id="username1"
-                  class="auth-input"
-                  type="text"
-                  name="username1"
-                  autocomplete="username"
-                />
+                <input id="username1" class="auth-input" type="text" name="username1" autocomplete="username" />
               </label>
               <label>
                 Password:
-                <input
-                  id="password1"
-                  class="auth-input"
-                  type="password"
-                  name="password"
-                  autocomplete="current-password"
-                />
+                <input id="password1" class="auth-input" type="password" name="password"
+                  autocomplete="current-password" />
               </label>
               <label>
                 Confirm Password:
-                <input
-                  id="password2"
-                  class="auth-input"
-                  type="password"
-                  name="password"
-                  autocomplete="current-password"
-                />
+                <input id="password2" class="auth-input" type="password" name="password"
+                  autocomplete="current-password" />
               </label>
               <div class="form-buttons">
                 <button class="game-button" type="submit">GO</button>
@@ -81,32 +55,17 @@
           </div>
 
           <!-- login -->
-          <div
-            id="login-container"
-            class="auth-container"
-            style="display: none;"
-          >
+          <div id="login-container" class="auth-container" style="display: none;">
             <h1>LOGIN</h1>
             <form id="login-form">
               <label>
                 Username:
-                <input
-                  id="username"
-                  class="auth-input"
-                  type="text"
-                  name="username"
-                  autocomplete="username"
-                />
+                <input id="username" class="auth-input" type="text" name="username" autocomplete="username" />
               </label>
               <label>
                 Password:
-                <input
-                  id="password"
-                  class="auth-input"
-                  type="password"
-                  name="password"
-                  autocomplete="current-password"
-                />
+                <input id="password" class="auth-input" type="password" name="password"
+                  autocomplete="current-password" />
               </label>
               <div class="form-buttons">
                 <button class="game-button" type="submit">GO</button>
@@ -204,6 +163,7 @@
         </div>
       </div>
     </div>
+<<<<<<< HEAD
     <!-- Store Modal -->
     <div id="store" class="modal">
       <div id="store-contents">
@@ -218,6 +178,10 @@
       src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
       crossorigin="anonymous"
     ></script>
+=======
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
+>>>>>>> 3b3a50226af01c8dd030edd2261cd6627db67b3a
     <script src="pixi/pixi.min.js"></script>
     <script src="htmlsocketlisteners.js"></script>
     <script src="auth.js"></script>
@@ -225,4 +189,5 @@
     <script src="map.js"></script>
     <script src="game.js"></script>
   </body>
+
 </html>

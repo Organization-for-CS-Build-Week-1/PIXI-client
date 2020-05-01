@@ -1,3 +1,18 @@
+customAlert = document.getElementById('alert')
+alertMsg = document.getElementById('alert-msg')
+closeAlertBtn = document.getElementById('alert-close')
+
+closeAlertBtn.addEventListener('click', (e) => {
+  e.preventDefault()
+  customAlert.style.display = 'none'
+  alertMsg.textContent = ''
+})
+
+function sendAlert(error) {
+  customAlert.style.display = 'flex'
+  alertMsg.textContent = error
+}
+
 //socket functions
 
 //register form submit
@@ -8,7 +23,7 @@ function registerSetup() {
   })
   socket.on('registerError', (error) => {
     console.error(error)
-    document.getElementById('register-alert').textContent = error.error
+    sendAlert(error.error)
   })
 
   registerForm = document.getElementById('register-form')
@@ -30,6 +45,8 @@ function registerSetup() {
     //clear input values
     registerForm.reset()
   })
+
+  alertMsg.textContent = ''
 }
 
 //login form submit
@@ -40,7 +57,7 @@ function loginSetup() {
   })
   socket.on('loginError', (error) => {
     console.error(error)
-    alert(error.error)
+    sendAlert(error.error)
   })
 
   loginForm = document.getElementById('login-form')
@@ -59,5 +76,7 @@ function loginSetup() {
 
     //clear input values
     loginForm.reset()
+
+    alertMsg.textContent = ''
   })
 }
