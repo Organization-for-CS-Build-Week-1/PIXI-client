@@ -410,7 +410,7 @@ function runGame() {
       socket.emit('move', 'w')
     }
   }
-
+  // DOM Manipulation helper functions for lazy devs
   const create = (el) => document.createElement(el),
     getId = (id) => document.getElementById(id),
     text = (el, textToAdd) => (el.textContent = textToAdd),
