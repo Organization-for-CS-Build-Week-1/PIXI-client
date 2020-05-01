@@ -20,9 +20,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-<<<<<<< HEAD
-  let state,
-    ant1,
+  let ant1,
     gameScene,
     roomItems,
     roomInfo,
@@ -34,9 +32,6 @@ function runGame() {
     buyItem,
     sellItems
 
-=======
-  let state, ant1, gameScene, roomInfo, exits, style, itemContainer
->>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
   let space = keyboard(32)
 
   const roomInfoInitState = {
@@ -50,7 +45,6 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
-<<<<<<< HEAD
     roomInfo = data.room
     cur_loc = data.room.world_loc
     itemContainer.temp.destroy()
@@ -66,19 +60,6 @@ function runGame() {
     } else {
       roomItems = data.room.items
       generateItems(roomItems)
-=======
-    console.log('roomupdate data:', data)
-    if (data.room) {
-      itemContainer.temp.destroy()
-      itemContainer = { temp: new Container() }
-      underLayer.addChild(itemContainer.temp)
-      // removeInfoBoxes(roomInfo.items, data.room.items)
-      roomInfo = data.room
-      generateItems(roomInfo.items)
-      cur_loc = data.room.world_loc
-      generatePaths()
-      drawMap()
->>>>>>> 5ace5348db9c2185938ec9566ba09f847b109475
     }
   })
 
