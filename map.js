@@ -5,11 +5,13 @@ let stores = [
   [6, 9],
   [3, 16],
 ]
+
 let drawMap
 function runMap() {
   socket.on('mapinfo', (data) => {
     rooms = data.rooms
     // stores = data.stores
+    // console.log(data)
   })
 
   const Application = PIXI.Application,
@@ -31,6 +33,7 @@ function runMap() {
   }
 
   drawMap = () => {
+    if (stores.length === 0) return
     for (let i = 0; i < rooms.length; i++) {
       const rectangle = new PIXI.Graphics()
       const roomx = rooms[i][0]
