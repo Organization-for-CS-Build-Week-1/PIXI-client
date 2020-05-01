@@ -4,20 +4,34 @@ const eF = () => {}
 
 var socket
 
+audioButton = {}
 antgameaudio = new Audio('assets/WAV/gameloop.wav')
+antgameaudio.loop = true
+
+function toggleGameAudio(muteIt) {
+  if (muteIt) {
+    antgameaudio.muted = true
+    audioButton.src = 'assets/PNG/NoAudio.png'
+    audioButton.alt = 'Audio is Off'
+    window.localStorage.setItem('audioMuted', true)
+  } else {
+    antgameaudio.muted = false
+    audioButton.src = 'assets/PNG/Audio.png'
+    audioButton.alt = 'Audio is On'
+    window.localStorage.setItem('audioMuted', false)
+  }
+}
 
 function audioSetup() {
+  audioButton = document.getElementById('audio')
+  const audioIsMuted = window.localStorage.getItem('audioMuted')
+  if (audioIsMuted === 'true') toggleGameAudio(true)
+  
   antgameaudio.play()
-  const audioButton = document.getElementById('audio')
-  antgameaudio.loop = true
-  audioButton.addEventListener('click', (e) => {
-    if (antgameaudio.muted) {
-      antgameaudio.muted = false
-      audioButton.src = 'assets/PNG/Audio.png'
-    } else {
-      antgameaudio.muted = true
-      audioButton.src = 'assets/PNG/NoAudio.png'
-    }
+
+  audioButton.addEventListener('click', e => {
+    if (antgameaudio.muted) toggleGameAudio(false)
+    else toggleGameAudio(true)
   })
 }
 
