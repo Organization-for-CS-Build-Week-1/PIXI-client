@@ -4,6 +4,21 @@ const eF = () => {}
 
 var socket
 
+antgameaudio = new Audio('assets/WAV/gameloop.wav')
+
+function audioSetup() {
+  const audioButton = document.getElementById('audio')
+  audioButton.addEventListener('click', (e) => {
+    if (antgameaudio.muted) {
+      antgameaudio.muted = false
+      audioButton.src = 'assets/PNG/Audio.png'
+    } else {
+      antgameaudio.muted = true
+      audioButton.src = 'assets/PNG/NoAudio.png'
+    }
+  })
+}
+
 // ==================== HIGHSCORE SETUP ==================== //
 
 const scoreboardInitState = {
@@ -187,4 +202,6 @@ function listenForInfo() {
   scoreboardSetup()
   chatSetup()
   inventorySetup()
+  audioSetup()
+  antgameaudio.play()
 }
