@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,8 +8,18 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
     <link rel="stylesheet" type="text/css" href="styles/auth.css" />
 
-    <link rel="stylesheet" href="assets/fipps/stylesheet.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="assets/arcadeclassic/stylesheet.css" type="text/css" charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="assets/fipps/stylesheet.css"
+      type="text/css"
+      charset="utf-8"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/arcadeclassic/stylesheet.css"
+      type="text/css"
+      charset="utf-8"
+    />
   </head>
 
   <body>
@@ -102,8 +111,7 @@
           </div>
           <div class="chat">
             <h2 class="chat-title">Chatroom</h2>
-            <div id="chat-container">
-            </div>
+            <div id="chat-container"></div>
             <div class="chat-options">
               <button>GG</button>
               <button>Hi!</button>
@@ -129,19 +137,42 @@
             </div>
             <div id="inventory-container"></div>
             <div id="inventory-totals">
-              <h4>Total: <span id="total-weight"></span> <span id="total-score"></span></h4>
+              <div class="third">
+                <h4>Total:</h4>
+              </div>
+              <div class="third">
+                <h4 id="total-weight"></h4>
+              </div>
+              <div class="third">
+                <h4 id="total-score"></h4>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div id="control-panel">
-        <div id="control-panel-box">
-
+      <div class="control-panel">
+        <h3>Controls</h3>
+        <div class="control-panel-box">
+          <div class="wasd control-third">
+            <img src="assets/PNG/WASD.png" alt="WASD to move" />
+            <h4>Move</h4>
+          </div>
+          <div class="space control-third">
+            <img src="assets/PNG/SPACE.png" alt="WASD to move" />
+            <h4>Take Item</h4>
+          </div>
+          <div class="mouse control-third">
+            <img src="assets/PNG/MOUSE.png" alt="WASD to move" />
+            <h4>Drop Item</h4>
+          </div>
         </div>
       </div>
     </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
+    <script
+      src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="pixi/pixi.min.js"></script>
     <script src="htmlsocketlisteners.js"></script>
     <script src="auth.js"></script>
@@ -149,5 +180,4 @@
     <script src="map.js"></script>
     <script src="game.js"></script>
   </body>
-
 </html>

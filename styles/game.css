@@ -22,7 +22,6 @@
   width: 300px;
   display: flex;
   flex-direction: column;
-  margin-right: 10px;
   color: whitesmoke;
   text-shadow: 1px 1px black;
 }
@@ -94,7 +93,15 @@
   font-family: Consolas, monaco, monospace;
 }
 
+/* .chat-flip {
+  display: flex;
+  flex-flow: column-reverse
+} */
+
+
 #chat-container {
+  display: flex;
+  flex-flow: column-reverse;
   margin: 0 1rem 0 1.7rem;
   flex-grow: 1;
   overflow-y: scroll;
@@ -186,7 +193,7 @@
 
 #inventory-container {
   flex-grow: 1;
-  margin: 0 1rem 1rem 1.7rem;
+  margin: 0 1rem 0.5rem 1.7rem;
   flex-grow: 1;
   overflow-y: scroll;
 }
@@ -232,21 +239,65 @@
   margin: 0;
 }
 
+#inventory-totals {
+  margin: 0rem 2rem 0.5rem 1.7rem;
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #container {
   width: 500px;
   height: 500px;
 }
 
-#control-panel {
-  background-color: grey;
-  height: 12rem;
+/* ================== CONTROL PANEL ================== */
+
+.control-panel {
+  max-width: 500px;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  margin: 0 auto;
+  background-color: grey;
 }
 
-#control-panel-box {
-  background-color: turquoise;
-  height: 100%;
-  width: 600px;
+.control-panel > h3 {
+  font-family: 'arcadeclassicregular', Arial sans-serif;
+  color: white;
+  text-shadow: 2.5px 2.5px black;
+  font-size: 1.8rem;
+  text-align: center;
+  margin: 0.5rem auto 0;
+}
+
+.control-panel-box {
+  box-sizing: border-box;
+  width: 100%;
+  height: 12rem;
+  padding: 0 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.control-third {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  padding: 0.7rem;
+  justify-content: flex-end;
+}
+
+.control-third img {
+  flex-grow: 2;
+  padding: 1rem 0 1.5rem;
+  object-fit: contain;
+}
+
+.control-third h4 {
+  /* flex-grow: 1; */
+  font-family: Consolas, monaco, monospace;
+  color: #dddddd;
+  text-shadow: 1px 1px black;
+  font-size: 1.5rem;
+  text-align: center;
 }
