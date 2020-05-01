@@ -79,8 +79,11 @@
                 />
               </label>
               <div class="form-buttons">
-                <button class="game-button" type="submit">GO</button>
-                <button class="game-button" id="login-button">Login</button>
+                <button class="game-button" type="submit">REGISTER</button>
+                <label for="login-button">
+                  Already have an account?
+                  <button class="game-button" id="login-button">Login</button>
+                </label>
               </div>
             </form>
           </div>
@@ -114,10 +117,13 @@
                 />
               </label>
               <div class="form-buttons">
-                <button class="game-button" type="submit">GO</button>
-                <button class="game-button" id="register-button">
-                  Register
-                </button>
+                <button class="game-button" type="submit">LOGIN</button>
+                <label for="register-button">
+                  First time here?
+                  <button class="game-button" id="register-button">
+                    Register
+                  </button>
+                </label>
               </div>
             </form>
           </div>
@@ -210,8 +216,8 @@
             </div>
           </div>
         </div>
-        <div class="audio-container panel right-panel" >
-          <img id="audio" src="assets/PNG/Audio.png" alt="Audio is On"/>
+        <div class="audio-container panel right-panel">
+          <img id="audio" src="assets/PNG/Audio.png" alt="Audio is On" />
         </div>
       </div>
     </div>
@@ -221,16 +227,17 @@
         <span id="close" class="closeButton">&times;</span>
         <h2 class="store-header">Welcome To The Ant Store!</h2>
         <div class="item-header-container">
-        <p class="item-headers">NAME</p>
-        <p class="item-headers">SCORE</p>
-        <p class="item-headers">WEIGHT</p>
-      </div>
+          <p class="item-headers">NAME</p>
+          <p class="item-headers">SCORE</p>
+          <p class="item-headers">WEIGHT</p>
+        </div>
       </div>
     </div>
     <script
       src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
       crossorigin="anonymous"
     ></script>
+    <script src="pixi/pixi-legacy.min.js"></script>
     <script src="pixi/pixi.min.js"></script>
     <script src="htmlsocketlisteners.js"></script>
     <script src="auth.js"></script>

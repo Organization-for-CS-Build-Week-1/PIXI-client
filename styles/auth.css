@@ -42,5 +42,19 @@ label {
 .form-buttons {
   margin: 1rem auto;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  /* align-items: center; */
+}
+
+.form-buttons label {
+  width: 100%;
+  text-align: center;
+  text-shadow: 2.5px 2.5px black;
+}
+
+
+.form-buttons button {
+  margin: 0.3rem 0 1rem;
+  width: 100%;
 }
