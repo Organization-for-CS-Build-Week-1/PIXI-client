@@ -8,6 +8,7 @@ antgameaudio = new Audio('assets/WAV/gameloop.wav')
 
 function audioSetup() {
   const audioButton = document.getElementById('audio')
+  antgameaudio.loop = true
   audioButton.addEventListener('click', (e) => {
     if (antgameaudio.muted) {
       antgameaudio.muted = false
