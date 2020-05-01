@@ -20,7 +20,7 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let state, ant1, gameScene, roomItems, roomInfo, exits, style, itemContainer
+  let state, ant1, gameScene, roomInfo, exits, style, itemContainer
   let space = keyboard(32)
 
   const roomInfoInitState = {
@@ -39,9 +39,9 @@ function runGame() {
       itemContainer.temp.destroy()
       itemContainer = { temp: new Container() }
       underLayer.addChild(itemContainer.temp)
-      roomItems = data.room.items
-      generateItems(roomItems)
+      // removeInfoBoxes(roomInfo.items, data.room.items)
       roomInfo = data.room
+      generateItems(roomInfo.items)
       cur_loc = data.room.world_loc
       generatePaths()
       drawMap()
@@ -176,7 +176,7 @@ function runGame() {
   }
 
   //Space
-  space.press = () => itemCollision(ant1, roomItems)
+  space.press = () => itemCollision(ant1, roomInfo.items)
 
   function play() {
     ant1.x += ant1.vx
@@ -324,19 +324,23 @@ function runGame() {
         item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
         item[`${item.id}_infoBox`].endFill()
 
-        gameScene.addChild(
+        itemContainer.temp.addChild(
           item[`${item.id}_infoBox`],
           item[`${item.id}_infoBoxText`]
         )
       }
 
       //stop hovering over item
-      item['sprite'].mouseout = (mouseData) =>
-        gameScene.removeChild(
-          item[`${item.id}_infoBox`],
-          item[`${item.id}_infoBoxText`]
-        )
-
+      item['sprite'].mouseout = (mouseData) => {
+        try {
+          itemContainer.temp.removeChild(
+            item[`${item.id}_infoBox`],
+            item[`${item.id}_infoBoxText`]
+          )
+          // Just in case there's an error somehow,
+          // This will silently catch it
+        } catch (e) {}
+      }
       itemContainer.temp.addChild(item['sprite'])
     }
     console.log(itemContainer.temp)
