@@ -1,17 +1,13 @@
 let rooms = []
 let cur_loc = []
-let stores = [
-  [11, 7],
-  [6, 9],
-  [3, 16],
-]
+let stores = []
 
 let drawMap
 function runMap() {
   socket.on('mapinfo', (data) => {
     rooms = data.rooms
-    // stores = data.stores
-    // console.log(data)
+    stores = data.stores
+    console.log(data)
   })
 
   const Application = PIXI.Application,

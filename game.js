@@ -54,12 +54,11 @@ function runGame() {
     generatePaths()
     drawMap()
 
-    if (data.room.name === 'Ant Store') {
+    if (data.room.name !== 'Ant Store') {
       generateItems(data.room.items)
     } else {
       itemContainer.temp.addChild(storekeeper)
       storeItems = data.room.items
-      // console.log(JSON.stringify(storeItems))
     }
   })
 
@@ -419,6 +418,7 @@ function runGame() {
 
   function generateStore() {
     if (!roomInfo) return
+    if (!roomItems) return
 
     if (getId('item-elements')) return
 

@@ -101,28 +101,7 @@ function chatSetup() {
 
 // ==================== INVENTORY SETUP ==================== //
 
-let playerItemsForSale = [
-  [
-    [321, 363],
-    {
-      id: 152,
-      name: 'Stick',
-      description: 'Medium score, medium weight. not bad for an ant.',
-      weight: 3,
-      score: 2400,
-    },
-  ],
-  [
-    [221, 463],
-    {
-      id: 153,
-      name: 'Stick',
-      description: 'Medium score, medium weight. not bad for an ant.',
-      weight: 3,
-      score: 1300,
-    },
-  ],
-]
+let playerItemsForSale
 
 playerInventory = {}
 
@@ -201,7 +180,7 @@ function listenForInfo() {
   socket.on('playerupdate', (player) => {
     console.log('player update', player)
     scoreboard.player.textContent = player.score
-    // playerItemsForSale = player.items
+    playerItemsForSale = player.items
     updateInventory(player.items)
     inventoryTotal(player.weight, player.score)
   })
