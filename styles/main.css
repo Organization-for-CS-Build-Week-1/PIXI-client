@@ -34,7 +34,7 @@ label {
   box-shadow: none;
 }
 
-#landing-page-container,
+/* #landing-page-container,
 #login-container,
 #register-container {
   max-width: 800px;
@@ -42,19 +42,32 @@ label {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+} */
+
+#landing-page {
+  display: flex;
+  flex-direction: column;
+}
+
+#landing-page-top {
+  width: 100%;
+  display: flex;
+}
+
+#logo-container {
+  width: 50vw;
 }
 
 #logo {
-  margin-top: 15px;
+  margin: 30px;
   padding-bottom: 10px;
   background: #1c971c;
   border: 10px solid black;
   outline: 2px solid grey;
-}
-
-#landing-page-container h1 {
   text-align: center;
   font-family: 'fippsregular', Arial sans-serif;
-  font-size: 4rem;
-  width: 85%;
+  font-size: 3.5rem;
+  flex: 1;
 }
+
+

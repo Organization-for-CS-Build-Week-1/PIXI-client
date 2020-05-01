@@ -1,3 +1,9 @@
+.auth-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .auth-container h1 {
   font-family: 'arcadeclassicregular', Arial sans-serif;
   color: white;

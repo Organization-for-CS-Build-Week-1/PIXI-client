@@ -14,7 +14,7 @@ navButtons = {
   home: document.getElementById('home-button'),
 }
 
-let currentPage
+let currentPage = pages['login']
 let gameRunning = false
 
 function switchPage(page) {
@@ -33,7 +33,7 @@ function switchPage(page) {
   if (page === 'register') registerSetup()
 }
 
-window.onload = () => switchPage('landing')
+// window.onload = () => switchPage('register')
 
 navButtons.register.addEventListener('click', () => switchPage('register'))
 navButtons.login.addEventListener('click', () => switchPage('login'))
