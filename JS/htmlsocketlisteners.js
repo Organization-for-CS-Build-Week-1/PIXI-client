@@ -142,7 +142,7 @@ class ItemContainer {
     this.weight = weight
     this.score = score
     this.div = this.createDiv()
-    this.div.addEventListener('click', this.dropItem.bind(this))
+    this.div.onclick = this.clickItem.bind(this)
   }
 
   createDiv() {
@@ -169,7 +169,7 @@ class ItemContainer {
     return item
   }
 
-  dropItem() {
+  clickItem() {
     socket.emit('drop', this.id)
   }
 }
