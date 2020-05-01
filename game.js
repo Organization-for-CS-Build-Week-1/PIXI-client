@@ -328,7 +328,7 @@ function runGame() {
       item['sprite'].anchor.set(0.5)
       item['sprite'].position.set(x, y)
       item['sprite'].interactive = true
-      item['sprite'].cursor = 'pointer'
+
       item['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
 
       //setup infoBox elements

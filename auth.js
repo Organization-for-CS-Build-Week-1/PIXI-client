@@ -8,7 +8,7 @@ function registerSetup() {
   })
   socket.on('registerError', (error) => {
     console.error(error)
-    alert(error.error)
+    document.getElementById('register-alert').textContent = error.error
   })
 
   registerForm = document.getElementById('register-form')
@@ -35,7 +35,7 @@ function registerSetup() {
 //login form submit
 function loginSetup() {
   socket.on('login', (data) => {
-    console.log("login data:", data)
+    console.log('login data:', data)
     switchPage('game')
   })
   socket.on('loginError', (error) => {
