@@ -29,7 +29,9 @@ function runGame() {
     style,
     itemContainer,
     storekeeper,
-    storeItems
+    storeItems,
+    buyItem,
+    sellItems
 
   let space = keyboard(32)
 
@@ -57,7 +59,7 @@ function runGame() {
     } else {
       itemContainer.temp.addChild(storekeeper)
       storeItems = data.room.items
-      console.log(storeItems)
+      // console.log(JSON.stringify(storeItems))
     }
   })
 
@@ -97,7 +99,6 @@ function runGame() {
     storekeeper.x = app.screen.width / 2
     storekeeper.y = app.screen.height / 2
     storekeeper.anchor.set(0.5)
-    storekeeper.tint = 0xff0000
 
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
@@ -410,23 +411,25 @@ function runGame() {
     }
   }
 
-  function generateStore() {
-    const create = (el) => document.createElement(el)
-    const getId = (id) => document.getElementById(id)
-    const text = (el, textToAdd) => (el.textContent = textToAdd)
-    const append = (el, parentEl) => parentEl.appendChild(el)
-    const addClass = (el, aClass) => el.classList.add(aClass)
+  const create = (el) => document.createElement(el),
+    getId = (id) => document.getElementById(id),
+    text = (el, textToAdd) => (el.textContent = textToAdd),
+    append = (el, parentEl) => parentEl.appendChild(el),
+    addClass = (el, aClass) => el.classList.add(aClass)
 
+  function generateStore() {
     if (!roomInfo) return
+
     if (getId('item-elements')) return
 
     if (testForAABB(ant1, storekeeper)) {
       ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
 
-      const storeContents = getId('store-contents')
-      const itemElements = create('div')
-      const store = getId('store')
-      const close = getId('close')
+      const storeContents = getId('store-contents'),
+        itemElements = create('div'),
+        store = getId('store'),
+        close = getId('close')
+
       close.onclick = () => {
         store.style.display = 'none'
         itemElements.remove()
@@ -440,7 +443,11 @@ function runGame() {
           score = create('p'),
           weight = create('p')
 
-        item.onclick = () => console.log('Trade Started!')
+        item.onclick = () => {
+          buyItem = storeItems[i][1]
+          itemElements.remove()
+          inventoryScreen()
+        }
         addClass(item, 'item-link')
         text(name, `${storeItems[i][1].name}`)
         text(score, `${storeItems[i][1].score}`)
@@ -453,6 +460,42 @@ function runGame() {
       }
       append(itemElements, storeContents)
     }
+  }
+
+  function inventoryScreen() {
+    const storeContents = getId('store-contents'),
+      itemElements = create('div'),
+      close = getId('close')
+
+    close.onclick = () => {
+      store.style.display = 'none'
+      itemElements.remove()
+    }
+
+    itemElements.setAttribute('id', 'item-elements')
+
+    for (let i = 0; i < playerItemsForSale.length; i++) {
+      const item = create('div'),
+        name = create('p'),
+        score = create('p'),
+        weight = create('p')
+
+      item.onclick = () => {
+        sellItems = []
+        sellItems.push(playerItemsForSale[i][1])
+        console.log(sellItems)
+      }
+      addClass(item, 'item-link')
+      text(name, `${playerItemsForSale[i][1].name}`)
+      text(score, `${playerItemsForSale[i][1].score}`)
+      text(weight, `${playerItemsForSale[i][1].weight}`)
+
+      append(name, item)
+      append(score, item)
+      append(weight, item)
+      append(item, itemElements)
+    }
+    append(itemElements, storeContents)
   }
 
   function takeItem(id) {

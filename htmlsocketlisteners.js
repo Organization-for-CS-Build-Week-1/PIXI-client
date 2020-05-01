@@ -2,7 +2,7 @@
 /** Empty Function as a placeholder */
 const eF = () => {}
 
-var socket;
+var socket
 
 // ==================== HIGHSCORE SETUP ==================== //
 
@@ -101,6 +101,29 @@ function chatSetup() {
 
 // ==================== INVENTORY SETUP ==================== //
 
+let playerItemsForSale = [
+  [
+    [321, 363],
+    {
+      id: 152,
+      name: 'Stick',
+      description: 'Medium score, medium weight. not bad for an ant.',
+      weight: 3,
+      score: 2400,
+    },
+  ],
+  [
+    [221, 463],
+    {
+      id: 153,
+      name: 'Stick',
+      description: 'Medium score, medium weight. not bad for an ant.',
+      weight: 3,
+      score: 1300,
+    },
+  ],
+]
+
 playerInventory = {}
 
 class ItemContainer {
@@ -163,23 +186,22 @@ function inventorySetup() {
   // updateInventory(mockItems)
 }
 
-function inventoryTotal(weight, score){
- document.getElementById('total-weight').textContent = weight
+function inventoryTotal(weight, score) {
+  document.getElementById('total-weight').textContent = weight
   document.getElementById('total-score').textContent = score
-
 }
 
 // ==================== SOCKET.ON ==================== //
 
-
 function listenForInfo() {
-  socket.on('roomupdate', ({chat}) => updateChat(chat))
-  
+  socket.on('roomupdate', ({ chat }) => updateChat(chat))
+
   socket.on('highscoreupdate', updateHighscores)
-  
+
   socket.on('playerupdate', (player) => {
-    console.log("player update", player)
+    console.log('player update', player)
     scoreboard.player.textContent = player.score
+    // playerItemsForSale = player.items
     updateInventory(player.items)
     inventoryTotal(player.weight, player.score)
   })
