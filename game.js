@@ -53,12 +53,14 @@ function runGame() {
     underLayer.addChild(itemContainer.temp)
     generatePaths()
     drawMap()
+    console.log(data)
 
-    if (data.room.name !== 'Ant Store') {
-      generateItems(data.room.items)
-    } else {
-      itemContainer.temp.addChild(storekeeper)
+    if (data.room.name === 'Ant Store') {
       storeItems = data.room.items
+      itemContainer.temp.addChild(storekeeper)
+    } else {
+      roomItems = data.room.items
+      generateItems(roomItems)
     }
   })
 
@@ -209,7 +211,7 @@ function runGame() {
       width: gameScene.width - 10,
       height: gameScene.height - 10,
     })
-    if (roomInfo.name !== 'Ant Store') {
+    if (roomInfo.name === 'Ant Store') {
       generateStore()
     }
   }
@@ -418,7 +420,6 @@ function runGame() {
 
   function generateStore() {
     if (!roomInfo) return
-    if (!roomItems) return
 
     if (getId('item-elements')) return
 
@@ -473,28 +474,34 @@ function runGame() {
     }
 
     itemElements.setAttribute('id', 'item-elements')
+    if (playerItemsForSale.length > 0) {
+      for (let i = 0; i < playerItemsForSale.length; i++) {
+        const item = create('div'),
+          name = create('p'),
+          score = create('p'),
+          weight = create('p')
 
-    for (let i = 0; i < playerItemsForSale.length; i++) {
-      const item = create('div'),
-        name = create('p'),
-        score = create('p'),
-        weight = create('p')
+        item.onclick = () => {
+          sellItems = []
+          sellItems.push(playerItemsForSale[i][1])
+          console.log(sellItems)
+        }
+        addClass(item, 'item-link')
+        text(name, `${playerItemsForSale[i][1].name}`)
+        text(score, `${playerItemsForSale[i][1].score}`)
+        text(weight, `${playerItemsForSale[i][1].weight}`)
 
-      item.onclick = () => {
-        sellItems = []
-        sellItems.push(playerItemsForSale[i][1])
-        console.log(sellItems)
+        append(name, item)
+        append(score, item)
+        append(weight, item)
+        append(item, itemElements)
       }
-      addClass(item, 'item-link')
-      text(name, `${playerItemsForSale[i][1].name}`)
-      text(score, `${playerItemsForSale[i][1].score}`)
-      text(weight, `${playerItemsForSale[i][1].weight}`)
-
-      append(name, item)
-      append(score, item)
-      append(weight, item)
-      append(item, itemElements)
+    } else {
+      const emptyMessage = create('p')
+      text(emptyMessage, 'You have nothing to sell')
+      append(emptyMessage, itemElements)
     }
+
     append(itemElements, storeContents)
   }
 
