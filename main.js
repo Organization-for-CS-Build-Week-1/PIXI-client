@@ -1,7 +1,6 @@
 socket = io.connect('http://localhost:5000')
 
 pages = {
-  landing: document.getElementById('landing-page-container'),
   register: document.getElementById('register-container'),
   login: document.getElementById('login-container'),
   game: document.getElementById('game-container'),
@@ -9,9 +8,7 @@ pages = {
 
 navButtons = {
   register: document.getElementById('register-button'),
-  login: document.getElementById('login-button'),
-  game: document.getElementById('game-button'),
-  home: document.getElementById('home-button'),
+  login: document.getElementById('login-button')
 }
 
 let currentPage = pages['login']
@@ -33,9 +30,15 @@ function switchPage(page) {
   if (page === 'register') registerSetup()
 }
 
-// window.onload = () => switchPage('register')
 
-navButtons.register.addEventListener('click', () => switchPage('register'))
-navButtons.login.addEventListener('click', () => switchPage('login'))
-navButtons.game.addEventListener('click', () => switchPage('game'))
-navButtons.home.addEventListener('click', () => switchPage('landing'))
+navButtons.register.addEventListener('click', e => {
+  e.preventDefault()  
+  switchPage('register')
+})
+
+navButtons.login.addEventListener('click', e => {
+  e.preventDefault()  
+  switchPage('login')
+})
+
+switchPage('login')

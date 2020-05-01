@@ -24,58 +24,59 @@
     <!-- </nav> -->
 
     <div id="landing-page-container">
-      <div id="landing-page-top">
+      <div id="landing-hero">
 
-        <!-- register -->
-        <div id="register-container" class="auth-container" style="display: none;">
-          <nav id="nav">
-            <button id="register-button">Register</button>
-            <button id="login-button">Login</button>
-          </nav>
-          <h1>REGISTER</h1>
-          <form id="register-form">
-            <label>
-              Username:
-              <input id="username1" class="auth-input" type="text" name="username1" autocomplete="username" />
-            </label>
-            <label>
-              Password:
-              <input id="password1" class="auth-input" type="password" name="password"
+        <div class="landing-hero-left">
+          <!-- register -->
+          <div id="register-container" class="auth-container" style="display: none;">
+            <h1>REGISTER</h1>
+            <form id="register-form">
+              <label>
+                Username:
+                <input id="username1" class="auth-input" type="text" name="username1" autocomplete="username" />
+              </label>
+              <label>
+                Password:
+                <input id="password1" class="auth-input" type="password" name="password"
                 autocomplete="current-password" />
-            </label>
-            <label>
-              Confirm Password:
-              <input id="password2" class="auth-input" type="password" name="password"
+              </label>
+              <label>
+                Confirm Password:
+                <input id="password2" class="auth-input" type="password" name="password"
                 autocomplete="current-password" />
-            </label>
+              </label>
+              <div class="form-buttons">
+                <button class="game-button" type="submit">GO</button>
+                <button class="game-button" id="login-button">Login</button>
+              </div>
+            </form>
+          </div>
+  
+          <!-- login -->
+          <div id="login-container" class="auth-container" style="display: none;">
+            <h1>LOGIN</h1>
+            <form id="login-form">
+              <label>
+                Username:
+                <input id="username" class="auth-input" type="text" name="username" autocomplete="username" />
+              </label>
+              <label>
+                Password:
+                <input id="password" class="auth-input" type="password" name="password" autocomplete="current-password" />
+              </label>
+              <div class="form-buttons">
+                <button class="game-button" type="submit">GO</button>
+                <button class="game-button" id="register-button">Register</button>
+              </div>
+            </form>
+          </div>
 
-            <button class="submit" type="submit">GO</button>
-          </form>
         </div>
-
-        <!-- login -->
-        <div id="login-container" class="auth-container">
-          <nav id="nav">
-            <button id="register-button">Register</button>
-            <button id="login-button">Login</button>
-          </nav>
-          <h1>LOGIN</h1>
-          <form id="login-form">
-            <label>
-              Username:
-              <input id="username" class="auth-input" type="text" name="username" autocomplete="username" />
-            </label>
-            <label>
-              Password:
-              <input id="password" class="auth-input" type="password" name="password" autocomplete="current-password" />
-            </label>
-            <button class="submit" type="submit">GO</button>
-          </form>
-        </div>
-
-        <!-- logo -->
-        <div id="logo-container">
-          <h1 id="logo">The Ant's Knapsack</h1>
+        <div class="landing-hero-right">
+          <!-- logo -->
+          <div id="logo-container">
+            <h1 id="logo">The Ant's Knapsack</h1>
+          </div>
         </div>
       </div>
       <div id="landing-page-bottom"></div>
@@ -143,10 +144,10 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
     <script src="pixi/pixi.min.js"></script>
     <script src="htmlsocketlisteners.js"></script>
-    <script src="main.js"></script>
     <script src="auth.js"></script>
-    <script src="game.js"></script>
+    <script src="main.js"></script>
     <script src="map.js"></script>
+    <script src="game.js"></script>
   </body>
 
 </html>
