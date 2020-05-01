@@ -357,3 +357,24 @@
   font-size: 1.5rem;
   text-align: center;
 }
+
+.store-header {
+  text-align: center;
+  font-family: 'arcadeclassicregular', Arial sans-serif;
+  text-shadow: 2.5px 2.5px black;
+  font-size: 1.8rem;
+  color: whitesmoke;
+}
+
+.item-header-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+}
+
+.item-to-buy {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 3rem;
+}

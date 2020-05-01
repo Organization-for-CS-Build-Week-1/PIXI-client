@@ -516,7 +516,7 @@ function runGame() {
     }
     const next = create('button')
     text(next, 'Review')
-    addClass(next, 'inventory-button')
+    addClass(next, 'game-button')
     next.onclick = () => {
       reviewScreen()
       itemElements.remove()
@@ -582,7 +582,7 @@ function runGame() {
     }
     const submit = create('button')
     text(submit, 'Barter!')
-    addClass(submit, 'inventory-button')
+    addClass(submit, 'game-button')
     const sellIds = sellItems.map((item) => item.id)
     const buyId = buyItem.id
     submit.onclick = () => {
