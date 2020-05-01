@@ -180,7 +180,7 @@
 
 #inventory-container {
   flex-grow: 1;
-  margin: 0 1rem 1rem 1.7rem;
+  margin: 0 1rem 0.5rem 1.7rem;
   flex-grow: 1;
   overflow-y: scroll;
 }
@@ -224,6 +224,14 @@
 .third:nth-child(3) {
   text-align: right;
   margin: 0;
+}
+
+#inventory-totals {
+  margin: 0rem 2rem 0.5rem 1.7rem;
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #container {
