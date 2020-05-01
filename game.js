@@ -314,14 +314,20 @@ function runGame() {
         `Score: ${item.score}\nWeight: ${item.weight}`,
         style
       )
-      item[`${item.id}_infoBoxText`].x = x + 14
-      item[`${item.id}_infoBoxText`].y = y + 14
 
       //hovering over item
       item['sprite'].mouseover = (mouseData) => {
         item[`${item.id}_infoBox`].lineStyle(2, 0x000000, 1)
         item[`${item.id}_infoBox`].beginFill(0xffffff)
-        item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
+        if (x < 390) {
+          item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
+          item[`${item.id}_infoBoxText`].x = x + 14
+          item[`${item.id}_infoBoxText`].y = y + 14
+        } else {
+          item[`${item.id}_infoBox`].drawRect(x - 96, y - 60, 96, 60)
+          item[`${item.id}_infoBoxText`].x = x - 82
+          item[`${item.id}_infoBoxText`].y = y - 46
+        }
         item[`${item.id}_infoBox`].endFill()
 
         itemContainer.temp.addChild(
