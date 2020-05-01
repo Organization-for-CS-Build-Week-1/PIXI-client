@@ -2,7 +2,7 @@
 /** Empty Function as a placeholder */
 const eF = () => {}
 
-var socket;
+var socket
 
 // ==================== HIGHSCORE SETUP ==================== //
 
@@ -73,10 +73,10 @@ function updateChat(chatMessage) {
   else pTag.textContent = chatMessage
 
   if (chatContainer.append) {
-    chatContainer.append(pTag)
+    chatContainer.prepend(pTag)
   }
   if (chatContainer.children.length > 15) {
-    chatContainer.children[0].remove()
+    chatContainer.children[chatContainer.children.length - 1].remove()
   }
 }
 
@@ -163,22 +163,20 @@ function inventorySetup() {
   // updateInventory(mockItems)
 }
 
-function inventoryTotal(weight, score){
- document.getElementById('total-weight').textContent = weight
+function inventoryTotal(weight, score) {
+  document.getElementById('total-weight').textContent = weight
   document.getElementById('total-score').textContent = score
-
 }
 
 // ==================== SOCKET.ON ==================== //
 
-
 function listenForInfo() {
-  socket.on('roomupdate', ({chat}) => updateChat(chat))
-  
+  socket.on('roomupdate', ({ chat }) => updateChat(chat))
+
   socket.on('highscoreupdate', updateHighscores)
-  
+
   socket.on('playerupdate', (player) => {
-    console.log("player update", player)
+    console.log('player update', player)
     scoreboard.player.textContent = player.score
     updateInventory(player.items)
     inventoryTotal(player.weight, player.score)
