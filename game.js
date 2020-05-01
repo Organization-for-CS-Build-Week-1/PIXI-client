@@ -45,22 +45,24 @@ function runGame() {
   roomInfo = roomInfoInitState
 
   socket.on('roomupdate', (data) => {
-    roomInfo = data.room
-    cur_loc = data.room.world_loc
-    itemContainer.temp.destroy()
-    itemContainer = { temp: new Container() }
-    underLayer.addChild(itemContainer.temp)
-    generatePaths()
-    drawMap()
+    if (data.room) {
+      roomInfo = data.room
+      cur_loc = data.room.world_loc
+      itemContainer.temp.destroy()
+      itemContainer = { temp: new Container() }
+      underLayer.addChild(itemContainer.temp)
+      generatePaths()
+      drawMap()
+      if (data.room.name === 'Ant Store') {
+        storeItems = data.room.items
+        itemContainer.temp.addChild(storekeeper)
+      } else {
+        roomItems = data.room.items
+        generateItems(roomItems)
+      }
+    }
     console.log(data)
 
-    if (data.room.name === 'Ant Store') {
-      storeItems = data.room.items
-      itemContainer.temp.addChild(storekeeper)
-    } else {
-      roomItems = data.room.items
-      generateItems(roomItems)
-    }
   })
 
   socket.on('take', (data) => {
