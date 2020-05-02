@@ -242,7 +242,7 @@
   margin: 0;
 }
 
-#inventory-totals {
+#inventory-totals, #player-total {
   margin: 0rem 2rem 0.5rem 1.7rem;
   padding: 0 0.5rem;
   display: flex;
@@ -299,32 +299,24 @@
 }
 
 .store-flex .inventory {
-  height: 75%;
+  height: 85%;
   width: 45%;
   border: 1px solid red;
 }
 
-#item-elements {
-  margin-top: 50px;
-  overflow: auto;
-  height: 380px;
+.selected {
+  background: rgba(255, 255, 255, 0.1);
 }
-.item-link {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin: 10px;
-  border: 1px solid white;
+
+.selected * {
+  color: #AAAAAA;
+  text-shadow: 1px 1px black;
 }
-.item-link > p {
-  font-size: large;
-  padding: 5px;
+
+.selected:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
-.item-link:hover {
-  cursor: hand;
-  cursor: pointer;
-  opacity: 0.7;
-}
+
 .closeButton {
   color: #aaaaaa;
   float: right;

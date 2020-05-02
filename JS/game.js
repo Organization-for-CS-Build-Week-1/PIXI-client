@@ -435,29 +435,85 @@ function runGame() {
     addClass = (el, aClass) => el.classList.add(aClass)
 
   function generateStore() {
-    const storeInventory = getId('store-inventory-container')
-    const playerInventory = getId('player-inventory-container')
+    // Get the store and close buttons.
+    // Display them, and set our 'close' function
     const store = getId('store')
     const close = getId('close')
-    sellItems = []
-
+    const storeInventory = getId('store-inventory-container')
+    const playerInventory = getId('player-inventory-container')
     store.style.display = 'block'
     close.onclick = () => {
       store.style.display = 'none'
       storeInventory.innerHTML = ''
-      sellItems = []
+      playerInventory.innerHTML = ''
     }
 
-    const itemsBeingSold = storeItems.map(
-      (item) => new ItemContainer({ ...item[1], cb: () => {} })
+    const barterScore = getId('barter-score')
+    const barterWeight = getId('barter-weight')
+    const barterItem = getId('barter-item')
+
+    const itemsBeingSold = {
+      selectedItem: {},
+      allItems: [],
+    }
+    const toggleToBuy = function () {
+      if (itemsBeingSold.selectedItem.id === this.id) {
+        itemsBeingSold.selectedItem = {}
+        barterItem.innerHTML = ''
+        this.div.classList.remove('selected')
+      } else {
+        itemToUnselect = itemsBeingSold.allItems.find(
+          (item) => item.id === itemsBeingSold.selectedItem.id
+        )
+        if (itemToUnselect) itemToUnselect.div.classList.remove("selected")
+        itemsBeingSold.selectedItem = this
+        barterItem.innerHTML = ''
+        this.div.classList.add('selected')
+        append(new ItemContainer({ ...this, cb: () => {} }).div, barterItem)
+      }
+    }
+    itemsBeingSold.allItems = storeItems.map(
+      (item) => new ItemContainer({ ...item[1], cb: toggleToBuy })
     )
-    itemsBeingSold.forEach((item) => append(item.div, storeInventory))
+    itemsBeingSold.allItems.forEach((item) => append(item.div, storeInventory))
 
     if (playerItemsForSale.length) {
-      const playerItems = playerItemsForSale.map(
-        (item) => new ItemContainer({ ...item, cb: () => {} })
+      const playerItems = {
+        selectedItems: [],
+        allItems: [],
+      }
+      const updateTotals = () => {
+        const { weight, score } = playerItems.selectedItems.reduce(
+          (prev, curr) => ({
+            weight: prev.weight + curr.weight,
+            score: prev.score + curr.score,
+          }),
+          { weight: 0, score: 0 }
+        )
+        text(barterWeight, weight)
+        text(barterScore, score)
+      }
+      updateTotals()
+      const toggleToSell = function () {
+        indexIfExists = playerItems.selectedItems.findIndex(
+          (item) => item.id === this.id
+        )
+        if (indexIfExists === -1) {
+          playerItems.selectedItems.push(this)
+          this.div.classList.add('selected')
+        } else {
+          playerItems.selectedItems = playerItems.selectedItems.filter(
+            (item) => item.id !== this.id
+          )
+          this.div.classList.remove('selected')
+        }
+        updateTotals()
+      }
+
+      playerItems.allItems = playerItemsForSale.map(
+        (item) => new ItemContainer({ ...item, cb: toggleToSell })
       )
-      playerItems.forEach((item) => append(item.div, playerInventory))
+      playerItems.allItems.forEach((item) => append(item.div, playerInventory))
     } else {
       const emptyMessage = create('p')
       text(emptyMessage, 'You have nothing to sell')
