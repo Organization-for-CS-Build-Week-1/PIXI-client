@@ -149,19 +149,20 @@
       <h1 id="logo" class="game-logo">The Ant's Knapsack</h1>
       <div class="wrapper">
         <div class="left-panel panel">
+          <!-- SCOREBOARD -->
           <div class="scoreboard">
             <h2 class="score-title">Top Ranking Ants</h2>
             <div class="scores">
-              <!-- ↓↓ USE JS TO CHANGE TEXT CONTENT ↓↓ -->
               <h4>1: <span class="highscore"></span></h4>
               <h4>2: <span class="highscore"></span></h4>
               <h4>3: <span class="highscore"></span></h4>
             </div>
             <div class="player-score">
               <h4>You: <span id="player-score"></span></h4>
-              <!-- ↑↑ USE JS TO CHANGE TEXT CONTENT ↑↑ -->
             </div>
           </div>
+
+          <!-- CHAT -->
           <div class="chat">
             <h2 class="chat-title">Chatroom</h2>
             <div id="chat-container"></div>
@@ -172,9 +173,15 @@
             </div>
           </div>
         </div>
+
+        <!-- PIXI CANVAS -->
         <div id="container"></div>
+
         <div class="right-panel panel">
+          <!-- PIXI MAP -->
           <div class="map" id="piximap"></div>
+
+          <!-- GAME INVENTORY -->
           <div class="inventory">
             <h2 class="inventory-title">Inventory</h2>
             <div class="inventory-header">
@@ -189,7 +196,7 @@
               </div>
             </div>
             <div id="inventory-container"></div>
-            <div id="inventory-totals">
+            <div class="inventory-totals">
               <div class="third">
                 <h4>Total:</h4>
               </div>
@@ -238,6 +245,7 @@
         <span id="close" class="closeButton">&times;</span>
         <h2 class="store-header">Welcome To The Ant Store!</h2>
         <div class="store-flex">
+          <!-- STORE INVENTORY -->
           <div class="store-inventory inventory">
             <h2 class="inventory-title">STORE</h2>
             <div class="inventory-header">
@@ -252,8 +260,20 @@
               </div>
             </div>
             <div id="store-inventory-container"></div>
-            <div id="barter-item"></div>
+            <div class="inventory-totals">
+              <div class="third">
+                <h4>Total:</h4>
+              </div>
+              <div class="third">
+                <h4 id="store-barter-weight"></h4>
+              </div>
+              <div class="third">
+                <h4 id="store-barter-score"></h4>
+              </div>
+            </div>
           </div>
+
+          <!-- PLAYER INVENTORY -->
           <div class="player-inventory inventory">
             <h2 class="inventory-title">INVENTORY</h2>
             <div class="inventory-header">
@@ -268,18 +288,20 @@
               </div>
             </div>
             <div id="player-inventory-container"></div>
-            <div id="player-total">
+            <div class="inventory-totals">
               <div class="third">
                 <h4>Total:</h4>
               </div>
               <div class="third">
-                <h4 id="barter-weight"></h4>
+                <h4 id="player-barter-weight"></h4>
               </div>
               <div class="third">
-                <h4 id="barter-score"></h4>
+                <h4 id="player-barter-score"></h4>
               </div>
             </div>
           </div>
+
+          <!-- STORE BUTTONS -->
         </div>
       </div>
     </div>
