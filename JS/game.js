@@ -21,6 +21,7 @@ function runGame() {
   loader.add('assets/spritesheet.json').load(setup)
 
   let ant1,
+    antCanMove = true,
     gameScene,
     roomItems,
     roomInfo,
@@ -276,16 +277,14 @@ function runGame() {
     var key = {}
     key.code = keyCode
     key.isDown = false
-    key.isUp = true
     key.press = undefined
     key.release = undefined
 
     //The `downHandler`
     key.downHandler = function (event) {
       if (event.keyCode === key.code) {
-        if (key.isUp && key.press) key.press()
+        if (antCanMove && !key.isDown && key.press) key.press()
         key.isDown = true
-        key.isUp = false
       }
       event.preventDefault()
     }
@@ -293,9 +292,8 @@ function runGame() {
     //The `upHandler`
     key.upHandler = function (event) {
       if (event.keyCode === key.code) {
-        if (key.isDown && key.release) key.release()
+        if (antCanMove && key.isDown && key.release) key.release()
         key.isDown = false
-        key.isUp = true
       }
       event.preventDefault()
     }
@@ -415,13 +413,8 @@ function runGame() {
       if (
         roomInfo.name === 'Ant Store' &&
         testForAABB(ant1, storekeeper) &&
-        !this.storeOpen
+        !checkStore.storeOpen
       ) {
-        this.storeOpen = true
-        ant1.position.set(
-          app.screen.width / 2 - 100,
-          app.screen.height / 2 - 100
-        )
         generateStore()
       }
     },
@@ -435,39 +428,38 @@ function runGame() {
     addClass = (el, aClass) => el.classList.add(aClass)
 
   function generateStore() {
-    // Get the store and close buttons.
-    // Display them, and set our 'close' function
+    checkStore.storeOpen = true
+    // Stop the ant
+    antCanMove = false
+    ant1.vx = 0
+    ant1.vy = 0
+    ant1.stop()
+
     const store = getId('store')
     const close = getId('close')
-    const storeInventory = getId('store-inventory-container')
-    const playerInventory = getId('player-inventory-container')
+    const storeInventory = new StoreInventory(
+      storeItems.map((item) => item[1]),
+      getId('store-inventory-container'),
+      getId('store-barter-weight'),
+      getId('store-barter-score')
+    )
+    const playerInventory = new PlayerInventory(
+      playerItemsForSale,
+      getId('player-inventory-container'),
+      getId('player-barter-weight'),
+      getId('player-barter-score')
+    )
     store.style.display = 'block'
     close.onclick = () => {
+      checkStore.storeOpen = false
       store.style.display = 'none'
-      storeInventory.innerHTML = ''
-      playerInventory.innerHTML = ''
+      storeInventory.deconstructor()
+      playerInventory.deconstructor()
+      ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
+      antCanMove = true
     }
 
-    const playerBarterScore = getId('player-barter-score')
-    const playerBarterWeight = getId('player-barter-weight')
-
-    const storeBarterScore = getId('store-barter-score')
-    const storeBarterWeight = getId('store-barter-weight')
-
-    const itemsBeingSold = new StoreInventory(
-      storeItems.map(item => item[1]),
-      storeInventory,
-      storeBarterWeight,
-      storeBarterScore
-    )
-
     if (playerItemsForSale.length) {
-      const playerItems = new PlayerInventory(
-        playerItemsForSale,
-        playerInventory,
-        playerBarterWeight,
-        playerBarterScore
-      )
     } else {
       const emptyMessage = create('p')
       text(emptyMessage, 'You have nothing to sell')
