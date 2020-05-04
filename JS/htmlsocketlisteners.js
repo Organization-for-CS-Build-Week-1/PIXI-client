@@ -148,7 +148,7 @@ function updateInventory(items) {
     socket.emit('drop', this.id)
   }
 
-  const currentItems = items.map((item) => new ItemContainer({ ...item, cb }))
+  const currentItems = items.map((item) => new ItemContainer(item, cb))
   playerCurrent.inventory.innerHTML = ''
   currentItems.forEach((item) => playerCurrent.inventory.prepend(item.div))
 }
