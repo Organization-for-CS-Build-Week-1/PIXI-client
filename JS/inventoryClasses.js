@@ -83,6 +83,14 @@ class PlayerInventory {
     this.weight.textContent = weight
     this.score.textContent = score
   }
+  
+  deconstructor() {
+    while (this.items.firstChild) {
+      this.items.removeChild(this.items.lastChild)
+    }
+    this.weight.textContent = ""
+    this.score.textContent = ""
+  }
 }
 
 class StoreInventory extends PlayerInventory {
