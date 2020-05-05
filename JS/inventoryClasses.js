@@ -44,7 +44,14 @@ class StoreItemContainer extends ItemContainer {
 }
 
 class PlayerInventory {
-  constructor(allItems, itemsContainer, weightContainer, scoreContainer) {
+  constructor(
+    allItems,
+    itemsContainer,
+    weightContainer,
+    scoreContainer,
+    fullStore
+  ) {
+    this.fullStore = fullStore
     this.items = itemsContainer
     this.weight = weightContainer
     this.score = scoreContainer
@@ -81,21 +88,37 @@ class PlayerInventory {
     )
 
     this.weight.textContent = weight
+
+    if (Number(this.weight.textContent) > 0)
+      this.weight.classList.add('barter-potential')
+    else this.weight.classList.remove('barter-potential')
+
     this.score.textContent = score
+    if (Number(this.score.textContent) > 0)
+      this.score.classList.add('barter-potential')
+    else this.score.classList.remove('barter-potential')
+    
+    this.fullStore.examineBarter()
   }
-  
+
   deconstructor() {
     while (this.items.firstChild) {
       this.items.removeChild(this.items.lastChild)
     }
-    this.weight.textContent = ""
-    this.score.textContent = ""
+    this.weight.textContent = ''
+    this.score.textContent = ''
   }
 }
 
 class StoreInventory extends PlayerInventory {
-  constructor(allItems, itemsContainer, weightContainer, scoreContainer) {
-    super(allItems, itemsContainer, weightContainer, scoreContainer)
+  constructor(
+    allItems,
+    itemsContainer,
+    weightContainer,
+    scoreContainer,
+    fullStore
+  ) {
+    super(allItems, itemsContainer, weightContainer, scoreContainer, fullStore)
   }
 
   toggleClick(item) {
@@ -120,5 +143,65 @@ class StoreInventory extends PlayerInventory {
     }
 
     this.updateTotals()
+  }
+}
+
+class Store {
+  constructor(
+    storeInventory,
+    playerInventory,
+    playerweight,
+    barterButton,
+    errorContainer,
+    closeTheStore
+  ) {
+    this.store = storeInventory
+    this.store.fullStore = this
+
+    this.playerItems = playerInventory
+    this.playerItems.fullStore = this
+
+    this.playerWeight = playerweight
+    this.barterButton = barterButton
+    this.error = errorContainer
+    this.closeTheStore = closeTheStore
+    this.barterButton.onclick = this.barter.bind(this)
+  }
+
+  examineBarter() {
+    const price =
+      Number(this.store.score.textContent) -
+      Number(this.playerItems.score.textContent)
+
+    const weight =
+      this.playerWeight -
+      Number(this.playerItems.weight.textContent) +
+      Number(this.store.weight.textContent)
+
+    if (
+      !this.playerItems.selectedItems.length ||
+      !this.store.selectedItems.length
+    ) {
+      this.barterButton.classList.add('inactive')
+      this.error.textContent = "You're not trading anything."
+    } else if (price > 0) {
+      this.barterButton.classList.add('inactive')
+      this.error.textContent = 'You need to trade something more valuable.'
+    } else if (weight > 100) {
+      this.barterButton.classList.add('inactive')
+      this.error.textContent = 'This trade would make you too heavy.'
+    } else {
+      this.barterButton.classList.remove('inactive')
+      this.error.textContent = 'Looks like a good trade.'
+    }
+  }
+
+  barter() {
+    if (!this.barterButton.classList.contains('inactive')) {
+      const sellIds = this.playerItems.selectedItems.map((item) => item.id)
+      const buyId = this.store.selectedItems[0].id
+      socket.emit('barter', { player_item_ids: sellIds, store_item_id: buyId })
+      this.closeTheStore()
+    }
   }
 }
