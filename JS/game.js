@@ -435,8 +435,7 @@ function runGame() {
     ant1.vy = 0
     ant1.stop()
 
-    const store = getId('store')
-    const close = getId('close')
+    // Create the store and player inventory views
     const storeInventory = new StoreInventory(
       storeItems.map((item) => item[1]),
       getId('store-inventory-container'),
@@ -444,119 +443,34 @@ function runGame() {
       getId('store-barter-score')
     )
     const playerInventory = new PlayerInventory(
-      playerItemsForSale,
+      playerInfo.items,
       getId('player-inventory-container'),
       getId('player-barter-weight'),
       getId('player-barter-score')
     )
-    store.style.display = 'block'
-    close.onclick = () => {
+
+    const modal = getId('modal')
+    modal.style.display = 'block'
+    const closeTheStore = () => {
       checkStore.storeOpen = false
-      store.style.display = 'none'
+      modal.style.display = 'none'
       storeInventory.deconstructor()
       playerInventory.deconstructor()
       ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
       antCanMove = true
     }
+    getId('close').onclick = closeTheStore
+    getId('exit').onclick = closeTheStore
 
-    if (playerItemsForSale.length) {
-    } else {
-      const emptyMessage = create('p')
-      text(emptyMessage, 'You have nothing to sell')
-      append(emptyMessage, playerInventory)
-    }
-  }
-
-  function reviewScreen() {
-    const storeContents = getId('store-contents'),
-      itemElements = create('div'),
-      close = getId('close')
-
-    close.onclick = () => {
-      store.style.display = 'none'
-      itemElements.remove()
-      sellItems = []
-    }
-
-    itemElements.setAttribute('id', 'item-elements')
-    const itemToBuy = create('div'),
-      name = create('p'),
-      score = create('p'),
-      weight = create('p')
-
-    addClass(itemToBuy, 'item-to-buy')
-    text(name, `${buyItem.name}`)
-    text(score, `${buyItem.score}`)
-    text(weight, `${buyItem.weight}`)
-
-    append(name, itemToBuy)
-    append(score, itemToBuy)
-    append(weight, itemToBuy)
-    append(itemToBuy, itemElements)
-
-    if (sellItems.length > 0) {
-      for (let i = 0; i < sellItems.length; i++) {
-        const item = create('div'),
-          name = create('p'),
-          score = create('p'),
-          weight = create('p')
-
-        item.onclick = () => {
-          sellItems = sellItems.filter(
-            (rmItem) => rmItem !== playerItemsForSale[i]
-          )
-          item.remove()
-        }
-        addClass(item, 'item-link')
-        text(name, `${sellItems[i].name}`)
-        text(score, `${sellItems[i].score}`)
-        text(weight, `${sellItems[i].weight}`)
-
-        append(name, item)
-        append(score, item)
-        append(weight, item)
-        append(item, itemElements)
-      }
-    } else {
-      const emptyMessage = create('p')
-      text(emptyMessage, 'You are not trading anything.')
-      append(emptyMessage, itemElements)
-    }
-    const submit = create('button')
-    text(submit, 'Barter!')
-    addClass(submit, 'game-button')
-    const sellIds = sellItems.map((item) => item.id)
-    const buyId = buyItem.id
-
-    const total = create('div'),
-      totalName = create('p'),
-      totalScore = create('p'),
-      totalWeight = create('p')
-
-    addClass(total, 'total')
-    text(totalName, `Totals:`)
-    text(totalScore, `${sellItems.reduce((sum, item) => item.score + sum, 0)}`)
-    text(
-      totalWeight,
-      `${sellItems.reduce((sum, item) => item.weight + sum, 0)}`
+    const store = new Store(
+      storeInventory,
+      playerInventory,
+      playerInfo.weight,
+      getId('barter'),
+      getId('store-error'),
+      closeTheStore
     )
-
-    append(totalName, total)
-    append(totalScore, total)
-    append(totalWeight, total)
-    append(total, itemElements)
-
-    submit.onclick = () => {
-      socket.emit('barter', {
-        player_item_ids: sellIds,
-        store_item_id: buyId,
-      })
-      store.style.display = 'none'
-      itemElements.remove()
-      sellItems = []
-    }
-    append(submit, itemElements)
-    append(itemElements, storeContents)
+    store.examineBarter()
   }
 
   function takeItem(id) {
