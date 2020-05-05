@@ -110,14 +110,10 @@
 #chat-container::-webkit-scrollbar {
   width: 16px;
 }
-#chat-container::-webkit-scrollbar-track {
-}
 #chat-container::-webkit-scrollbar-thumb {
-  background: #4d6fa5;
+  background: rgba(0, 0, 0, 0.7);
   border-left: 2px solid black;
   border-right: 2px solid black;
-}
-#chat-container::-webkit-scrollbar-thumb:hover {
 }
 
 #chat-container > * {
@@ -201,17 +197,17 @@
   overflow-y: scroll;
 }
 
-#inventory-container::-webkit-scrollbar {
+#inventory-container::-webkit-scrollbar,
+#store-inventory-container::-webkit-scrollbar,
+#player-inventory-container::-webkit-scrollbar {
   width: 1rem;
 }
-#inventory-container::-webkit-scrollbar-track {
-}
-#inventory-container::-webkit-scrollbar-thumb {
-  background: #462a0a;
+#inventory-container::-webkit-scrollbar-thumb,
+#store-inventory-container::-webkit-scrollbar-thumb,
+#player-inventory-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.7);
   border-left: 2px solid black;
   border-right: 2px solid black;
-}
-#inventory-container::-webkit-scrollbar-thumb:hover {
 }
 
 /* ================ ITEM ================ */
@@ -257,8 +253,7 @@
 
 /* ================ STORE STYLES ================= */
 
-.modal {
-  display: none;
+#modal {
   position: fixed;
   z-index: 11;
   padding-top: 100px;
@@ -269,20 +264,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.store-header {
-  text-align: center;
-  font-family: 'arcadeclassicregular', Arial sans-serif;
-  text-shadow: 2.5px 2.5px black;
-  font-size: 1.8rem;
-  color: whitesmoke;
-}
-
-.store-inventory,
-.player-inventory {
-  background: none;
-}
-
-#store-contents {
+.store {
   position: relative;
   background-color: rgba(49, 53, 56, 0.95);
   margin: auto;
@@ -292,29 +274,12 @@
   height: 500px;
 }
 
-.store-flex {
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.store-flex .inventory {
-  height: 85%;
-  width: 45%;
-  border: 1px solid red;
-}
-
-.selected {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.selected * {
-  color: #AAAAAA;
-  text-shadow: 1px 1px black;
-}
-
-.selected:hover {
-  background: rgba(255, 255, 255, 0.05);
+.store-header {
+  text-align: center;
+  font-family: 'arcadeclassicregular', Arial sans-serif;
+  text-shadow: 2.5px 2.5px black;
+  font-size: 1.8rem;
+  color: whitesmoke;
 }
 
 .closeButton {
@@ -331,6 +296,76 @@
   cursor: pointer;
 }
 
+.store-inventory,
+.player-inventory {
+  background: none;
+}
+
+.store-contents {
+  height: 100%;
+}
+
+.store-flex {
+  height: 80%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.store-flex .inventory {
+  margin: 1rem auto;
+  height: 95%;
+  width: 45%;
+  max-width: 20rem;
+  border: 3px solid black;
+  outline: 1px solid gray;
+}
+
+.selected {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.selected * {
+  color: #aaaaaa;
+  text-shadow: 1px 1px black;
+}
+
+.selected:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.barter-potential {
+  color: #aaaaaa;
+  text-shadow: 1px 1px black;
+}
+
+.store-control {
+  display: flex;
+  height: 20%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.store-control > h4 {
+  font-size: 1.2rem;
+  font-family: Consolas, monaco, monospace;
+  color: #dddddd;
+  text-shadow: 1px 1px black;
+  margin-left: 3rem;
+  flex-grow: 1;
+}
+
+.game-button.inactive {
+  transform: translate(0, 0);
+  box-shadow: none;
+  background-color: gray;
+}
+
+.game-button.inactive:hover {
+  background-color: gray;
+  cursor: auto;
+}
+
+/* ================== CONTROL PANEL ================== */
 .lower-section {
   width: 100vw;
   display: flex;
@@ -338,7 +373,6 @@
   align-items: flex-start;
   margin: 10px 0;
 }
-/* ================== CONTROL PANEL ================== */
 
 .control-panel {
   max-width: 500px;

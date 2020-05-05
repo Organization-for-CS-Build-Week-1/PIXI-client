@@ -240,68 +240,75 @@
       </div>
     </div>
     <!-- Store Modal -->
-    <div id="store" class="modal" style="display: none;">
-      <div id="store-contents">
+    <div id="modal" style="display: none;">
+      <div class="store">
         <span id="close" class="closeButton">&times;</span>
         <h2 class="store-header">Welcome To The Ant Store!</h2>
-        <div class="store-flex">
-          <!-- STORE INVENTORY -->
-          <div class="store-inventory inventory">
-            <h2 class="inventory-title">STORE</h2>
-            <div class="inventory-header">
-              <div class="third">
-                <h4>Item</h4>
+        <div class="store-contents">
+          <div class="store-flex">
+            <!-- STORE INVENTORY -->
+            <div class="store-inventory inventory">
+              <h2 class="inventory-title">STORE</h2>
+              <div class="inventory-header">
+                <div class="third">
+                  <h4>Item</h4>
+                </div>
+                <div class="third">
+                  <h4>Weight</h4>
+                </div>
+                <div class="third">
+                  <h4>Score</h4>
+                </div>
               </div>
-              <div class="third">
-                <h4>Weight</h4>
-              </div>
-              <div class="third">
-                <h4>Score</h4>
+              <div id="store-inventory-container"></div>
+              <div class="inventory-totals">
+                <div class="third">
+                  <h4>Total:</h4>
+                </div>
+                <div class="third">
+                  <h4 id="store-barter-weight"></h4>
+                </div>
+                <div class="third">
+                  <h4 id="store-barter-score"></h4>
+                </div>
               </div>
             </div>
-            <div id="store-inventory-container"></div>
-            <div class="inventory-totals">
-              <div class="third">
-                <h4>Total:</h4>
-              </div>
-              <div class="third">
-                <h4 id="store-barter-weight"></h4>
-              </div>
-              <div class="third">
-                <h4 id="store-barter-score"></h4>
-              </div>
-            </div>
-          </div>
 
-          <!-- PLAYER INVENTORY -->
-          <div class="player-inventory inventory">
-            <h2 class="inventory-title">INVENTORY</h2>
-            <div class="inventory-header">
-              <div class="third">
-                <h4>Item</h4>
+            <!-- PLAYER INVENTORY -->
+            <div class="player-inventory inventory">
+              <h2 class="inventory-title">INVENTORY</h2>
+              <div class="inventory-header">
+                <div class="third">
+                  <h4>Item</h4>
+                </div>
+                <div class="third">
+                  <h4>Weight</h4>
+                </div>
+                <div class="third">
+                  <h4>Score</h4>
+                </div>
               </div>
-              <div class="third">
-                <h4>Weight</h4>
-              </div>
-              <div class="third">
-                <h4>Score</h4>
+              <div id="player-inventory-container"></div>
+              <div class="inventory-totals">
+                <div class="third">
+                  <h4>Total:</h4>
+                </div>
+                <div class="third">
+                  <h4 id="player-barter-weight"></h4>
+                </div>
+                <div class="third">
+                  <h4 id="player-barter-score"></h4>
+                </div>
               </div>
             </div>
-            <div id="player-inventory-container"></div>
-            <div class="inventory-totals">
-              <div class="third">
-                <h4>Total:</h4>
-              </div>
-              <div class="third">
-                <h4 id="player-barter-weight"></h4>
-              </div>
-              <div class="third">
-                <h4 id="player-barter-score"></h4>
-              </div>
-            </div>
-          </div>
 
-          <!-- STORE BUTTONS -->
+            <!-- STORE BUTTONS -->
+          </div>
+          <div class="store-control">
+            <button id="barter" class="game-button">Barter</button>
+            <button id="exit" class="game-button">Exit</button>
+            <h4 id="store-error"></h4>
+          </div>
         </div>
       </div>
     </div>
