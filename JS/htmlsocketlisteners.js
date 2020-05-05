@@ -131,7 +131,7 @@ function chatSetup() {
 
 // ==================== INVENTORY SETUP ==================== //
 
-let playerItemsForSale
+let playerInfo
 
 playerCurrent = {}
 
@@ -142,15 +142,17 @@ const mockItems = [
   { id: 0, name: 'Gem', weight: 25, score: 4500 },
 ]
 
-function updateInventory(items) {
-  playerItemsForSale = items
+function updateInventory(player) {
+  playerInfo = player
   const cb = function() {
     socket.emit('drop', this.id)
   }
 
-  const currentItems = items.map((item) => new ItemContainer(item, cb))
+  const currentItems = playerInfo.items.map((item) => new ItemContainer(item, cb))
   playerCurrent.inventory.innerHTML = ''
   currentItems.forEach((item) => playerCurrent.inventory.prepend(item.div))
+  playerCurrent.weight.textContent = playerInfo.weight
+  playerCurrent.score.textContent = playerInfo.score
 }
 
 function inventorySetup() {
@@ -161,11 +163,6 @@ function inventorySetup() {
   }
   // Testing
   // updateInventory(mockItems)
-}
-
-function inventoryTotal(weight, score) {
-  playerCurrent.weight.textContent = weight
-  playerCurrent.score.textContent = score
 }
 
 // ===================== ERROR HANDLING ==================== //
@@ -219,8 +216,7 @@ function listenForInfo() {
 
   socket.on('playerupdate', (player) => {
     scoreboard.player.textContent = player.score
-    updateInventory(player.items)
-    inventoryTotal(player.weight, player.score)
+    updateInventory(player)
   })
   socket.on('moveError', gameErrorFunctions.sendAlert)
   socket.on('barterError', gameErrorFunctions.sendAlert)
