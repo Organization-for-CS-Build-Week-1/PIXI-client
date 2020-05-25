@@ -5,7 +5,7 @@ A multiplayer adventure game in which you scramble around, ant-like, collecting 
 
 Play the game [here](https://the-ants-knapsack.netlify.app/)!
 
-<img src="./DungeonAPI/img/gameplay.gif">​
+<img src="https://github.com/Organization-for-CS-Build-Week-1/CS-Build-Week-1-Flask/blob/master/DungeonAPI/img/gameplay.gif">​
 
 # Table of Contents
 
