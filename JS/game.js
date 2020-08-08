@@ -405,7 +405,7 @@ function runGame() {
   }
 
   // DOM Manipulation helper functions for lazy devs
-  const getId = (id) => document.getElementById(id),
+  const getId = (id) => document.getElementById(id)
 
   function generateStore() {
     checkStore.storeOpen = true
