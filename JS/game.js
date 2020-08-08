@@ -22,7 +22,6 @@ function runGame() {
 
   let allAnts = {},
     ant1,
-    antCanMove = true,
     animations,
     gameScene,
     roomItems,
@@ -31,8 +30,13 @@ function runGame() {
     style,
     itemContainer,
     storekeeper,
-    storeItems,
-    space = keyboard(32)
+    storeItems
+
+  const space = keyboard(32)
+  const left = keyboard(65)
+  const up = keyboard(87)
+  const right = keyboard(68)
+  const down = keyboard(83)
 
   const roomInfoInitState = {
     direction: [],
@@ -46,6 +50,9 @@ function runGame() {
 
   socket.on('roomupdate', (data) => {
     if (data.room) {
+      if (roomInfo.id !== data.room.id && checkStore.storeModalIfExists) {
+        checkStore.storeModalIfExists.closeTheStore()
+      }
       roomInfo = data.room
       cur_loc = data.room.world_loc
       itemContainer.temp.destroy()
@@ -55,8 +62,16 @@ function runGame() {
       drawMap()
       if (data.room.name === 'Ant Store') {
         storeItems = data.room.items
-        itemContainer.temp.addChild(storekeeper)
+        const storeText = 'PRESS SPACE\nTO BARTER'
+        storekeeper = createSpriteAndMouseOver(
+          itemContainer.temp,
+          id['Store.png'],
+          250,
+          250,
+          storeText
+        )
       } else {
+        storekeeper = null
         roomItems = data.room.items
         generateItems(roomItems)
       }
@@ -91,93 +106,33 @@ function runGame() {
     ant1.vy = 0
     overLayer.addChild(ant1)
 
-    storekeeper = new Sprite(id['Store.png'])
-    storekeeper.x = app.screen.width / 2
-    storekeeper.y = app.screen.height / 2
-    storekeeper.anchor.set(0.5)
-
     style = new PIXI.TextStyle({
       fontFamily: 'Arial',
       fontSize: 14,
     })
 
-    exits = {
-      north: createPath('n'),
-      south: createPath('s'),
-      east: createPath('e'),
-      west: createPath('w'),
-    }
+    exits = createPaths()
 
-    function createPath(direction) {
-      if (direction === 'n') {
-        const north = new Sprite(id['path.png'])
-        north.position.set(app.screen.width / 2 - 20, 0)
-        north.height = 35
-        return north
-      }
-      if (direction === 'e') {
-        const east = new Sprite(id['path.png'])
-        east.position.set(app.screen.width, app.screen.height / 2 + 20)
-        east.anchor.set(1)
-        east.width = 35
-        return east
-      }
-      if (direction === 's') {
-        const south = new Sprite(id['path.png'])
-        south.position.set(app.screen.width / 2 + 20, app.screen.height)
-        south.anchor.set(1)
-        south.height = 35
-        return south
-      }
-      if (direction === 'w') {
-        const west = new Sprite(id['path.png'])
-        west.position.set(0, app.screen.height / 2 - 20)
-        west.width = 35
-        return west
-      }
-    }
+    function createPaths() {
+      const north = new Sprite(id['path.png'])
+      north.position.set(app.screen.width / 2 - 20, 0)
+      north.height = 35
 
-    let left = keyboard(65),
-      up = keyboard(87),
-      right = keyboard(68),
-      down = keyboard(83)
+      const east = new Sprite(id['path.png'])
+      east.position.set(app.screen.width, app.screen.height / 2 + 20)
+      east.anchor.set(1)
+      east.width = 35
 
-    //Up
-    up.press = function () {
-      ant1.vy = -3
-    }
-    up.release = function () {
-      if (down.isDown) ant1.vy = 3
-      else ant1.vy = 0
-    }
+      const south = new Sprite(id['path.png'])
+      south.position.set(app.screen.width / 2 + 20, app.screen.height)
+      south.anchor.set(1)
+      south.height = 35
 
-    //Left
-    left.press = function () {
-      ant1.vx = -3
-      ant1.scale.x = -1
-    }
-    left.release = function () {
-      if (right.isDown) ant1.vx = 3
-      else ant1.vx = 0
-    }
+      const west = new Sprite(id['path.png'])
+      west.position.set(0, app.screen.height / 2 - 20)
+      west.width = 35
 
-    //Right
-    right.press = function () {
-      ant1.vx = 3
-      ant1.scale.x = 1
-    }
-    right.release = function () {
-      if (left.isDown) ant1.vx = -3
-      else ant1.vx = 0
-    }
-
-    //Down
-    down.press = function () {
-      ant1.vy = 3
-    }
-    down.release = function () {
-      if (up.isDown) ant1.vy = -3
-      else ant1.vy = 0
+      return { north, south, east, west }
     }
 
     socket.emit('init')
@@ -190,13 +145,13 @@ function runGame() {
     allAnts[antID].anchor.set(0.5)
   }
 
-  function updateSingleAnt(antObj, newLoc, isPlayer = false) {
+  function updateSingleAnt(antObj, newLoc) {
     antObj.x = newLoc.x
     antObj.y = newLoc.y
-    if (!isPlayer) {
-      antObj.vx = newLoc.vx
-      antObj.vy = newLoc.vy
-    }
+    antObj.vx = newLoc.vx
+    antObj.vy = newLoc.vy
+    if (antObj.vx > 0) antObj.scale.x = 1
+    if (antObj.vx < 0) antObj.scale.x = -1
   }
 
   function updateAnts(newData) {
@@ -210,9 +165,7 @@ function runGame() {
     for (antID in newData) {
       newAntLoc = newData[antID]
 
-      if (antID === socketID) {
-        updateSingleAnt(ant1, newAntLoc, true)
-      } else if (removableAnts[antID]) {
+      if (allAnts[antID]) {
         delete removableAnts[antID]
         updateSingleAnt(allAnts[antID], newAntLoc)
       } else {
@@ -229,22 +182,34 @@ function runGame() {
     }
   }
 
-  //Space
-  space.press = () => itemCollision(ant1, roomInfo.items)
+  function getPlayerVX() {
+    let vx = 0
+    if (left.isDown) vx -= 3
+    if (right.isDown) vx += 3
+    return vx
+  }
+
+  function getPlayerVY() {
+    let vy = 0
+    if (up.isDown) vy -= 3
+    if (down.isDown) vy += 3
+    return vy
+  }
 
   function play() {
-    socket.emit('move', { vx: ant1.vx, vy: ant1.vy })
+    socket.emit('move', { vx: getPlayerVX(), vy: getPlayerVY() })
     for (antID in allAnts) {
       checkMoving(allAnts[antID])
     }
-
-    checkStore.collisionCheck()
   }
 
   //ant collision with items
-  function itemCollision(player, items) {
-    for (item of items) {
-      if (testForAABB(player, item[1].sprite)) {
+  function interact() {
+    if (storekeeper) {
+      return checkStore.collisionCheck()
+    }
+    for (item of roomInfo.items) {
+      if (testForAABB(ant1, item[1].sprite)) {
         takeItem(item[1].id)
         gameScene.removeChild(
           item[1][`${item[1].id}_infoBox`],
@@ -276,20 +241,16 @@ function runGame() {
     )
   }
 
-
-
   function keyboard(keyCode) {
-    var key = {}
+    const key = {}
     key.code = keyCode
     key.isDown = false
-    key.press = undefined
-    key.release = undefined
 
     //The `downHandler`
     key.downHandler = function (event) {
       if (event.keyCode === key.code) {
         event.preventDefault()
-        if (antCanMove && !key.isDown && key.press) key.press()
+        if (!key.isDown && key.code == 32) interact() // Spacebar interaction
         key.isDown = true
       }
     }
@@ -298,71 +259,72 @@ function runGame() {
     key.upHandler = function (event) {
       if (event.keyCode === key.code) {
         event.preventDefault()
-        if (antCanMove && key.isDown && key.release) key.release()
         key.isDown = false
       }
     }
 
     //Attach event listeners
-    window.addEventListener('keydown', key.downHandler.bind(key), false)
-    window.addEventListener('keyup', key.upHandler.bind(key), false)
+    window.addEventListener('keydown', key.downHandler, false)
+    window.addEventListener('keyup', key.upHandler, false)
     return key
+  }
+
+  function createSpriteAndMouseOver(PIXIContainer, spriteID, x, y, infoText) {
+    const newSprite = new Sprite(spriteID)
+    newSprite.anchor.set(0.5)
+    newSprite.position.set(x, y)
+    newSprite.interactive = true
+    newSprite.hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
+
+    const infoBox = new PIXI.Graphics()
+    const infoBoxText = new PIXI.Text(infoText, style)
+
+    newSprite.mouseover = (mouseData) => {
+      infoBox.lineStyle(2, 0x000000, 1)
+      infoBox.beginFill(0xffffff)
+      if (x < 390) {
+        infoBox.drawRect(x, y, 96, 60)
+        infoBoxText.x = x + 14
+        infoBoxText.y = y + 14
+      } else {
+        infoBox.drawRect(x - 96, y - 60, 96, 60)
+        infoBoxText.x = x - 82
+        infoBoxText.y = y - 46
+      }
+      infoBox.endFill()
+
+      PIXIContainer.addChild(infoBox, infoBoxText)
+    }
+
+    //stop hovering over item
+    newSprite.mouseout = (mouseData) => {
+      try {
+        PIXIContainer.removeChild(infoBox, infoBoxText)
+        // Just in case there's an error somehow,
+        // This will silently catch it
+      } catch (e) {}
+    }
+    PIXIContainer.addChild(newSprite)
+    return newSprite
   }
 
   function generateItems(roomItems) {
     if (!roomItems || !roomItems.length) return
     for (i = 0; i < roomItems.length; i++) {
       const item = roomItems[i][1]
+
+      const spriteID = id[`${item.name}.png`]
       const x = roomItems[i][0][0] + 32
       const y = roomItems[i][0][1] + 32
+      const infoText = `Score: ${item.score}\nWeight: ${item.weight}`
 
-      item['sprite'] = new Sprite(id[`${item.name}.png`])
-      item['sprite'].anchor.set(0.5)
-      item['sprite'].position.set(x, y)
-      item['sprite'].interactive = true
-
-      item['sprite'].hitArea = new PIXI.Rectangle(-10, -10, 20, 20)
-
-      //setup infoBox elements
-      item[`${item.id}_infoBox`] = new PIXI.Graphics() //change to using item id when using real data
-      item[`${item.id}_infoBoxText`] = new PIXI.Text(
-        `Score: ${item.score}\nWeight: ${item.weight}`,
-        style
+      item.sprite = createSpriteAndMouseOver(
+        itemContainer.temp,
+        spriteID,
+        x,
+        y,
+        infoText
       )
-
-      //hovering over item
-      item['sprite'].mouseover = (mouseData) => {
-        item[`${item.id}_infoBox`].lineStyle(2, 0x000000, 1)
-        item[`${item.id}_infoBox`].beginFill(0xffffff)
-        if (x < 390) {
-          item[`${item.id}_infoBox`].drawRect(x, y, 96, 60)
-          item[`${item.id}_infoBoxText`].x = x + 14
-          item[`${item.id}_infoBoxText`].y = y + 14
-        } else {
-          item[`${item.id}_infoBox`].drawRect(x - 96, y - 60, 96, 60)
-          item[`${item.id}_infoBoxText`].x = x - 82
-          item[`${item.id}_infoBoxText`].y = y - 46
-        }
-        item[`${item.id}_infoBox`].endFill()
-
-        itemContainer.temp.addChild(
-          item[`${item.id}_infoBox`],
-          item[`${item.id}_infoBoxText`]
-        )
-      }
-
-      //stop hovering over item
-      item['sprite'].mouseout = (mouseData) => {
-        try {
-          itemContainer.temp.removeChild(
-            item[`${item.id}_infoBox`],
-            item[`${item.id}_infoBoxText`]
-          )
-          // Just in case there's an error somehow,
-          // This will silently catch it
-        } catch (e) {}
-      }
-      itemContainer.temp.addChild(item['sprite'])
     }
   }
 
@@ -392,15 +354,10 @@ function runGame() {
   }
 
   checkStore = {
-    storeOpen: false,
+    storeModalIfExists: null,
     collisionCheck: () => {
-      if (
-        roomInfo.name === 'Ant Store' &&
-        testForAABB(ant1, storekeeper) &&
-        !checkStore.storeOpen
-      ) {
+      if (testForAABB(ant1, storekeeper) && !this.storeModalIfExists)
         generateStore()
-      }
     },
   }
 
@@ -408,12 +365,7 @@ function runGame() {
   const getId = (id) => document.getElementById(id)
 
   function generateStore() {
-    checkStore.storeOpen = true
-    // Stop the ant
-    antCanMove = false
-    ant1.vx = 0
-    ant1.vy = 0
-    ant1.stop()
+    if (checkStore.storeModalIfExists) return
 
     // Create the store and player inventory views
     const storeInventory = new StoreInventory(
@@ -432,17 +384,15 @@ function runGame() {
     const modal = getId('modal')
     modal.style.display = 'block'
     const closeTheStore = () => {
-      checkStore.storeOpen = false
+      checkStore.storeModalIfExists = null
       modal.style.display = 'none'
       storeInventory.deconstructor()
       playerInventory.deconstructor()
-      ant1.position.set(app.screen.width / 2 - 100, app.screen.height / 2 - 100)
-      antCanMove = true
     }
     getId('close').onclick = closeTheStore
     getId('exit').onclick = closeTheStore
 
-    const store = new Store(
+    checkStore.storeModalIfExists = new Store(
       storeInventory,
       playerInventory,
       playerInfo.weight,
@@ -450,7 +400,7 @@ function runGame() {
       getId('store-error'),
       closeTheStore
     )
-    store.examineBarter()
+    checkStore.storeModalIfExists.examineBarter()
   }
 
   function takeItem(id) {
