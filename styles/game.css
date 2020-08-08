@@ -276,7 +276,7 @@
 
 .store {
   position: relative;
-  background-color: rgba(49, 53, 56, 0.95);
+  background-color: rgba(49, 53, 56, 0.8);
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
@@ -308,7 +308,7 @@
 
 .store-inventory,
 .player-inventory {
-  background: none;
+  background-color: rgba(49, 53, 56, 0.8);
 }
 
 .store-contents {
