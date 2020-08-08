@@ -63,6 +63,12 @@ function runGame() {
       }
     }
   })
+  socket.on('movementupdate', (data) => {
+    console.log('movement', data)
+    room_loc = data[socketID]
+    ant1.x = room_loc[0]
+    ant1.y = room_loc[1]
+  })
 
   function setup() {
     let animations = resources['assets/spritesheet.json'].spritesheet.animations
@@ -80,6 +86,7 @@ function runGame() {
     gameScene.addChild(background)
 
     ant1 = new AnimatedSprite(animations['Ant'])
+    console.log(ant1.id)
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
     // CHANGE BACK
@@ -194,8 +201,7 @@ function runGame() {
   space.press = () => itemCollision(ant1, roomInfo.items)
 
   function play() {
-    ant1.x += ant1.vx
-    ant1.y += ant1.vy
+    socket.emit('move', { vx: ant1.vx, vy: ant1.vy })
 
     checkPaths()
     contain(ant1, {
@@ -283,19 +289,19 @@ function runGame() {
     //The `downHandler`
     key.downHandler = function (event) {
       if (event.keyCode === key.code) {
+        event.preventDefault()
         if (antCanMove && !key.isDown && key.press) key.press()
         key.isDown = true
       }
-      event.preventDefault()
     }
 
     //The `upHandler`
     key.upHandler = function (event) {
       if (event.keyCode === key.code) {
+        event.preventDefault()
         if (antCanMove && key.isDown && key.release) key.release()
         key.isDown = false
       }
-      event.preventDefault()
     }
 
     //Attach event listeners
@@ -391,19 +397,19 @@ function runGame() {
     const dir_string = roomInfo.direction.join('')
     if (dir_string.includes('n') && testForAABB(ant1, exits.north)) {
       ant1.y = app.screen.height - 60
-      socket.emit('move', 'n')
+      socket.emit('travel', 'n')
     }
     if (dir_string.includes('e') && testForAABB(ant1, exits.east)) {
       ant1.x = 60
-      socket.emit('move', 'e')
+      socket.emit('travel', 'e')
     }
     if (dir_string.includes('s') && testForAABB(ant1, exits.south)) {
       ant1.y = 60
-      socket.emit('move', 's')
+      socket.emit('travel', 's')
     }
     if (dir_string.includes('w') && testForAABB(ant1, exits.west)) {
       ant1.x = app.screen.width - 60
-      socket.emit('move', 'w')
+      socket.emit('travel', 'w')
     }
   }
 
