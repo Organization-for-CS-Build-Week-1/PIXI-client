@@ -8,6 +8,16 @@
   flex-direction: column;
 }
 
+#container {
+  min-width: 500px;
+  width: 500px;
+  max-width: 500px;
+  min-height: 500px;
+  height: 500px;
+  max-height: 500px;
+  flex-grow: 1;
+}
+
 .wrapper {
   width: 100vw;
   height: 500px;
