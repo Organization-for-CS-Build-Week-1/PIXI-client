@@ -238,13 +238,6 @@ function runGame() {
       checkMoving(allAnts[antID])
     }
 
-    checkPaths()
-    contain(ant1, {
-      x: 50,
-      y: 40,
-      width: gameScene.width - 10,
-      height: gameScene.height - 10,
-    })
     checkStore.collisionCheck()
   }
 
@@ -283,36 +276,7 @@ function runGame() {
     )
   }
 
-  function contain(sprite, container) {
-    let collision = undefined
 
-    //Left
-    if (sprite.x < container.x) {
-      sprite.x = container.x
-      collision = 'left'
-    }
-
-    //Top
-    if (sprite.y < container.y) {
-      sprite.y = container.y
-      collision = 'top'
-    }
-
-    //Right
-    if (sprite.x + sprite.width > container.width) {
-      sprite.x = container.width - sprite.width
-      collision = 'right'
-    }
-
-    //Bottom
-    if (sprite.y + sprite.height > container.height) {
-      sprite.y = container.height - sprite.height
-      collision = 'bottom'
-    }
-
-    //Return the `collision` value
-    return collision
-  }
 
   function keyboard(keyCode) {
     var key = {}
@@ -427,27 +391,6 @@ function runGame() {
     }
   }
 
-  function checkPaths() {
-    if (!roomInfo) return
-    const dir_string = roomInfo.direction.join('')
-    if (dir_string.includes('n') && testForAABB(ant1, exits.north)) {
-      ant1.y = app.screen.height - 60
-      socket.emit('travel', 'n')
-    }
-    if (dir_string.includes('e') && testForAABB(ant1, exits.east)) {
-      ant1.x = 60
-      socket.emit('travel', 'e')
-    }
-    if (dir_string.includes('s') && testForAABB(ant1, exits.south)) {
-      ant1.y = 60
-      socket.emit('travel', 's')
-    }
-    if (dir_string.includes('w') && testForAABB(ant1, exits.west)) {
-      ant1.x = app.screen.width - 60
-      socket.emit('travel', 'w')
-    }
-  }
-
   checkStore = {
     storeOpen: false,
     collisionCheck: () => {
@@ -462,11 +405,7 @@ function runGame() {
   }
 
   // DOM Manipulation helper functions for lazy devs
-  const create = (el) => document.createElement(el),
-    getId = (id) => document.getElementById(id),
-    text = (el, textToAdd) => (el.textContent = textToAdd),
-    append = (el, parentEl) => parentEl.appendChild(el),
-    addClass = (el, aClass) => el.classList.add(aClass)
+  const getId = (id) => document.getElementById(id),
 
   function generateStore() {
     checkStore.storeOpen = true
