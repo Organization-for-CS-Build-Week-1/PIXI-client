@@ -20,8 +20,10 @@ function runGame() {
 
   loader.add('assets/spritesheet.json').load(setup)
 
-  let ant1,
+  let allAnts = {},
+    ant1,
     antCanMove = true,
+    animations,
     gameScene,
     roomItems,
     roomInfo,
@@ -30,10 +32,7 @@ function runGame() {
     itemContainer,
     storekeeper,
     storeItems,
-    buyItem,
-    sellItems
-
-  let space = keyboard(32)
+    space = keyboard(32)
 
   const roomInfoInitState = {
     direction: [],
@@ -64,14 +63,11 @@ function runGame() {
     }
   })
   socket.on('movementupdate', (data) => {
-    console.log('movement', data)
-    room_loc = data[socketID]
-    ant1.x = room_loc[0]
-    ant1.y = room_loc[1]
+    updateAnts(data)
   })
 
   function setup() {
-    let animations = resources['assets/spritesheet.json'].spritesheet.animations
+    animations = resources['assets/spritesheet.json'].spritesheet.animations
     id = resources['assets/spritesheet.json'].textures
 
     gameScene = new Container()
@@ -85,8 +81,7 @@ function runGame() {
     background.scale.set(1)
     gameScene.addChild(background)
 
-    ant1 = new AnimatedSprite(animations['Ant'])
-    console.log(ant1.id)
+    ant1 = allAnts[socketID] = new AnimatedSprite(animations['Ant'])
     ant1.animationSpeed = 0.3
     ant1.anchor.set(0.5)
     // CHANGE BACK
@@ -150,51 +145,88 @@ function runGame() {
     //Up
     up.press = function () {
       ant1.vy = -3
-      checkMoving(ant1)
     }
     up.release = function () {
       if (down.isDown) ant1.vy = 3
       else ant1.vy = 0
-      checkMoving(ant1)
     }
 
     //Left
     left.press = function () {
       ant1.vx = -3
       ant1.scale.x = -1
-      checkMoving(ant1)
     }
     left.release = function () {
       if (right.isDown) ant1.vx = 3
       else ant1.vx = 0
-      checkMoving(ant1)
     }
 
     //Right
     right.press = function () {
       ant1.vx = 3
       ant1.scale.x = 1
-      checkMoving(ant1)
     }
     right.release = function () {
       if (left.isDown) ant1.vx = -3
       else ant1.vx = 0
-      checkMoving(ant1)
     }
 
     //Down
     down.press = function () {
       ant1.vy = 3
-      checkMoving(ant1)
     }
     down.release = function () {
       if (up.isDown) ant1.vy = -3
       else ant1.vy = 0
-      checkMoving(ant1)
     }
 
     socket.emit('init')
     app.ticker.add(() => play())
+  }
+
+  function createAnt(antID) {
+    allAnts[antID] = new AnimatedSprite(animations['Ant'])
+    allAnts[antID].animationSpeed = 0.3
+    allAnts[antID].anchor.set(0.5)
+  }
+
+  function updateSingleAnt(antObj, newLoc, isPlayer = false) {
+    antObj.x = newLoc.x
+    antObj.y = newLoc.y
+    if (!isPlayer) {
+      antObj.vx = newLoc.vx
+      antObj.vy = newLoc.vy
+    }
+  }
+
+  function updateAnts(newData) {
+    removableAnts = {}
+
+    for (antID in allAnts) {
+      removableAnts[antID] = true
+    }
+    delete removableAnts[socketID]
+
+    for (antID in newData) {
+      newAntLoc = newData[antID]
+
+      if (antID === socketID) {
+        updateSingleAnt(ant1, newAntLoc, true)
+      } else if (removableAnts[antID]) {
+        delete removableAnts[antID]
+        updateSingleAnt(allAnts[antID], newAntLoc)
+      } else {
+        createAnt(antID)
+        updateSingleAnt(allAnts[antID], newAntLoc)
+        overLayer.addChild(allAnts[antID])
+      }
+    }
+    for (antID in removableAnts) {
+      if (allAnts[antID]) {
+        overLayer.removeChild(allAnts[antID])
+        delete allAnts[antID]
+      }
+    }
   }
 
   //Space
@@ -202,6 +234,9 @@ function runGame() {
 
   function play() {
     socket.emit('move', { vx: ant1.vx, vy: ant1.vy })
+    for (antID in allAnts) {
+      checkMoving(allAnts[antID])
+    }
 
     checkPaths()
     contain(ant1, {
@@ -231,7 +266,7 @@ function runGame() {
   function checkMoving(animatedSprite) {
     if (animatedSprite.vx || (animatedSprite.vy && animatedSprite.play)) {
       animatedSprite.play()
-    } else animatedSprite.stop()
+    } else if (animatedSprite.stop) animatedSprite.stop()
   }
 
   // classic AABB collision test
