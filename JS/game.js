@@ -32,6 +32,16 @@ function runGame() {
     storekeeper,
     storeItems
 
+  const ping = {
+    current: Date.now(),
+    ping: 0,
+    update: () => {
+      const now = Date.now()
+      ping.ping = now - ping.current
+      ping.current = now
+    },
+  }
+
   const space = keyboard(32)
   const left = keyboard(65)
   const up = keyboard(87)
@@ -78,6 +88,18 @@ function runGame() {
     }
   })
   socket.on('movementupdate', (data) => {
+    ping.update()
+    // =========================================================================================== ////
+    // =========================================================================================== ////
+    //                                                                                             ////
+    //                            Hello. Please comment this                                       ////
+    //                            out before deploying. TY <3                                      ////
+    console.log(ping.ping)
+    //                                                                                             ////
+    //                                                                                             ////
+    //                                                                                             ////
+    // =========================================================================================== ////
+    // =========================================================================================== ////
     updateAnts(data)
   })
 
@@ -154,30 +176,61 @@ function runGame() {
     if (antObj.vx < 0) antObj.scale.x = -1
   }
 
-  function updateAnts(newData) {
-    removableAnts = {}
+  const removableAnts = {
+    /**
+     *
+     * Store and/or remove an ant from the room.
+     *
+     * If we're storing an ant for removal, this means:
+     *   - The ant is on screen client-side, but
+     *   - the server didn't give any movement data.
+     *
+     *
+     * If the ant DOES NOT already exist in this object:
+     *   - it is added with a key of it's antID and a value of Date.now()
+     *
+     * If the ant ALREADY exists in this object:
+     *   - we check if it's been stored in this object for longer than 3 pings.
+     *   - If it has, then we remove the ant from the screen.
+     */
+    storeForRemoval: (antID) => {
+      if (!removableAnts[antID]) {
+        removableAnts[antID] = Date.now()
+        return
+      }
+      if (Date.now() - removableAnts[antID] > ping.ping*3) {
+        if (allAnts[antID]) {
+          overLayer.removeChild(allAnts[antID])
+          delete allAnts[antID]
+        }
+        delete removableAnts[antID]
+      }
+    },
 
+    /**
+     * Removes ant from storage. Ant will no longer be removed from the screen.
+     */
+    removeFromStorage: (antId) => {
+      delete removableAnts[antID]
+    },
+  }
+
+  function updateAnts(newData) {
     for (antID in allAnts) {
-      removableAnts[antID] = true
+      if (antID !== socketID && !newData[antID]) {
+        removableAnts.storeForRemoval(antID)
+      } else removableAnts.removeFromStorage(antID)
     }
-    delete removableAnts[socketID]
 
     for (antID in newData) {
       newAntLoc = newData[antID]
 
       if (allAnts[antID]) {
-        delete removableAnts[antID]
         updateSingleAnt(allAnts[antID], newAntLoc)
       } else {
         createAnt(antID)
         updateSingleAnt(allAnts[antID], newAntLoc)
         overLayer.addChild(allAnts[antID])
-      }
-    }
-    for (antID in removableAnts) {
-      if (allAnts[antID]) {
-        overLayer.removeChild(allAnts[antID])
-        delete allAnts[antID]
       }
     }
   }
