@@ -32,15 +32,19 @@ function runGame() {
     storekeeper,
     storeItems
 
-  const ping = {
-    current: Date.now(),
-    ping: 0,
-    update: () => {
+  const CreatePing = () => {
+    let current = Date.now()
+    let ping = 0
+    const updatePing = () => {
       const now = Date.now()
-      ping.ping = now - ping.current
-      ping.current = now
-    },
+      ping = now - current
+      current = now
+    }
+    const getPing = () => ping
+    return { getPing, updatePing }
   }
+  const serverPing = CreatePing()
+  const clientPing = CreatePing()
 
   const space = keyboard(32)
   const left = keyboard(65)
@@ -88,13 +92,13 @@ function runGame() {
     }
   })
   socket.on('movementupdate', (data) => {
-    ping.update()
+    serverPing.updatePing()
     // =========================================================================================== ////
     // =========================================================================================== ////
     //                                                                                             ////
     //                            Hello. Please comment this                                       ////
     //                            out before deploying. TY <3                                      ////
-    console.log(ping.ping)
+    console.log("SERVER PING:", serverPing.getPing())
     //                                                                                             ////
     //                                                                                             ////
     //                                                                                             ////
@@ -198,7 +202,7 @@ function runGame() {
         removableAnts[antID] = Date.now()
         return
       }
-      if (Date.now() - removableAnts[antID] > ping.ping*3) {
+      if (Date.now() - removableAnts[antID] > serverPing.getPing() * 3) {
         if (allAnts[antID]) {
           overLayer.removeChild(allAnts[antID])
           delete allAnts[antID]
@@ -250,6 +254,8 @@ function runGame() {
   }
 
   function play() {
+    clientPing.updatePing()
+    console.log("CLIENT PING:", clientPing.getPing())
     socket.emit('move', { vx: getPlayerVX(), vy: getPlayerVY() })
     for (antID in allAnts) {
       checkMoving(allAnts[antID])
