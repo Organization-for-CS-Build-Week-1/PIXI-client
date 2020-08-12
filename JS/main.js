@@ -1,5 +1,5 @@
 let socketID;
-socket = io.connect('http://localhost:5000')
+socket = io.connect('https://ants-knapsack-development.herokuapp.com/')
 socket.on("connected", socketid => socketID = socketid)
 
 pages = {
